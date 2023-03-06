@@ -1,17 +1,13 @@
 import esbuild from "esbuild";
 import process from "process";
-
-
-// "build": "esbuild src/main.ts --bundle --outfile=dist/main.js --loader:.njk=text --sourcemap --platform=node --packages=external",
+import metadata from "./package.json" assert { type: "json" };
 
 
 esbuild.build({
     entryPoints: ["src/main.ts"],
     outfile: "dist/main.js",
     bundle: true,
-    external: [
-        "commander",
-    ],
+    external: Object.keys(metadata.dependencies).concat(Object.keys(metadata.devDependencies)),
     loader: {
         ".njk": "text"
     },
@@ -21,5 +17,6 @@ esbuild.build({
     platform: "node",
     logLevel: "info",
     sourcemap: true,
+    "minify": false,
     treeShaking: true,
 }).catch(() => process.exit(1));
