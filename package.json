@@ -8,7 +8,7 @@
     "build": "node esbuild.config.mjs",
     "test": "jest --clearCache && jest",
     "lint": "prettier --write \"src/**/*.ts\" && eslint ./src",
-    "prepublishOnly": "npm test && npm run lint",
+    "prepare": "npm test && npm run lint && npm run build",
     "preversion": "npm test && npm run lint",
     "run": "npm run build && node dist/main.js"
   },

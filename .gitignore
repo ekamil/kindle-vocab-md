@@ -1,2 +1,4 @@
 node_modules
 dist
+/package
+kindle-vocab-md-*.tgz
