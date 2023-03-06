@@ -7,7 +7,7 @@ module.exports = {
             encoding: "utf-8", flag: "r"
         })
         return {
-            code: `module.exports = "${file}";`,
-        };
-    },
+            code: `module.exports = ${JSON.stringify(file)} ;`,
+        }
+    }
 };

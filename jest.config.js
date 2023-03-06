@@ -4,7 +4,7 @@ module.exports = {
   testEnvironment: 'node',
   verbose: true,
   transform: {
-    '^.+\.(ts|html)$': 'ts-jest',
     '^.+\.(njk)$': '<rootDir>/readstringTransformer.js',
-  }
+    '^.+\.(ts|html)$': 'ts-jest',
+  },
 };

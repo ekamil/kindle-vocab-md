@@ -8,7 +8,7 @@
     "select": "ts-node src/select.ts",
     "render": "ts-node src/render.ts",
     "build": "node esbuild.config.mjs production",
-    "test": "jest",
+    "test": "jest --clearCache && jest",
     "lint": "eslint ./src"
   },
   "keywords": [],

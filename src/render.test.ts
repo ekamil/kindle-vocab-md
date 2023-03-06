@@ -9,6 +9,10 @@ describe("render module", () => {
       usage: "Foo was barred for the bar",
     };
     const res = nunjucks.renderString(WordTemplate, vars);
-    expect(res).toBe("");
+      expect(res).toBe(`foo
+
+> [!quote]
+> Foo was barred for the bar
+`);
   });
 });
