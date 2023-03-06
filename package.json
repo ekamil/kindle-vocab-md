@@ -2,11 +2,9 @@
   "name": "kindle-vocab-md",
   "version": "0.1.0-alpha",
   "description": "Export utility for Kindle Vocabulary",
-  "main": "index.js",
   "scripts": {
     "cli": "ts-node src/cli.ts",
     "select": "ts-node src/select.ts",
-    "render": "ts-node src/render.ts",
     "build": "node esbuild.config.mjs production",
     "test": "jest --clearCache && jest",
     "lint": "eslint ./src"

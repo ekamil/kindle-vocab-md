@@ -7,9 +7,9 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Debug render.ts",
+      "name": "Debug select.ts",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/src/render.ts",
+      "program": "${workspaceFolder}/src/select.ts",
       "preLaunchTask": "tsc: build - tsconfig.json",
       "outFiles": ["${workspaceFolder}/dist/**/*.js"]
     }
