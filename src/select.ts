@@ -8,5 +8,7 @@ const db = new Database("vocab.db");
 //   )
 //   statement.run([3]);
 
-// Fetch a random integer between -99 and +99
-db.get("SELECT * from words limit 10", (_, res) => console.log(res));
+export const testSelect = () => {
+  db.get("SELECT * from words limit 1", (_, res) => console.log(res));
+  db.get("SELECT * from lookups limit 1", (_, res) => console.log(res.usage));
+};

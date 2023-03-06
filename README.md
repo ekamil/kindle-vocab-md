@@ -1,4 +1,5 @@
 # Export kindle vocabulary to Markdown
+TODO: try rollup
 
 ## Assumptions
 ### Kindle vocabulary
@@ -39,7 +40,7 @@ Can be either a single Markdown table or a folder containing file for each book 
 All three options should preserve place for comments
 
 Optional: highlight with `::word::` the word in context
-
+Set tags
 
 ### if word-centric
 Each lookup is a section, maybe a [callout](https://help.obsidian.md/How+to/Use+callouts)
@@ -54,3 +55,7 @@ https://typescript.tv/hands-on/understanding-generators-iterators-and-iterables/
 
 [Nunjucks](https://mozilla.github.io/nunjucks/api.html)
   - https://github.com/hadynz/obsidian-kindle-plugin/tree/master/src/rendering
+
+Gray-matter
+https://github.com/hadynz/obsidian-kindle-plugin/blob/5b804919b97df4b06981b6ad227f3d6933a5529d/src/utils/frontmatter.ts
+https://www.npmjs.com/package/gray-matter

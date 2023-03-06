@@ -1,9 +1,12 @@
 {
   "extends": "@tsconfig/node16/tsconfig.json",
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/templates/*.njk"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "resolveJsonModule": true,
-    "outDir": "./dist"
+    "noEmit": true,
+    "module": "ESNext",
+    "preserveValueImports": true,
+    "isolatedModules": true
   }
 }

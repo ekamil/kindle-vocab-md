@@ -1,10 +1,13 @@
 import nunjucks, { Environment } from "nunjucks";
-import { WordTemplateVariables, wordTemplate } from "./templates/word";
+import type { WordTemplateVariables } from "./templates";
+import { WordTemplate } from "./templates";
 
-let vars: WordTemplateVariables = {
+const vars: WordTemplateVariables = {
   word: "foo",
   usage: "Foo was barred for the bar",
 };
 
-const res = nunjucks.renderString(wordTemplate, vars);
-console.log(res);
+export const testRender = () => {
+  const res = nunjucks.renderString(WordTemplate, vars);
+  console.log(res);
+};
