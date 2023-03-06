@@ -10,7 +10,7 @@
     "lint": "prettier --write \"src/**/*.ts\" && eslint ./src",
     "prepare": "npm test && npm run lint && npm run build",
     "preversion": "npm test && npm run lint",
-    "run": "npm run build && node dist/main.js"
+    "main": "npm run build && node dist/main.js"
   },
   "keywords": [],
   "author": "kamil@essekkat.pl",

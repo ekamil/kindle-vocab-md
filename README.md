@@ -59,3 +59,8 @@ https://typescript.tv/hands-on/understanding-generators-iterators-and-iterables/
 Gray-matter
 https://github.com/hadynz/obsidian-kindle-plugin/blob/5b804919b97df4b06981b6ad227f3d6933a5529d/src/utils/frontmatter.ts
 https://www.npmjs.com/package/gray-matter
+
+
+## Development
+
+Run main.ts: `npm run main -- --format csv`

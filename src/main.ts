@@ -7,7 +7,9 @@ const options = program.opts();
 console.log(options);
 
 testSelect();
-renderWordTemplate({
-  word: "foo",
-  usage: "Bar",
-});
+console.log(
+  renderWordTemplate({
+    word: "foo",
+    usage: "Bar",
+  }),
+);
