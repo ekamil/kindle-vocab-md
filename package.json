@@ -1,17 +1,22 @@
 {
   "name": "kindle-vocab-md",
   "version": "0.1.0-alpha",
+  "license": "ISC",
+  "private": true,
   "description": "Export utility for Kindle Vocabulary",
   "scripts": {
-    "cli": "ts-node src/cli.ts",
-    "select": "ts-node src/select.ts",
-    "build": "node esbuild.config.mjs production",
+    "build": "node esbuild.config.mjs",
     "test": "jest --clearCache && jest",
-    "lint": "eslint ./src"
+    "lint": "prettier --write \"src/**/*.ts\" && eslint ./src",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm test && npm run lint",
+    "run": "npm run build && node dist/main.js"
   },
   "keywords": [],
   "author": "kamil@essekkat.pl",
-  "license": "ISC",
+  "files": [
+    "./dist/*"
+  ],
   "devDependencies": {
     "@jest/globals": "^29.4.3",
     "@types/node": "^18.11.18",

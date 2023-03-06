@@ -14,7 +14,7 @@ export const program = new Command()
   .option(
     "-d, --database <path>",
     "path to vocab.db SQLite database",
-    "./vocab.db"
+    "./vocab.db",
   )
   .option("-o, --output <path>", "directory or file for the results", "./out")
   .addOption(
@@ -24,5 +24,5 @@ export const program = new Command()
         OutputFormat.MarkdownDir,
         OutputFormat.CSV,
       ])
-      .default(OutputFormat.MarkdownDir)
+      .default(OutputFormat.MarkdownDir),
   );

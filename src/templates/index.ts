@@ -8,7 +8,7 @@ type WordTemplateVariables = {
   usage: string;
 };
 
-export let renderWordTemplate = (v: WordTemplateVariables) => {
+export const renderWordTemplate = (v: WordTemplateVariables) => {
   return nunjucks.renderString(word, v);
 };
 
@@ -16,6 +16,6 @@ type NoteTemplateVariables = {
   word: string;
   usage: string;
 };
-export let renderNoteTemplate = (v: NoteTemplateVariables) => {
+export const renderNoteTemplate = (v: NoteTemplateVariables) => {
   return nunjucks.renderString(note, v);
 };
