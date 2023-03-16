@@ -7,4 +7,5 @@ module.exports = {
     '^.+\.(njk)$': '<rootDir>/readstringTransformer.js',
     '^.+\.(ts|html)$': 'ts-jest',
   },
+  testPathIgnorePatterns: ['./node_modules/', './.direnv'],
 };
