@@ -2,6 +2,7 @@ import nunjucks from "nunjucks";
 
 import word from "./word.njk";
 import note from "./note.njk";
+import book from "./book.njk";
 
 type WordTemplateVariables = {
   word: string;
@@ -18,4 +19,14 @@ type NoteTemplateVariables = {
 };
 export const renderNoteTemplate = (v: NoteTemplateVariables) => {
   return nunjucks.renderString(note, v);
+};
+
+type BookTemplateVariables = {
+  title: string;
+  asin: string;
+  authors: string;
+  guid: string;
+};
+export const renderBookTemplate = (v: BookTemplateVariables) => {
+  return nunjucks.renderString(book, v);
 };
