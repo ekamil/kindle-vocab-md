@@ -1,11 +1,34 @@
 import { describe, expect, test } from "@jest/globals";
-import { renderBookTemplate, renderWordTemplate } from "./templates";
+import {
+  renderBookTemplate,
+  renderLookupTemplate,
+  renderWordTemplate,
+} from "./templates";
 
 describe("render module", () => {
+  const WORD = {
+    word: "fooing",
+    stem: "foo",
+    lookups: [
+      {
+        usage: "Foo was barred for the bar for fooing",
+        book: "At the mountains of madness",
+        pos: "677",
+        date: null,
+      },
+      {
+        usage: "Foo was fooing for the bar again!!!",
+        book: "At the mountains of madness",
+        pos: "800",
+        date: "2023-03-25",
+      },
+    ],
+  };
+
   test("renders a single word", () => {
     const vars = {
-      word: "fooing",
-      stem: "foo",
+      word: WORD.word,
+      stem: WORD.stem,
       lookups: [],
     };
     const res = renderWordTemplate(vars);
@@ -17,25 +40,9 @@ describe("render module", () => {
 
 `);
   });
+
   test("renders a single word with highlights", () => {
-    const vars = {
-      word: "fooing",
-      stem: "foo",
-      lookups: [
-        {
-          usage: "Foo was barred for the bar for fooing",
-          book: "At the mountains of madness",
-          pos: "677",
-          date: null,
-        },
-        {
-          usage: "Foo was fooing for the bar again!!!",
-          book: "At the mountains of madness",
-          pos: "800",
-          date: "2023-03-25",
-        },
-      ],
-    };
+    const vars = WORD;
     const res = renderWordTemplate(vars);
     expect(res).toEqual(`# foo
 
@@ -50,6 +57,15 @@ describe("render module", () => {
 >[!quote] [[At the mountains of madness]] @ 800
 > Foo was ::fooing:: for the bar again!!!
 > @ 2023-03-25
+
+`);
+  });
+
+  test("renders a single lookup (separate tmpl)", () => {
+    const vars = WORD.lookups[0];
+    const res = renderLookupTemplate(vars, WORD);
+    expect(res).toEqual(`>[!quote] [[At the mountains of madness]] @ 677
+> Foo was barred for the bar for ::fooing::
 
 `);
   });

@@ -1,11 +1,12 @@
 import nunjucks from "nunjucks";
 
+import lookup from "./templates/lookup.njk";
 import word from "./templates/word.njk";
 import book from "./templates/book.njk";
 
 type WordTemplateLookup = {
   usage: string;
-  book: string;
+  book: string; // safe title
   pos: string;
   date: string | null;
 };
@@ -16,16 +17,24 @@ type WordTemplateVariables = {
   lookups: WordTemplateLookup[];
 };
 
+export const renderLookupTemplate = (
+  v: WordTemplateLookup,
+  parent: WordTemplateVariables,
+) => {
+  let vars = copy(v);
+  vars.usage = v.usage.replaceAll(parent.word, `::${parent.word}::`);
+  return nunjucks.renderString(lookup, vars);
+};
+
 export const renderWordTemplate = (v: WordTemplateVariables) => {
   // todo: sorting - here or method higher?
   // todo: date format - higher
-  // todo: highlight - here
-  v.lookups.forEach((lookup) => {
-    lookup.usage = lookup.usage.replaceAll(v.word, `::${v.word}::`);
-    console.log(`Highlighting ${v.word}`);
-    // lookup.date = lookup.date ? lookup.date.toISOString() : null;
+  // todo: use `renderLookupTemplate`
+  let vars = copy(v);
+  vars.lookups.forEach((lookup) => {
+    lookup.usage = lookup.usage.replaceAll(vars.word, `::${vars.word}::`);
   });
-  return nunjucks.renderString(word, v);
+  return nunjucks.renderString(word, vars);
 };
 
 type BookTemplateVariables = {
@@ -40,3 +49,7 @@ type BookTemplateVariables = {
 export const renderBookTemplate = (v: BookTemplateVariables) => {
   return nunjucks.renderString(book, v);
 };
+
+function copy<Type>(obj: Type): Type {
+  return JSON.parse(JSON.stringify(obj)) as Type;
+}
