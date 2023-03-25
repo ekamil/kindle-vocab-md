@@ -17,6 +17,16 @@ export const program = new Command()
     "./vocab.db",
   )
   .option("-o, --output <path>", "directory or file for the results", "./out")
+  .option(
+    "--books-dir <path>",
+    "directory or file for the results",
+    "./out/books",
+  )
+  .option(
+    "--words-dir <path>",
+    "directory or file for the results",
+    "./out/words",
+  )
   .addOption(
     new Option("-f, --format <format>", "output format")
       .choices([
