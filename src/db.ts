@@ -1,5 +1,5 @@
 import type { Lookup, Word } from "./db_models";
-import { PromisifiedDatabase } from "./tools/PromisifiedDatabase";
+import { PromisifiedDatabase } from "./tools/promisified_sqlite";
 
 const queries = {
   word_query: "SELECT * FROM words WHERE stem like ?",

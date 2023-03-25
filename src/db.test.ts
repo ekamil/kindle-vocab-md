@@ -1,9 +1,8 @@
 import { describe, expect, test } from "@jest/globals";
 import { Repository } from "./db";
-import { PromisifiedDatabase } from "./tools/PromisifiedDatabase";
+import { PromisifiedDatabase } from "./tools/promisified_sqlite";
 
 describe("test DB version", () => {
-  const repo = new Repository("vocab.db");
   test("vocab.db is in the test version", async () => {
     const path = "vocab.db";
     const db = new PromisifiedDatabase(path);

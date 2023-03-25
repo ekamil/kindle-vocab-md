@@ -9,7 +9,7 @@ export class PromisifiedDatabase {
         console.error(err);
         throw new Error("Failed to connect to database");
       }
-      console.debug(`Connected to db ${path}`);
+      // console.debug(`Connected to db ${path}`);
     });
   }
 
