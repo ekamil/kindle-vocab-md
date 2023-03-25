@@ -1,21 +1,5 @@
 import { Database } from "sqlite3";
-
-interface Lookup {
-  id: string;
-  word_key: string;
-  book_key: string;
-  dict_key: string;
-  pos: string;
-  usage: string;
-  timestamp: number;
-}
-interface Word {
-  id: string;
-  word: string;
-  lang: string;
-  stem: string;
-  timestamp: number;
-}
+import type { Lookup, Word } from "./models";
 
 export class Repository {
   private readonly db: Database;
