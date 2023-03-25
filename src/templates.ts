@@ -1,15 +1,30 @@
 import nunjucks from "nunjucks";
 
-import word from "./word.njk";
-import note from "./note.njk";
-import book from "./book.njk";
+import word from "./templates/word.njk";
+import note from "./templates/note.njk";
+import book from "./templates/book.njk";
+
+type WordTemplateLookup = {
+  usage: string;
+  book: string;
+  pos: string;
+  date: string | null;
+};
 
 type WordTemplateVariables = {
   word: string;
-  usage: string;
+  stem: string;
+  lookups: WordTemplateLookup[];
 };
 
 export const renderWordTemplate = (v: WordTemplateVariables) => {
+  // todo: sorting - here or method higher?
+  // todo: date format - here
+  // todo: highlight - here
+  v.lookups.forEach((lookup) => {
+    lookup.usage = lookup.usage.replaceAll(v.word, `::${v.word}::`);
+    // lookup.date = lookup.date ? lookup.date.toISOString() : null;
+  });
   return nunjucks.renderString(word, v);
 };
 

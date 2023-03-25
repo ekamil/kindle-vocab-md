@@ -6,12 +6,14 @@ export interface BookInfo {
   title: string;
   authors: string;
 }
+
 export interface DictInfo {
   id: string;
   asin: string;
   langin: string;
   langout: string;
 }
+
 export interface Lookup {
   id: string;
   word_key: string;
@@ -28,11 +30,13 @@ export interface Metadata {
   sscnt: number;
   profileid: string;
 }
+
 export interface Version {
   id: string;
   dsname: string;
   value: number;
 }
+
 export interface Word {
   id: string;
   word: string;

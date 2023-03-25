@@ -1,25 +1,23 @@
-import { Database } from "sqlite3";
-import type { Lookup, Word } from "./models";
+import type { Lookup, Word } from "./db_models";
+import { PromisifiedDatabase } from "./tools/PromisifiedDatabase";
+
+const queries = {
+  word_query: "SELECT * FROM words WHERE stem like ?",
+  lookups_for_word:
+    "SELECT * FROM lookups WHERE word_key = ? ORDER BY timestamp ASC",
+};
 
 export class Repository {
-  private readonly db: Database;
+  private readonly db: PromisifiedDatabase;
   constructor(path = "vocab.db") {
-    this.db = new Database(path);
+    this.db = new PromisifiedDatabase(path);
   }
 
   async findWord(partial: string): Promise<Word> {
-    return new Promise<Word>((resolve) => {
-      this.db.get(
-        "SELECT * from words where stem like ?",
-        [partial],
-        (_, row) => {
-          resolve(row as Word);
-        },
-      );
-    });
+    return this.db.get(queries.word_query, [partial]);
   }
 
-  getLookupsForWord(word: Word): Lookup[] {
-    return [];
+  async getLookupsForWord(word: Word): Promise<Lookup[]> {
+    return this.db.all(queries.lookups_for_word, [word.id]);
   }
 }

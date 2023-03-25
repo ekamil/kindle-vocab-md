@@ -1,4 +1,8 @@
-{{ word }}
+# {{ stem }}
 
-> [!quote]
-> {{ usage }}
+## Examples
+{% for lookup in lookups %}
+>[!quote] [[{{ lookup.book }}]] @ {{lookup.pos}}
+> {{ lookup.usage }}
+{% if lookup.date %}> @ {{lookup.date}}{% endif %}
+{% endfor %}
