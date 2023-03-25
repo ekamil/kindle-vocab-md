@@ -8,6 +8,8 @@
     "noEmit": true,
     "module": "ESNext",
     "preserveValueImports": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true
   }
 }
