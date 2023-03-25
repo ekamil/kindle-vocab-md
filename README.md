@@ -12,6 +12,7 @@ It's a sqllite database with just 4 important tables:
 - dict_inf (optional, really, there's also `words.lang`, but it can have variant)
   - langin / langout (ie. normalised language code)
 - book_info
+  - asin & guid
   - authors
   - title
 
@@ -34,7 +35,7 @@ WHERE W.stem = 'organza'
 ```
 
 ## Results
-Can be either a single Markdown table or a folder containing file for each book or each word.
+Can be either a single Markdown table or a folder containing file for each book and for each word.
 
 All three options should preserve place for comments
 
