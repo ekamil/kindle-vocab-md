@@ -68,7 +68,7 @@ https://www.npmjs.com/package/gray-matter
 
 ## Development
 
-Run main.ts: `npm run main -- --format csv`
+Run main.ts: `npm run main -- --output ./out` or `npm run --silent main -- --output ./out`
 
 
 ## Ideas

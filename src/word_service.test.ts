@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { LookupRepository, WordRepository } from "./db";
+import { LookupRepository } from "./db";
 import { WordService } from "./word_service";
 import {
   renderBookTemplate,
@@ -14,7 +14,6 @@ import {
 describe("from real db models", () => {
   const path = "vocab.db";
   const db = new PromisifiedDatabase(path, log_connection(path));
-  const words_repo = new WordRepository(db);
   const service = new WordService(db);
 
   test("todo : filter lookups by time", async () => {
@@ -22,12 +21,12 @@ describe("from real db models", () => {
     // todo: encapsulate and change this test
     const lookups_repo = new LookupRepository(db);
     const all_words = await service.all_words();
-    const word = all_words[11];
-    let lookups = (await lookups_repo.for_word(word.id)).filter((l) => {
+    const word_id = all_words[11];
+    let lookups = (await lookups_repo.for_word(word_id)).filter((l) => {
       return new Date(l.timestamp) >= new Date("2016-08-01 00:00Z");
     });
     expect(lookups).toHaveLength(1);
-    lookups = (await lookups_repo.for_word(word.id)).filter((l) => {
+    lookups = (await lookups_repo.for_word(word_id)).filter((l) => {
       return l.timestamp >= new Date("2016-09-01 00:00").valueOf();
     });
     expect(lookups).toHaveLength(0);
@@ -51,8 +50,8 @@ describe("from real db models", () => {
   });
 
   test("create template vars", async () => {
-    const word = (await service.all_words())[12];
-    const enhanced = await service.enhance_word(word.id);
+    const word_id = (await service.all_words())[12];
+    const enhanced = await service.enhance_word(word_id);
     expect(enhanced).toBeDefined();
     expect(enhanced.lookups).toHaveLength(1);
     const lookup = enhanced.lookups[0];
@@ -78,8 +77,8 @@ describe("from real db models", () => {
 
   test("smoke: create template vars", async () => {
     const words = await service.all_words();
-    words.slice(0, 40).forEach(async (word) => {
-      const enhanced = await service.enhance_word(word.id);
+    words.slice(0, 40).forEach(async (word_id) => {
+      const enhanced = await service.enhance_word(word_id);
       expect(enhanced).toBeDefined();
     });
   });

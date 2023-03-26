@@ -5,8 +5,8 @@
   "private": true,
   "description": "Export utility for Kindle Vocabulary",
   "scripts": {
-    "clean": "rimraf dist/ ./kindle-vocab-md-0.?.?.tgz",
-    "build": "node esbuild.config.mjs",
+    "clean": "rimraf dist/ ./kindle-vocab-md-0.?.?.tgz out/",
+    "build": "node --no-warnings  esbuild.config.mjs",
     "test": "jest --clearCache && jest .",
     "lint": "prettier --write \"src/**/*.ts\" && eslint ./src && tsc ",
     "prepare": "npm test && npm run lint && npm run build",

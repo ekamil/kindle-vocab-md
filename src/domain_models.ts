@@ -6,6 +6,8 @@ export class Book {
   readonly authors: string;
   readonly asin: string;
   readonly guid: string;
+  latest_lookup_date?: Date;
+
   public get safe_title(): string {
     // safe title - as in ready to be a file name
     return this.title.replaceAll(/\W/g, " ").replaceAll(/ +/g, " ").trim();

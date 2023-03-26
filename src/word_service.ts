@@ -1,24 +1,39 @@
 import { BookRepository, LookupRepository, WordRepository } from "./db";
 import type { WordKey, WordT } from "./db_models";
-import { EnhancedWord } from "./domain_models";
+import { Book, EnhancedWord } from "./domain_models";
 import { type TemplateVars } from "./templates";
 import { PromisifiedDatabase } from "./tools/promisified_sqlite";
+
+type WordVars = TemplateVars["word"];
+type LookupVars = TemplateVars["lookups"];
+type BookVars = TemplateVars["books"];
 
 export class WordService {
   private readonly lookups_repo: LookupRepository;
   private readonly words_repo: WordRepository;
   private readonly books_repo: BookRepository;
   public readonly words: Map<WordKey, EnhancedWord>;
+  public readonly books: Book[];
 
   constructor(private readonly db: PromisifiedDatabase) {
     this.lookups_repo = new LookupRepository(this.db);
     this.words_repo = new WordRepository(this.db);
     this.books_repo = new BookRepository(this.db);
     this.words = new Map<WordKey, EnhancedWord>();
+    this.books = new Array<Book>();
   }
 
-  async all_words() {
-    return await this.words_repo.all();
+  async all_words(): Promise<string[]> {
+    return (await this.words_repo.all()).map((word) => {
+      return word.id;
+    });
+  }
+
+  async all_books(): Promise<Book[]> {
+    const all = await this.books_repo.all();
+    return all.map((it) => {
+      return new Book(it);
+    });
   }
 
   async enhance_word(word_key: WordKey): Promise<EnhancedWord> {
@@ -35,10 +50,6 @@ export class WordService {
   }
 
   async word_to_template_vars(word: EnhancedWord): Promise<TemplateVars> {
-    type WordVars = TemplateVars["word"];
-    type LookupVars = TemplateVars["lookups"];
-    type BookVars = TemplateVars["books"];
-
     const word_vars: WordVars = {
       word: word.word,
       stem: word.stem,
