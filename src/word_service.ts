@@ -4,34 +4,22 @@ import { EnhancedWord } from "./domain_models";
 import { type TemplateVars } from "./templates";
 import { PromisifiedDatabase } from "./tools/promisified_sqlite";
 
-export class Service {
-  private readonly db: PromisifiedDatabase;
+export class WordService {
   private readonly lookups_repo: LookupRepository;
   private readonly words_repo: WordRepository;
   private readonly books_repo: BookRepository;
   public readonly words: Map<WordKey, EnhancedWord>;
 
-  constructor(path: string) {
-    this.db = new PromisifiedDatabase(path, log_connection(path));
+  constructor(private readonly db: PromisifiedDatabase) {
     this.lookups_repo = new LookupRepository(this.db);
     this.words_repo = new WordRepository(this.db);
     this.books_repo = new BookRepository(this.db);
     this.words = new Map<WordKey, EnhancedWord>();
   }
 
-  //   async initialize(): Promise<void> {
-  //     await this.books_repo.all();
-  //     await this.lookups_repo.all();
-  //     await this.words_repo.all();
-
-  //     await this.words_repo.all().then(async (all_words) =>
-  //       all_words.forEach(async (word) => {
-  //         await this.enhance_word(word.id);
-  //       }),
-  //     );
-
-  //     return Promise.resolve();
-  //   }
+  async all_words() {
+    return await this.words_repo.all();
+  }
 
   async enhance_word(word_key: WordKey): Promise<EnhancedWord> {
     const from_cache = this.words.get(word_key);
@@ -54,7 +42,6 @@ export class Service {
     const word_vars: WordVars = {
       word: word.word,
       stem: word.stem,
-      lookups: [],
     };
 
     const lookup_vars: LookupVars = [];
@@ -86,14 +73,4 @@ export class Service {
       books: book_vars,
     });
   }
-}
-
-function log_connection(path: string): (err: Error | null) => void {
-  return (err) => {
-    if (err) {
-      console.error(err);
-      throw new Error("Failed to connect to database");
-    }
-    console.debug(`Connected to sqlite db ${path}`);
-  };
 }

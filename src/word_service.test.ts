@@ -1,25 +1,27 @@
 import { describe, expect, test } from "@jest/globals";
 import { LookupRepository, WordRepository } from "./db";
-import { Service } from "./service";
+import { WordService } from "./word_service";
 import {
   renderBookTemplate,
   renderLookupTemplate,
   renderWordTemplate,
 } from "./templates";
-import { PromisifiedDatabase } from "./tools/promisified_sqlite";
+import {
+  log_connection,
+  PromisifiedDatabase,
+} from "./tools/promisified_sqlite";
 
 describe("from real db models", () => {
   const path = "vocab.db";
-  const db = new PromisifiedDatabase(path);
+  const db = new PromisifiedDatabase(path, log_connection(path));
   const words_repo = new WordRepository(db);
-  const service = new Service(path);
+  const service = new WordService(db);
 
   test("todo : filter lookups by time", async () => {
     // blueprint for service code
     // todo: encapsulate and change this test
     const lookups_repo = new LookupRepository(db);
-
-    const all_words = await words_repo.all();
+    const all_words = await service.all_words();
     const word = all_words[11];
     let lookups = (await lookups_repo.for_word(word.id)).filter((l) => {
       return new Date(l.timestamp) >= new Date("2016-08-01 00:00Z");
@@ -32,8 +34,8 @@ describe("from real db models", () => {
   });
 
   test("creates EnhancedWord from db models", async () => {
-    const word_t = await words_repo.get("en:retches");
-    const actual = await service.enhance_word(word_t.id);
+    const word_id = "en:retches";
+    const actual = await service.enhance_word(word_id);
     expect(service.words.size).toBe(1);
 
     expect(actual.word).toBe("retches");
@@ -49,7 +51,7 @@ describe("from real db models", () => {
   });
 
   test("create template vars", async () => {
-    const word = (await words_repo.all())[12];
+    const word = (await service.all_words())[12];
     const enhanced = await service.enhance_word(word.id);
     expect(enhanced).toBeDefined();
     expect(enhanced.lookups).toHaveLength(1);
@@ -72,5 +74,13 @@ describe("from real db models", () => {
     expect(rendered_book).toContain(lookup.book.title);
     expect(rendered_book).toContain(lookup.book.authors);
     expect(rendered_book).toContain(lookup.book.asin);
+  });
+
+  test("smoke: create template vars", async () => {
+    const words = await service.all_words();
+    words.slice(0, 40).forEach(async (word) => {
+      const enhanced = await service.enhance_word(word.id);
+      expect(enhanced).toBeDefined();
+    });
   });
 });

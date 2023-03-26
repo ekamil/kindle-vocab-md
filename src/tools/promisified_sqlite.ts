@@ -27,3 +27,12 @@ export class PromisifiedDatabase {
     });
   }
 }
+export function log_connection(path: string): (err: Error | null) => void {
+  return (err) => {
+    if (err) {
+      console.error(err);
+      throw new Error("Failed to connect to database");
+    }
+    console.debug(`Connected to sqlite db ${path}`);
+  };
+}

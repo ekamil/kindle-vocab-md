@@ -20,7 +20,7 @@ type LookupVars = {
 type WordVars = {
   word: string;
   stem: string;
-  lookups: LookupVars[];
+  lookups?: LookupVars[];
 };
 
 export const renderLookupTemplate = (v: LookupVars) => {

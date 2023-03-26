@@ -29,7 +29,6 @@ describe("render module", () => {
     const vars = {
       word: WORD.word,
       stem: WORD.stem,
-      lookups: [],
     };
     const res = renderWordTemplate(vars);
     expect(res).toEqual(`# foo
