@@ -10,6 +10,7 @@ import {
   log_connection,
   PromisifiedDatabase,
 } from "./tools/promisified_sqlite";
+import { word_to_template_vars } from "./mappers";
 
 describe("from real db models", () => {
   const path = "vocab.db";
@@ -56,7 +57,7 @@ describe("from real db models", () => {
     expect(enhanced.lookups).toHaveLength(1);
     const lookup = enhanced.lookups[0];
 
-    const actual = await service.word_to_template_vars(enhanced);
+    const actual = word_to_template_vars(enhanced);
 
     const rendered_word = renderWordTemplate(actual.word);
     expect(rendered_word).toBeTruthy();

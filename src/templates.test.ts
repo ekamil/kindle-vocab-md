@@ -86,8 +86,8 @@ tags:
   - book
 Status: Read
 ASIN: B0097DHVGW
-Kindle guid: CR!7Z1SMZYP6H6GK0E99HBRQKZ3627A
-Latest lookup date: 2023-03-25T21:25:00.000Z
+Kindle guid: 'CR!7Z1SMZYP6H6GK0E99HBRQKZ3627A'
+Latest lookup date: '2023-03-25T21:25:00.000Z'
 ---
 
 # The Ego Tunnel: The Science of the Mind and the Myth of the Self

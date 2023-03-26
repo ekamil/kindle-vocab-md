@@ -1,12 +1,7 @@
 import { BookRepository, LookupRepository, WordRepository } from "./db";
 import type { WordKey, WordT } from "./db_models";
 import { Book, EnhancedWord } from "./domain_models";
-import { type TemplateVars } from "./templates";
 import { PromisifiedDatabase } from "./tools/promisified_sqlite";
-
-type WordVars = TemplateVars["word"];
-type LookupVars = TemplateVars["lookups"];
-type BookVars = TemplateVars["books"];
 
 export class WordService {
   private readonly lookups_repo: LookupRepository;
@@ -24,6 +19,7 @@ export class WordService {
   }
 
   async all_words(): Promise<string[]> {
+    // TODO: filtering
     return (await this.words_repo.all()).map((word) => {
       return word.id;
     });
@@ -47,41 +43,5 @@ export class WordService {
     const enhanced = new EnhancedWord(word, lookups, books);
     this.words.set(word_key, enhanced);
     return Promise.resolve(enhanced);
-  }
-
-  async word_to_template_vars(word: EnhancedWord): Promise<TemplateVars> {
-    const word_vars: WordVars = {
-      word: word.word,
-      stem: word.stem,
-    };
-
-    const lookup_vars: LookupVars = [];
-    const book_vars: BookVars = [];
-    word.lookups // already sorted by date
-      .map((actual_lookup) => {
-        lookup_vars.push({
-          usage: actual_lookup.usage,
-          book: actual_lookup.book.safe_title,
-          pos: actual_lookup.pos,
-          date: actual_lookup.date.toISOString(),
-        });
-        return actual_lookup;
-      })
-      .map((actual_lookup) => {
-        book_vars.push({
-          safe_title: actual_lookup.book.safe_title,
-          title: actual_lookup.book.title,
-          authors: actual_lookup.book.authors,
-          asin: actual_lookup.book.asin,
-          guid: actual_lookup.book.guid,
-          latest_lookup_date: actual_lookup.date.toISOString(),
-        });
-      });
-
-    return Promise.resolve({
-      word: word_vars,
-      lookups: lookup_vars,
-      books: book_vars,
-    });
   }
 }
