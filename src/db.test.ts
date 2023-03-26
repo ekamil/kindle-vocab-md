@@ -42,7 +42,6 @@ describe("db module - lookup repository", () => {
     expect(actual).toHaveLength(0);
   });
   test("finds lookups for word", async () => {
-    const word = await lookups.for_word("boring");
     const actual = await lookups.for_word(known_word);
     expect(actual).toBeDefined();
     expect(actual).toHaveLength(1);
@@ -94,5 +93,11 @@ describe("db module - generic repo", () => {
 
     const actual = await generic_repo.all();
     expect(actual).toHaveLength(expected_book_count);
+  });
+  test("map interface", async () => {
+    const from_cache = await generic_repo.all(true);
+    expect(from_cache.length).toBe(expected_book_count);
+    const copy = generic_repo.as_map;
+    expect(copy.get("Bloodchild:A6F32010")).toBeDefined();
   });
 });

@@ -42,6 +42,7 @@ describe("domain models", () => {
     expect(book.safe_title).toBe(expected);
   });
 });
+
 describe("from db models", () => {
   const word: WordT = {
     id: "en:adroit",

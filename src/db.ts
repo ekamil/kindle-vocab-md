@@ -10,8 +10,8 @@ import { PromisifiedDatabase } from "./tools/promisified_sqlite";
 import { ReadListRepository } from "./tools/repository";
 
 const queries = {
-  book_by_id: "SELECT * FROM books WHERE id = ?",
-  books: "SELECT * FROM books ORDER BY id ASC",
+  book_by_id: "SELECT * FROM book_info WHERE id = ?",
+  books: "SELECT * FROM book_info ORDER BY id ASC",
 
   word_by_id: "SELECT * FROM words WHERE id = ? ORDER BY timestamp ASC",
   word_by_stem: "SELECT * FROM words WHERE stem like ? ORDER BY timestamp ASC",
@@ -34,7 +34,10 @@ export class LookupRepository extends ReadListRepository<LookupKey, LookupT> {
     super(db, queries.lookup_by_id, queries.lookups);
   }
 
-  async for_word(word: WordKey): Promise<LookupT[]> {
+  async for_word(word: WordKey, only_cache = false): Promise<LookupT[]> {
+    if (!only_cache || this.cache.size == 0) {
+      await this.all();
+    }
     const from_cache = new Array(...this.cache.values()).filter(
       (l) => l.word_key == word,
     );

@@ -19,7 +19,7 @@ export class Book {
   }
 }
 
-export interface EnhancedLookup {
+interface EnhancedLookup {
   usage: string;
   book: Book;
   pos: string;
@@ -31,7 +31,11 @@ export class EnhancedWord {
   word: string; // possibly declinated or sth
   stem: string;
   lookups: EnhancedLookup[];
-  constructor(word: WordT, lookups: LookupT[], books: Map<BookKey, BookT>) {
+  constructor(
+    word: WordT,
+    lookups: LookupT[],
+    books: ReadonlyMap<BookKey, BookT>,
+  ) {
     this.word_key = word.id;
     this.word = word.word;
     this.stem = word.stem;
@@ -50,9 +54,9 @@ export class EnhancedWord {
       })
       .map((l) => {
         // markdown highlighting in sentence
-          l.usage = l.usage.replaceAll(word.word, `::${word.word}::`);
-          return l;
-        })
+        l.usage = l.usage.replaceAll(word.word, `::${word.word}::`);
+        return l;
+      })
       .sort((l1, l2) => {
         return l1.date < l2.date ? -1 : 1;
       });

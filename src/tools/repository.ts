@@ -16,6 +16,10 @@ export class ReadListRepository<K, V extends ID<K>> {
     this.cache = new Map<K, V>();
   }
 
+  public get as_map(): ReadonlyMap<K, V> {
+    return new Map(this.cache.entries());
+  }
+
   async get(key: K): Promise<V> {
     const from_cache = this.cache.get(key);
     if (from_cache !== undefined) {
