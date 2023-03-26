@@ -97,7 +97,7 @@ describe("db module - generic repo", () => {
   test("map interface", async () => {
     const from_cache = await generic_repo.all(true);
     expect(from_cache.length).toBe(expected_book_count);
-    const copy = generic_repo.as_map;
+    const copy = await generic_repo.as_map();
     expect(copy.get("Bloodchild:A6F32010")).toBeDefined();
   });
 });

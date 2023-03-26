@@ -15,8 +15,8 @@ describe("from real db models", () => {
     const word = all_words[11]; // "en:retches"
     expect(word.stem).toBe("retch");
     const lookups = await lookups_repo.for_word(word.id);
-    await books_repo.all(); // initialize cache
-    const actual = new EnhancedWord(word, lookups, books_repo.as_map);
+    const books = await books_repo.as_map();
+    const actual = new EnhancedWord(word, lookups, books);
     expect(actual.word).toBe("retches");
     expect(actual.lookups).toHaveLength(1);
     expect(actual.lookups[0].book.safe_title).toBe(
