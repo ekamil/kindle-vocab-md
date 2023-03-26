@@ -3,14 +3,8 @@ import { Database } from "sqlite3";
 export class PromisifiedDatabase {
   private readonly db: Database;
 
-  constructor(path: string) {
-    this.db = new Database(path, (err) => {
-      if (err) {
-        console.error(err);
-        throw new Error("Failed to connect to database");
-      }
-      // console.debug(`Connected to db ${path}`);
-    });
+  constructor(path: string, callback?: (err: Error | null) => void) {
+    this.db = new Database(path, callback);
   }
 
   async get<T>(sql: string, params: any): Promise<T> {

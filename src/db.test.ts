@@ -35,7 +35,7 @@ describe("db module - lookup repository", () => {
   });
   test("non-existent lookup id", async () => {
     const actual = lookups.get("xdxxxxxxx");
-    expect(actual).rejects.toEqual(not_found);
+    expect(actual).rejects.toContain(not_found);
   });
   test("non-existent word", async () => {
     const actual = await lookups.for_word("xdxxxxxxx");
@@ -62,7 +62,7 @@ describe("db module - word repository", () => {
   });
   test("non-existent word", async () => {
     const actual = lookups.get("xdxxxxxxx");
-    expect(actual).rejects.toEqual(not_found);
+    expect(actual).rejects.toContain(not_found);
   });
   test("list all", async () => {
     const actual = await lookups.all();
@@ -85,7 +85,7 @@ describe("db module - generic repo", () => {
   });
   test("handles non-existent books", () => {
     const actual = generic_repo.get("xd");
-    expect(actual).rejects.toEqual(not_found);
+    expect(actual).rejects.toContain(not_found);
   });
   test("list books", async () => {
     const from_cache = await generic_repo.all(true);

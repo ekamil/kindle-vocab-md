@@ -63,8 +63,8 @@ describe("render module", () => {
 
   test("renders a single lookup (separate tmpl)", () => {
     const vars = WORD.lookups[0];
-    const res = renderLookupTemplate(vars, WORD);
-    expect(res).toEqual(`>[!quote] [[At the mountains of madness]] @ 677
+    const res = renderLookupTemplate(vars);
+    expect(res).toEqual(`>[!quote] [[At the mountains of madness]] @ \`677\`
 > Foo was barred for the bar for fooing
 
 `);

@@ -4,6 +4,12 @@ import lookup from "./templates/lookup.njk";
 import word from "./templates/word.njk";
 import book from "./templates/book.njk";
 
+export type TemplateVars = {
+  word: WordVars;
+  lookups: LookupVars[];
+  books: BookVars[];
+};
+
 type LookupVars = {
   usage: string;
   book: string; // safe title
@@ -17,14 +23,12 @@ type WordVars = {
   lookups: LookupVars[];
 };
 
-export const renderLookupTemplate = (v: LookupVars, parent: WordVars) => {
+export const renderLookupTemplate = (v: LookupVars) => {
   const vars = copy(v);
   return nunjucks.renderString(lookup, vars);
 };
 
 export const renderWordTemplate = (v: WordVars) => {
-  // todo: sorting - here or method higher?
-  // todo: date format - higher
   // todo: use `renderLookupTemplate`
   const vars = copy(v);
   return nunjucks.renderString(word, vars);
@@ -37,7 +41,7 @@ type BookVars = {
   authors: string;
   asin: string;
   guid: string;
-  latest_lookup_date: string | null;
+  latest_lookup_date: string;
 };
 export const renderBookTemplate = (v: BookVars) => {
   return nunjucks.renderString(book, v);

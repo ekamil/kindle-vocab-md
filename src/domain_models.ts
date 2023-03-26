@@ -31,6 +31,12 @@ export class EnhancedWord {
   word: string; // possibly declinated or sth
   stem: string;
   lookups: EnhancedLookup[];
+
+  public get safe_word(): string {
+    // safe word stem - ready to be a file name
+    return this.stem.replaceAll(/\W/g, " ").replaceAll(/ +/g, " ").trim();
+  }
+
   constructor(
     word: WordT,
     lookups: LookupT[],

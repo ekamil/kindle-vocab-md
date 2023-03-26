@@ -34,7 +34,7 @@ export class ReadListRepository<K, V extends ID<K>> {
       this.cache.set(key, from_db);
       return Promise.resolve(from_db);
     }
-    return Promise.reject(not_found);
+    return Promise.reject(not_found + " " + this.constructor.name);
   }
 
   async all(only_cache = false): Promise<V[]> {
