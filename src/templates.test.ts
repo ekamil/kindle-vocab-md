@@ -51,11 +51,11 @@ describe("render module", () => {
 ## Examples
 
 >[!quote] [[At the mountains of madness]] @ 677
-> Foo was barred for the bar for ::fooing::
+> Foo was barred for the bar for fooing
 
 
 >[!quote] [[At the mountains of madness]] @ 800
-> Foo was ::fooing:: for the bar again!!!
+> Foo was fooing for the bar again!!!
 > @ 2023-03-25
 
 `);
@@ -65,7 +65,7 @@ describe("render module", () => {
     const vars = WORD.lookups[0];
     const res = renderLookupTemplate(vars, WORD);
     expect(res).toEqual(`>[!quote] [[At the mountains of madness]] @ 677
-> Foo was barred for the bar for ::fooing::
+> Foo was barred for the bar for fooing
 
 `);
   });

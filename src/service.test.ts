@@ -10,14 +10,14 @@ describe("from real db models", () => {
   const words_repo = new WordRepository(db);
   const books_repo = new BookRepository(db);
 
-  test("creates word from db models", async () => {
+  test("creates EnhancedWord from db models", async () => {
     const all_words = await words_repo.all();
-    const word = all_words[11]; // "en:retches"
-    expect(word.stem).toBe("retch");
+    const word = all_words[11];
     const lookups = await lookups_repo.for_word(word.id);
     const books = await books_repo.as_map();
     const actual = new EnhancedWord(word, lookups, books);
     expect(actual.word).toBe("retches");
+    expect(actual.stem).toBe("retch");
     expect(actual.lookups).toHaveLength(1);
     expect(actual.lookups[0].book.safe_title).toBe(
       "The Fractal Prince Jean le Flambeur",

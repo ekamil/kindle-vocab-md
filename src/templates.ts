@@ -19,7 +19,6 @@ type WordVars = {
 
 export const renderLookupTemplate = (v: LookupVars, parent: WordVars) => {
   const vars = copy(v);
-  vars.usage = v.usage.replaceAll(parent.word, `::${parent.word}::`);
   return nunjucks.renderString(lookup, vars);
 };
 
@@ -28,9 +27,6 @@ export const renderWordTemplate = (v: WordVars) => {
   // todo: date format - higher
   // todo: use `renderLookupTemplate`
   const vars = copy(v);
-  vars.lookups.forEach((lookup) => {
-    lookup.usage = lookup.usage.replaceAll(vars.word, `::${vars.word}::`);
-  });
   return nunjucks.renderString(word, vars);
 };
 
