@@ -27,8 +27,8 @@ async function main(): Promise<void> {
 }
 
 main().then(
-  () => {
-    console.debug();
+  (result) => {
+    console.debug(result != undefined ? result : "");
   },
   (err) => {
     console.error(err);
