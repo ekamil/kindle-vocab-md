@@ -24,6 +24,9 @@ async function main(): Promise<void> {
   const books = await ws.all_books();
   const book = books[0];
   await fss.write_book(book);
+  const words = await ws.all_words();
+  const word = await ws.enhance_word(words[0]);
+  await fss.write_word(word);
 }
 
 main().then(

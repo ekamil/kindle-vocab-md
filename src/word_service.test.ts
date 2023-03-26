@@ -47,7 +47,7 @@ describe("from real db models", () => {
     expect(actual.lookups[0].date.getFullYear()).toBe(2016);
     expect(actual.lookups[0].date.getMonth()).toBe(7); // zero indexed
     expect(actual.lookups[0].usage).toContain("retches");
-    expect(actual.lookups[0].usage).toContain("::");
+    expect(actual.lookups[0].usage).toContain("==");
   });
 
   test("create template vars", async () => {

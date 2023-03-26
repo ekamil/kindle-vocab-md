@@ -39,29 +39,29 @@ export class FSService {
       // todo - same title but different book - handle this
       throw message;
     }
-    // book file already exists - we should update last excerpt's time
-    if (book.latest_lookup_date) {
-      parsed.data[FRONT_FIELDS.latest_lookup_date] =
-        book.latest_lookup_date.toISOString();
-
-      parsed.data[FRONT_FIELDS.modified_at] = new Date().toISOString();
-      await promises.writeFile(path, stringify(content, parsed.data));
-    }
+    // book file already exists - do nothing
+    // parsed.data[FRONT_FIELDS.modified_at] = new Date().toISOString();
+    // await promises.writeFile(path, stringify(content, parsed.data));
   };
 
   write_word = async (word: EnhancedWord) => {
     const path = join(this.words_dir, word.safe_word) + MARKDOWN;
+
+    const as_vars = word_to_template_vars(word);
+
     let content;
     try {
       content = await promises.readFile(path, { encoding: "utf-8" });
     } catch {
-      const as_vars = word_to_template_vars(word);
       as_vars.word.lookups = as_vars.lookups;
       content = renderWordTemplate(as_vars.word);
       await promises.writeFile(path, content);
       return;
     }
     const parsed = matter(content);
+    // const rendered_lookups = word.lookups.map((l) => {
+    //   renderLookupTemplate(as_vars.lookups);
+    // });
     //todo: file exists - need to append lookups?
 
     parsed.data[FRONT_FIELDS.modified_at] = new Date().toISOString();

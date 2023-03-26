@@ -6,7 +6,7 @@ export class Book {
   readonly authors: string;
   readonly asin: string;
   readonly guid: string;
-  latest_lookup_date?: Date;
+  now: Date;
 
   public get safe_title(): string {
     // safe title - as in ready to be a file name
@@ -18,6 +18,7 @@ export class Book {
     this.authors = book_info.authors;
     this.asin = book_info.asin;
     this.guid = book_info.guid;
+    this.now = new Date();
   }
 }
 
@@ -33,10 +34,22 @@ export class EnhancedWord {
   word: string; // possibly declinated or sth
   stem: string;
   lookups: EnhancedLookup[];
+  now: Date;
 
   public get safe_word(): string {
     // safe word stem - ready to be a file name
     return this.stem.replaceAll(/\W/g, " ").replaceAll(/ +/g, " ").trim();
+  }
+
+  public get latest_lookup_date(): Date {
+    let from_lookup;
+    if (this.lookups) {
+      from_lookup = this.lookups[-1]?.date;
+    } else {
+      from_lookup = null;
+    }
+    const long_time_ago = new Date("1970-01-01 12:00Z");
+    return from_lookup != null ? from_lookup : long_time_ago;
   }
 
   constructor(
@@ -62,11 +75,12 @@ export class EnhancedWord {
       })
       .map((l) => {
         // markdown highlighting in sentence
-        l.usage = l.usage.replaceAll(word.word, `::${word.word}::`);
+        l.usage = l.usage.replaceAll(word.word, `==${word.word}==`);
         return l;
       })
       .sort((l1, l2) => {
         return l1.date < l2.date ? -1 : 1;
       });
+    this.now = new Date();
   }
 }

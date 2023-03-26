@@ -21,6 +21,8 @@ type WordVars = {
   word: string;
   stem: string;
   lookups?: LookupVars[];
+  latest_lookup_date?: string;
+  modified_at: string;
 };
 
 export const renderLookupTemplate = (v: LookupVars) => {
@@ -41,7 +43,7 @@ type BookVars = {
   authors: string;
   asin: string;
   guid: string;
-  latest_lookup_date: string;
+  modified_at: string;
 };
 export const renderBookTemplate = (v: BookVars) => {
   return nunjucks.renderString(book, v);
