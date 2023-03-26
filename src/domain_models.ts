@@ -1,4 +1,4 @@
-import type { BookInfo, BookKey, Lookup, Word } from "./db_models";
+import type { BookT, BookKey, LookupT, WordT } from "./db_models";
 
 // intermediary between db_models and templates
 export class Book {
@@ -11,7 +11,7 @@ export class Book {
     return this.title.replaceAll(/\W/g, " ").replaceAll(/ +/g, " ").trim();
   }
 
-  constructor(book_info: BookInfo) {
+  constructor(book_info: BookT) {
     this.title = book_info.title;
     this.authors = book_info.authors;
     this.asin = book_info.asin;
@@ -31,7 +31,7 @@ export class EnhancedWord {
   word: string; // possibly declinated or sth
   stem: string;
   lookups: EnhancedLookup[];
-  constructor(word: Word, lookups: Lookup[], books: Map<BookKey, BookInfo>) {
+  constructor(word: WordT, lookups: LookupT[], books: Map<BookKey, BookT>) {
     this.word_key = word.id;
     this.word = word.word;
     this.stem = word.stem;
@@ -42,16 +42,17 @@ export class EnhancedWord {
           throw `missing book for lookup ${l}`;
         }
         return {
-          usage: l.usage, // consider highlighting here
+          usage: l.usage,
           pos: l.pos,
           date: new Date(l.timestamp),
           book: new Book(book_info),
         };
       })
       .map((l) => {
-        l.usage = l.usage.replaceAll(word.word, `::${word.word}::`);
-        return l;
-      })
+        // markdown highlighting in sentence
+          l.usage = l.usage.replaceAll(word.word, `::${word.word}::`);
+          return l;
+        })
       .sort((l1, l2) => {
         return l1.date < l2.date ? -1 : 1;
       });

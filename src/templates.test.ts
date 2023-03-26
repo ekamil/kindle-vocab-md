@@ -78,7 +78,7 @@ describe("render module", () => {
       authors: "Metzinger, Thomas",
       asin: "B0097DHVGW",
       guid: "CR!7Z1SMZYP6H6GK0E99HBRQKZ3627A",
-      latest_lookup_date: new Date("2023-03-25 22:25"),
+      latest_lookup_date: new Date("2023-03-25 22:25").toISOString(),
     };
     const res = renderBookTemplate(vars);
     expect(res).toBeTruthy();

@@ -1,6 +1,13 @@
 import { describe, expect, test } from "@jest/globals";
-import { Repository } from "./db";
+import { LookupRepository, WordRepository } from "./db";
+import type { BookKey, BookT } from "./db_models";
 import { PromisifiedDatabase } from "./tools/promisified_sqlite";
+import { ReadListRepository } from "./tools/repository";
+
+const not_found = "not found";
+const expected_sscnt = 206;
+const expected_book_count = 50;
+const expected_word_count = 437;
 
 describe("test DB version", () => {
   test("vocab.db is in the test version", async () => {
@@ -10,28 +17,82 @@ describe("test DB version", () => {
       "SELECT sscnt FROM metadata WHERE id = ?",
       ["WORDS"],
     );
-    expect(actual.sscnt).toBe(206);
+    expect(actual.sscnt).toBe(expected_sscnt);
   });
 });
 
-describe("db module - repository", () => {
-  const repo = new Repository("vocab.db");
-  test("finds a single word", async () => {
-    const actual = await repo.findWord("boring");
+describe("db module - lookup repository", () => {
+  const path = "vocab.db";
+  const db = new PromisifiedDatabase(path);
+  const lookups = new LookupRepository(db);
+  const known_id = "Starfish:840C8DB8:194286:11";
+  const known_word = "en:arsenide";
+  test("finds a single lookup", async () => {
+    const actual = await lookups.get(known_id);
     expect(actual).toBeDefined();
     expect(actual).not.toBeNull();
-    expect(actual).toHaveProperty("id", "en:boring");
+    expect(actual).toHaveProperty("word_key", known_word);
+  });
+  test("non-existent lookup id", async () => {
+    const actual = lookups.get("xdxxxxxxx");
+    expect(actual).rejects.toEqual(not_found);
   });
   test("non-existent word", async () => {
-    const actual = await repo.findWord("xdxxxxxxx");
-    expect(actual).toBeUndefined();
+    const actual = await lookups.for_word("xdxxxxxxx");
+    expect(actual).toHaveLength(0);
   });
-  test("finds lookups", async () => {
-    const word = await repo.findWord("boring");
-    const actual = await repo.getLookupsForWord(word);
+  test("finds lookups for word", async () => {
+    const word = await lookups.for_word("boring");
+    const actual = await lookups.for_word(known_word);
     expect(actual).toBeDefined();
     expect(actual).toHaveLength(1);
-    expect(actual[0].word_key).toBe(word.id);
-    expect(actual[0].usage).toContain(word.word);
+    expect(actual[0].word_key).toBe(known_word);
+    expect(actual[0].id).toBe(known_id);
+  });
+});
+
+describe("db module - word repository", () => {
+  const path = "vocab.db";
+  const db = new PromisifiedDatabase(path);
+  const lookups = new WordRepository(db);
+  const known_word = "en:arsenide";
+
+  test("finds a single lookup", async () => {
+    const actual = await lookups.get(known_word);
+    expect(actual).toHaveProperty("word", "arsenide");
+  });
+  test("non-existent word", async () => {
+    const actual = lookups.get("xdxxxxxxx");
+    expect(actual).rejects.toEqual(not_found);
+  });
+  test("list all", async () => {
+    const actual = await lookups.all();
+    expect(actual).toHaveLength(expected_word_count);
+  });
+});
+
+describe("db module - generic repo", () => {
+  const path = "vocab.db";
+  const db = new PromisifiedDatabase(path);
+
+  const generic_repo = new ReadListRepository<BookKey, BookT>(
+    db,
+    "select * from book_info where id = ?",
+    "select * from book_info order by id asc",
+  );
+  test("can get a book", async () => {
+    const actual = await generic_repo.get("Bloodchild:A6F32010");
+    expect(actual.authors).toBe("Octavia E. Butler");
+  });
+  test("handles non-existent books", () => {
+    const actual = generic_repo.get("xd");
+    expect(actual).rejects.toEqual(not_found);
+  });
+  test("list books", async () => {
+    const from_cache = await generic_repo.all(true);
+    expect(from_cache.length).toBeLessThan(expected_book_count);
+
+    const actual = await generic_repo.all();
+    expect(actual).toHaveLength(expected_book_count);
   });
 });

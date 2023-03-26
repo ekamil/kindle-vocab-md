@@ -41,7 +41,7 @@ type BookVars = {
   authors: string;
   asin: string;
   guid: string;
-  latest_lookup_date: Date;
+  latest_lookup_date: string | null;
 };
 export const renderBookTemplate = (v: BookVars) => {
   return nunjucks.renderString(book, v);

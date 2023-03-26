@@ -1,9 +1,9 @@
 import { describe, expect, test } from "@jest/globals";
-import { type BookInfo, type Lookup, type Word } from "./db_models";
+import { type BookT, type LookupT, type WordT } from "./db_models";
 import { Book, EnhancedWord } from "./domain_models";
 
 describe("domain models", () => {
-  const book_info: BookInfo = {
+  const book_info: BookT = {
     id: "At_the_Mountains_of_Madness:AE289D66",
     asin: "95f7df0a-3408-11e1-b961-001cc0a62c0b",
     guid: "At_the_Mountains_of_Madness:AE289D66",
@@ -43,7 +43,7 @@ describe("domain models", () => {
   });
 });
 describe("from db models", () => {
-  const word: Word = {
+  const word: WordT = {
     id: "en:adroit",
     stem: "adroit",
     word: "adroit",
@@ -52,7 +52,7 @@ describe("from db models", () => {
     timestamp: 1507190128401,
   };
 
-  const books: Map<string, BookInfo> = new Map([
+  const books: Map<string, BookT> = new Map([
     [
       "Anathem:522FC9CB",
       {
@@ -77,7 +77,7 @@ describe("from db models", () => {
     ],
   ]);
 
-  const lookups: Lookup[] = [
+  const lookups: LookupT[] = [
     {
       id: "Anathem:522FC9CB:338916:9",
       word_key: "en:adroit",
@@ -104,5 +104,8 @@ describe("from db models", () => {
     expect(actual.word).toBe("adroit");
     expect(actual.lookups).toHaveLength(2);
     expect(actual.lookups[0].book.safe_title).toBe("Anathem");
+    expect(actual.lookups[0].date.getFullYear()).toBe(2017);
+    expect(actual.lookups[0].usage).toContain(word.word);
+    expect(actual.lookups[0].usage).toContain("::");
   });
 });

@@ -1,8 +1,9 @@
 export type BookKey = string;
 export type WordKey = string;
+export type LookupKey = string;
 export type DictionaryKey = string;
 
-export interface BookInfo {
+export interface BookT {
   id: BookKey;
   asin: string;
   guid: string;
@@ -11,7 +12,7 @@ export interface BookInfo {
   authors: string;
 }
 
-export interface Word {
+export interface WordT {
   id: WordKey;
   word: string;
   stem: string;
@@ -21,8 +22,8 @@ export interface Word {
   profileid?: string;
 }
 
-export interface Lookup {
-  id: string;
+export interface LookupT {
+  id: LookupKey;
   word_key: WordKey;
   book_key: BookKey;
   dict_key: DictionaryKey;
@@ -31,21 +32,21 @@ export interface Lookup {
   timestamp: number;
 }
 
-export interface DictInfo {
+export interface DictInfoT {
   id: DictionaryKey;
   asin: string;
   langin: string;
   langout: string;
 }
 
-export interface Metadata {
+export interface MetadataT {
   id: string;
   dsname: string;
   sscnt: number;
   profileid: string;
 }
 
-export interface Version {
+export interface VersionT {
   id: string;
   dsname: string;
   value: number;
