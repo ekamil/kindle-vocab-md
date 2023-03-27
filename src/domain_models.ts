@@ -24,7 +24,7 @@ export class Book {
 
 interface EnhancedLookup {
   usage: string;
-  book: Book;
+  book: Book; // todo: useless
   pos: string;
   date: Date;
 }

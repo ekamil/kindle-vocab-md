@@ -1,5 +1,9 @@
 node_modules
+
 dist
 /package
 kindle-vocab-md-*.tgz
 /out
+
+/.vscode
+kindle-vocab-md.code-workspace

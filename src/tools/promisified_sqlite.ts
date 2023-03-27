@@ -7,6 +7,7 @@ export class PromisifiedDatabase {
     this.db = new Database(path, callback);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async get<T>(sql: string, params: any): Promise<T> {
     return await new Promise<T>((resolve, reject) => {
       this.db.get(sql, params, (err, row) => {
@@ -17,6 +18,7 @@ export class PromisifiedDatabase {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async all<T>(sql: string, params: any): Promise<T> {
     return await new Promise<T>((resolve, reject) => {
       this.db.all(sql, params, (err, row) => {

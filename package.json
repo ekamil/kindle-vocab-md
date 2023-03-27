@@ -6,9 +6,9 @@
   "description": "Export utility for Kindle Vocabulary",
   "scripts": {
     "clean": "rimraf dist/ ./kindle-vocab-md-0.?.?.tgz out/",
-    "build": "node --no-warnings  esbuild.config.mjs",
+    "build": "node --no-warnings esbuild.config.mjs",
     "test": "jest --clearCache && jest .",
-    "lint": "prettier --write \"src/**/*.ts\" && eslint ./src && tsc ",
+    "lint": "prettier --write \"src/**/*.ts\" && eslint --fix-dry-run ./src && tsc ",
     "prepare": "npm test && npm run lint && npm run build",
     "preversion": "npm test && npm run lint",
     "main": "npm run build && node dist/main.js"

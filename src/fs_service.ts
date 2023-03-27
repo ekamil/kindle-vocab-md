@@ -17,6 +17,7 @@ const FRONT_FIELDS = {
 };
 
 export class FSService {
+  // TODO: extract rendering
   constructor(
     private readonly books_dir: string,
     private readonly words_dir: string,
@@ -33,20 +34,26 @@ export class FSService {
       await promises.writeFile(path, content);
       return;
     }
+    let needs_write = false;
     const parsed = matter(content);
-    if (book.asin !== parsed.data[FRONT_FIELDS.asin]) {
+    if (parsed.data[FRONT_FIELDS.asin] === undefined) {
+      console.info(`Writing ASIN to file ${path}`);
+      parsed.data[FRONT_FIELDS.asin] = book.asin;
+      needs_write = true;
+    } else if (book.asin !== parsed.data[FRONT_FIELDS.asin]) {
       const message = `Ambiguous duplicate book: "${book.title}" in "${path}"`;
       // todo - same title but different book - handle this
       throw message;
     }
     // book file already exists - do nothing
-    // parsed.data[FRONT_FIELDS.modified_at] = new Date().toISOString();
-    // await promises.writeFile(path, stringify(content, parsed.data));
+    parsed.data[FRONT_FIELDS.modified_at] = new Date().toISOString();
+    if (needs_write) {
+      await promises.writeFile(path, stringify(content, parsed.data));
+    }
   };
 
   write_word = async (word: EnhancedWord) => {
     const path = join(this.words_dir, word.safe_word) + MARKDOWN;
-
     const as_vars = word_to_template_vars(word);
 
     let content;
@@ -59,13 +66,27 @@ export class FSService {
       return;
     }
     const parsed = matter(content);
-    // const rendered_lookups = word.lookups.map((l) => {
-    //   renderLookupTemplate(as_vars.lookups);
-    // });
-    //todo: file exists - need to append lookups?
+    let needs_write = false;
+    for (let index = 0; index < as_vars.lookups.length; index++) {
+      // append missing lookups, using date as disambiguation
+      const { date } = word.lookups[index];
+      if (parsed.content.includes(date.toISOString())) {
+        console.log("Lookup already in file");
+        continue;
+      }
+      needs_write = true;
 
-    parsed.data[FRONT_FIELDS.modified_at] = new Date().toISOString();
-    await promises.writeFile(path, stringify(content, parsed.data));
+      const for_template = as_vars.lookups[index];
+      const rendered = renderLookupTemplate(for_template);
+      parsed.content += "\n";
+      parsed.content += rendered;
+
+      parsed.data[FRONT_FIELDS.modified_at] = new Date().toISOString();
+      parsed.data[FRONT_FIELDS.latest_lookup_date] = date.toISOString();
+    }
+    if (needs_write) {
+      await promises.writeFile(path, stringify(content, parsed.data));
+    }
   };
 
   append_usage_to_word = async () => {
