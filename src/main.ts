@@ -24,9 +24,6 @@ async function main(): Promise<void> {
   );
   const ws = new WordService(db);
 
-  // const books = await ws.all_books();
-  // const book = books[0];
-  // await fss.write_book(book);
   const words = await ws.all_words();
   words.forEach(async (word) => {
     const enhanced = await ws.enhance_word(word);

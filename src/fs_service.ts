@@ -42,7 +42,7 @@ export class FSService {
       needs_write = true;
     } else if (book.asin !== parsed.data[FRONT_FIELDS.asin]) {
       const message = `Ambiguous duplicate book: "${book.title}" in "${path}"`;
-      // todo - same title but different book - handle this
+      // todo: - same title but different book - handle this
       throw message;
     }
     // book file already exists - do nothing
@@ -77,7 +77,7 @@ export class FSService {
     const parsed = matter(content);
     let needs_write = false;
     for (let index = 0; index < as_vars.lookups.length; index++) {
-      // append missing lookups, using date as disambiguation
+      // append missing lookups, using date for disambiguation
       const { date } = word.lookups[index];
       if (parsed.content.includes(date.toISOString())) {
         console.log("Lookup already in file");
