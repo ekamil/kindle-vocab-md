@@ -10,23 +10,29 @@ import { WordService } from "./word_service";
 async function main(): Promise<void> {
   program.parse();
   const options = program.opts();
-  console.log(options);
+  console.debug(options);
   assert(options.outputBooks);
   assert(options.outputWords);
 
   const fss = new FSService(options.outputBooks, options.outputWords);
+
   await fss.ensure_dirs();
+
   const db = new PromisifiedDatabase(
     options.database,
     log_connection(options.database),
   );
   const ws = new WordService(db);
-  const books = await ws.all_books();
-  const book = books[0];
-  await fss.write_book(book);
+
+  // const books = await ws.all_books();
+  // const book = books[0];
+  // await fss.write_book(book);
   const words = await ws.all_words();
-  const word = await ws.enhance_word(words[0]);
-  await fss.write_word(word);
+  words.forEach(async (word) => {
+    const enhanced = await ws.enhance_word(word);
+    const include_books = true;
+    await fss.write_word(enhanced, include_books);
+  });
 }
 
 main().then(

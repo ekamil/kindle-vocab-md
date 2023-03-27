@@ -52,7 +52,7 @@ export class FSService {
     }
   };
 
-  write_word = async (word: EnhancedWord) => {
+  write_word = async (word: EnhancedWord, include_books = false) => {
     const path = join(this.words_dir, word.safe_word) + MARKDOWN;
     const as_vars = word_to_template_vars(word);
 
@@ -63,6 +63,15 @@ export class FSService {
       as_vars.word.lookups = as_vars.lookups;
       content = renderWordTemplate(as_vars.word);
       await promises.writeFile(path, content);
+      if (include_books) {
+        word.lookups
+          .map((l) => {
+            return l.book;
+          })
+          .forEach((b) => {
+            this.write_book(b);
+          });
+      }
       return;
     }
     const parsed = matter(content);
