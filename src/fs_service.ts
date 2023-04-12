@@ -46,7 +46,7 @@ export class FSService {
       throw message;
     }
     // book file already exists - do nothing
-    parsed.data[FRONT_FIELDS.modified_at] = new Date().toISOString();
+    parsed.data[FRONT_FIELDS.modified_at] = new Date(Date.now()).toISOString();
     if (needs_write) {
       await promises.writeFile(path, stringify(content, parsed.data));
     }

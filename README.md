@@ -60,9 +60,9 @@ Heavily inspired by [obsidian-kindle-plugin](https://github.com/hadynz/obsidian-
 - [ ] Set tags via CLI
 - [ ] pre-commit & husky
 - [ ] Make highlights optional (CLI option)
-- [ ] Github or Gitlab? (rather 1 for social)
-- [ ] Github Actions [inspiration](https://github.com/mattpocock/matt-product-boilerplate/blob/master/.github/workflows/main.yml)
-- [ ] Flesh out the readme
+- [x] Github or Gitlab? (rather 1 for social)
+- [x] Github Actions
+- [x] Flesh out the readme
 - [ ] Show some examples (attach test data)
 - [ ] Impl. filter by book `--book UNIQUE-ENOUGH-STRING`
 - [ ] Impl. filter by date `--start-after DATE[2023-03-11]`
