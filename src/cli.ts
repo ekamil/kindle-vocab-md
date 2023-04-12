@@ -9,7 +9,7 @@ export const program = new Command()
   .option(
     "-d, --database <path>",
     "path to vocab.db SQLite database",
-    "./vocab.db",
+    "./test/vocab.db",
   )
   .option("--output <path>", "directory or file for the results", "./out")
   .addOption(

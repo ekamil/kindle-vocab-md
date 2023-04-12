@@ -8,11 +8,11 @@ const not_found = "not found";
 const expected_sscnt = 206;
 const expected_book_count = 50;
 const expected_word_count = 437;
+const db_path = "test/vocab.db";
 
 describe("test DB version", () => {
   test("vocab.db is in the test version", async () => {
-    const path = "vocab.db";
-    const db = new PromisifiedDatabase(path);
+    const db = new PromisifiedDatabase(db_path);
     const actual: { sscnt: number } = await db.get(
       "SELECT sscnt FROM metadata WHERE id = ?",
       ["WORDS"],
@@ -22,8 +22,7 @@ describe("test DB version", () => {
 });
 
 describe("db module - lookup repository", () => {
-  const path = "vocab.db";
-  const db = new PromisifiedDatabase(path);
+  const db = new PromisifiedDatabase(db_path);
   const lookups = new LookupRepository(db);
   const known_id = "Starfish:840C8DB8:194286:11";
   const known_word = "en:arsenide";
@@ -51,8 +50,7 @@ describe("db module - lookup repository", () => {
 });
 
 describe("db module - word repository", () => {
-  const path = "vocab.db";
-  const db = new PromisifiedDatabase(path);
+  const db = new PromisifiedDatabase(db_path);
   const lookups = new WordRepository(db);
   const known_word = "en:arsenide";
 
@@ -71,8 +69,7 @@ describe("db module - word repository", () => {
 });
 
 describe("db module - generic repo", () => {
-  const path = "vocab.db";
-  const db = new PromisifiedDatabase(path);
+  const db = new PromisifiedDatabase(db_path);
 
   const generic_repo = new ReadListRepository<BookKey, BookT>(
     db,

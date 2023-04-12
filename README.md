@@ -5,7 +5,8 @@ This program (script) is a way to liberate your "Vocabulary Builder" highlights 
 There are alternatives but my goal here was to export in a way compatible with [Obsidian](https://obsidian.md/) - ie. into a directory of markdown files.
 
 **Important: backup the output directory before running**
-The script won't delet
+
+The script shouldn't delete anything, but better safe than sorry!
 
 ## Features
 
@@ -64,8 +65,10 @@ Heavily inspired by [obsidian-kindle-plugin](https://github.com/hadynz/obsidian-
 - [x] Github Actions
 - [x] Flesh out the readme
 - [ ] Show some examples (attach test data)
+- [ ] Publish to NPM [docs](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry)
 - [ ] Impl. filter by book `--book UNIQUE-ENOUGH-STRING`
 - [ ] Impl. filter by date `--start-after DATE[2023-03-11]`
+- [ ] copy-db-before-query
 
 ## Details
 

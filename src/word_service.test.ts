@@ -12,9 +12,10 @@ import {
 } from "./tools/promisified_sqlite";
 import { word_to_template_vars } from "./mappers";
 
+const db_path = "test/vocab.db";
+
 describe("from real db models", () => {
-  const path = "vocab.db";
-  const db = new PromisifiedDatabase(path, log_connection(path));
+  const db = new PromisifiedDatabase(db_path, log_connection(db_path));
   const service = new WordService(db);
 
   test("todo : filter lookups by time", async () => {
