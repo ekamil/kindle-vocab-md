@@ -9,7 +9,7 @@ describe("render module", () => {
   const WORD = {
     word: "fooing",
     stem: "foo",
-    modified_at: new Date("2023-03-25 22:25").toISOString(),
+    modified_at: new Date("2023-03-25 21:25Z").toISOString(),
     lookups: [
       {
         usage: "Foo was barred for the bar for fooing",
@@ -30,7 +30,7 @@ describe("render module", () => {
     const vars = {
       word: WORD.word,
       stem: WORD.stem,
-      modified_at: new Date("2023-03-25 22:25").toISOString(),
+      modified_at: new Date("2023-03-25 21:25Z").toISOString(),
     };
     const res = renderWordTemplate(vars);
     expect(res).toEqual(`---
@@ -87,7 +87,7 @@ Latest lookup date: ''
       authors: "Metzinger, Thomas",
       asin: "B0097DHVGW",
       guid: "CR!7Z1SMZYP6H6GK0E99HBRQKZ3627A",
-      modified_at: new Date("2023-03-25 22:25").toISOString(),
+      modified_at: new Date("2023-03-25 22:25Z").toISOString(),
     };
     const res = renderBookTemplate(vars);
     expect(res).toBeTruthy();
@@ -96,7 +96,7 @@ tags:
   - book
 ASIN: B0097DHVGW
 Kindle guid: 'CR!7Z1SMZYP6H6GK0E99HBRQKZ3627A'
-Modified at: '2023-03-25T21:25:00.000Z'
+Modified at: '2023-03-25T22:25:00.000Z'
 ---
 
 # The Ego Tunnel: The Science of the Mind and the Myth of the Self
