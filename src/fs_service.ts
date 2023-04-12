@@ -80,7 +80,7 @@ export class FSService {
       // append missing lookups, using date for disambiguation
       const { date } = word.lookups[index];
       if (parsed.content.includes(date.toISOString())) {
-        console.log("Lookup already in file");
+        // console.log("Lookup already in file");
         continue;
       }
       needs_write = true;

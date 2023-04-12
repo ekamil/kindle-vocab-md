@@ -1,23 +1,54 @@
 # Export kindle vocabulary to Markdown
 
-About, what it does, what it does not.
+This program (script) is a way to liberate your "Vocabulary Builder" highlights from Kindle.
 
-insert fs tree
+There are alternatives but my goal here was to export in a way compatible with [Obsidian](https://obsidian.md/) - ie. into a directory of markdown files.
 
-Features:
+**Important: backup the output directory before running**
+The script won't delet
 
-- grabs all words and books
-- WikiLinks between notes (for Obsidian)
-- safe to run in the same directory
+## Features
+
+- grabs all words and books from your Kindle vocabulary database
+- creates WikiLinks between from words to books
+- safe to run repeatedly in the same directory (🤞🏽)
+
+## Issues
+#todo: link to GH issues
+
+⚠️ Unknown how it works with multiple languages and other versions of Kindle. ⚠️
+
+## Example output
+
+```
+📂 ./out
+┣━━ 📂 books
+┃   ┣━━ 📄 A Desolation Called Peace 2 Teixcalaan.md (212 bytes)
+┃   ┣━━ 📄 Accelerate The Science of Lean Software and DevOps Building and Scaling High Performing Technology Organizations.md (290 bytes)
+┃   ┣━━ 📄 All the Birds in the Sky.md (200 bytes)
+┃   ┣━━ 📄 Anathem.md (189 bytes)
+┃   ┣━━ 📄 Ancillary Justice 1 Imperial Radch.md (204 bytes)
+┃   ┗━━ 👀 ...
+┗━━ 📂 words
+    ┣━━ 📄 abode.md (598 bytes)
+    ┣━━ 📄 abseil.md (452 bytes)
+    ┣━━ 📄 abstruse.md (656 bytes)
+    ┣━━ 📄 abut.md (335 bytes)
+    ┣━━ 📄 actively.md (408 bytes)
+    ┗━━ 👀 ...
+```
 
 ## Usage
 
-Flow from connecting Kindle to running the tool to obsidian
-Optional: highlight with `::word::` the word in context
+1. Connect Kindle with a cable, mount it
+2. (Optional) Copy Kindle's database to your drive
+    `cp /Volumes/Kindle/system/vocabulary/vocab.db ./vocab.db`
+3. Run the script with `--database ./vocab.db --output ./out`
+3. Enjoy words and books in the `./out` directory
 
 ## Inspired by
 
-- [obsidian-kindle-plugin](https://github.com/hadynz/obsidian-kindle-plugin)
+Heavily inspired by [obsidian-kindle-plugin](https://github.com/hadynz/obsidian-kindle-plugin), but without actual integration with Obsidian 😝
 
 ## Assumptions
 
@@ -30,7 +61,7 @@ Optional: highlight with `::word::` the word in context
 - [ ] pre-commit & husky
 - [ ] Make highlights optional (CLI option)
 - [ ] Github or Gitlab? (rather 1 for social)
-- [ ] Github Actions
+- [ ] Github Actions [inspiration](https://github.com/mattpocock/matt-product-boilerplate/blob/master/.github/workflows/main.yml)
 - [ ] Flesh out the readme
 - [ ] Show some examples (attach test data)
 - [ ] Impl. filter by book `--book UNIQUE-ENOUGH-STRING`
@@ -52,7 +83,7 @@ Maybe:
 
 ### Kindle vocabulary
 
-It's a SQLLite database with just 4 important tables:
+It's a SQLite database with just 4 important tables:
 
 - lookups
   - timestamp
