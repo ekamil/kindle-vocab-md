@@ -33,9 +33,7 @@ describe("WordService works with a real db", () => {
     expect(actual.word).toBe("retches");
     expect(actual.stem).toBe("retch");
     expect(actual.lookups).toHaveLength(1);
-    expect(actual.lookups[0].book.safe_title).toBe(
-      "The Fractal Prince Jean le Flambeur",
-    );
+    expect(actual.lookups[0].book.safe_title).toBe("The Fractal Prince");
     expect(actual.lookups[0].date.getFullYear()).toBe(2016);
     expect(actual.lookups[0].date.getMonth()).toBe(7); // zero indexed
     expect(actual.lookups[0].usage).toContain("retches");

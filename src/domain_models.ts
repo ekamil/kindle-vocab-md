@@ -10,7 +10,20 @@ export class Book {
 
   public get safe_title(): string {
     // safe title - as in ready to be a file name
-    return this.title.replaceAll(/\W/g, " ").replaceAll(/ +/g, " ").trim();
+    const segments = this.title.split(":");
+    if (segments.length > 1) {
+      segments.pop();
+    }
+    const shortened = segments.join(" ");
+
+    // series name probably, Interference (Semiosis Duology)"
+    const series = /\(\w.*\)/g;
+
+    return shortened
+      .replaceAll(series, "")
+      .replaceAll(/\W/g, " ")
+      .replaceAll(/ +/g, " ")
+      .trim();
   }
 
   constructor(book_info: BookT) {
