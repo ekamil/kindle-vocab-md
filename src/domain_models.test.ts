@@ -17,7 +17,7 @@ describe("domain models", () => {
   test("sanitizes title", () => {
     const book = new Book(book_info);
     expect(book.title).toBe(book_info.title);
-    expect(book.safe_title).toBe("At the Mountains of Madness 1");
+    expect(book.safe_title).toBe("At the Mountains of Madness");
     expect(book.asin).toBe(book_info.asin);
     expect(book.guid).toBe(book_info.guid);
     expect(book.authors).toBe(book_info.authors);
@@ -27,14 +27,31 @@ describe("domain models", () => {
     [
       "  $$$At the Mountains of   Madness: 1 \
     ",
-      "At the Mountains of Madness 1",
+      "At the Mountains of Madness",
     ],
     [
       "  $$$At the Mountains of   Madness: 1 \
     ",
-      "At the Mountains of Madness 1",
+      "At the Mountains of Madness",
     ],
     [" 23 ", "23"],
+    ["The Great Gatsby", "The Great Gatsby"],
+    ["A Desolation Called Peace: 2 (Teixcalaan)", "A Desolation Called Peace"],
+    [
+      "The Curious Incident of the Dog in the Night-time",
+      "The Curious Incident of the Dog in the Night time",
+    ],
+    ["Interference (Semiosis Duology)", "Interference"],
+    ["The Player Of Games (Culture series)", "The Player Of Games"],
+    ["Excession (A Culture Novel Book)", "Excession"],
+    ["Use Of Weapons (Culture series)", "Use Of Weapons"],
+    ["Ancillary Justice: 1 (Imperial Radch)", "Ancillary Justice"],
+    ["Inversions (A Culture Novel Book)", "Inversions"],
+    ["Look To Windward (Culture series)", "Look To Windward"],
+    [
+      "Accelerate: The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations",
+      "Accelerate The Science of Lean Software and DevOps",
+    ],
   ])("sanitizes '%s'", (title, expected) => {
     const book_info_copy = { ...book_info };
     book_info_copy.title = title;
