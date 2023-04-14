@@ -34,7 +34,7 @@ describe("from real db models", () => {
     expect(lookups).toHaveLength(0);
   });
 
-  test("creates EnhancedWord from db models", async () => {
+  test("creates LookedUpWord from db models", async () => {
     const word_id = "en:retches";
     const actual = await service.enhance_word(word_id);
     expect(service.words.size).toBe(1);
