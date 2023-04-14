@@ -1,13 +1,17 @@
 import { promises } from "fs";
 import { join } from "path";
 import matter, { stringify } from "gray-matter";
-import { Book, LookedUpWord } from "./domain_models";
+import { Book, LookedUpWord, Lookup } from "./domain_models";
 import {
   renderBookTemplate,
   renderLookupTemplate,
   renderWordTemplate,
 } from "./templates";
-import { book_to_template_vars, word_to_template_vars } from "./mappers";
+import {
+  book_to_template_vars,
+  lookup_to_template_vars,
+  word_to_template_vars,
+} from "./mappers";
 
 const MARKDOWN = ".md";
 const FRONT_FIELDS = {
@@ -17,12 +21,20 @@ const FRONT_FIELDS = {
 };
 
 export class FSService {
-  // TODO: extract rendering
   constructor(
     private readonly books_dir: string,
     private readonly words_dir: string,
   ) {}
-
+  ensure_dirs = async () => {
+    [this.books_dir, this.words_dir].forEach(async (d) => {
+      try {
+        await promises.access(d);
+        console.log(`${d} already exists`);
+      } catch (error) {
+        await promises.mkdir(d, { recursive: true });
+      }
+    });
+  };
   write_book = async (book: Book) => {
     const path = join(this.books_dir, book.safe_title) + MARKDOWN;
     let content;
@@ -34,25 +46,26 @@ export class FSService {
       await promises.writeFile(path, content);
       return;
     }
-    let needs_write = false;
+    await this.maybeUpdateBook(book, path, content);
+  };
+
+  private async maybeUpdateBook(book: Book, path: string, content: string) {
+    // book file already exists - only write ASIN for later if it isn't already there
     const parsed = matter(content);
-    if (parsed.data[FRONT_FIELDS.asin] === undefined) {
+    const asin_in_file = parsed.data[FRONT_FIELDS.asin];
+    if (asin_in_file === undefined) {
       console.info(`Writing ASIN to file ${path}`);
       parsed.data[FRONT_FIELDS.asin] = book.asin;
-      needs_write = true;
-    } else if (book.asin !== parsed.data[FRONT_FIELDS.asin]) {
+      parsed.data[FRONT_FIELDS.modified_at] = new Date().toISOString();
+      await promises.writeFile(path, stringify(content, parsed.data));
+    } else if (book.asin !== asin_in_file) {
       const message = `Ambiguous duplicate book: "${book.title}" in "${path}"`;
       // todo: - same title but different book - handle this
       throw message;
     }
-    // book file already exists - do nothing
-    parsed.data[FRONT_FIELDS.modified_at] = new Date().toISOString();
-    if (needs_write) {
-      await promises.writeFile(path, stringify(content, parsed.data));
-    }
-  };
+  }
 
-  write_word = async (word: LookedUpWord, include_books = false) => {
+  write_word = async (word: LookedUpWord) => {
     const path = join(this.words_dir, word.safe_word) + MARKDOWN;
     const as_vars = word_to_template_vars(word);
 
@@ -63,53 +76,35 @@ export class FSService {
       as_vars.word.lookups = as_vars.lookups;
       content = renderWordTemplate(as_vars.word);
       await promises.writeFile(path, content);
-      if (include_books) {
-        word.lookups
-          .map((l) => {
-            return l.book;
-          })
-          .forEach((b) => {
-            this.write_book(b);
-          });
-      }
       return;
     }
     const parsed = matter(content);
     let needs_write = false;
     for (let index = 0; index < as_vars.lookups.length; index++) {
       // append missing lookups, using date for disambiguation
-      const { date } = word.lookups[index];
-      if (parsed.content.includes(date.toISOString())) {
+      const lookup = word.lookups[index];
+      if (parsed.content.includes(lookup.date.toISOString())) {
         // console.log("Lookup already in file");
         continue;
       }
       needs_write = true;
-
-      const for_template = as_vars.lookups[index];
-      const rendered = renderLookupTemplate(for_template);
-      parsed.content += "\n";
-      parsed.content += rendered;
-
-      parsed.data[FRONT_FIELDS.modified_at] = new Date().toISOString();
-      parsed.data[FRONT_FIELDS.latest_lookup_date] = date.toISOString();
+      this.appendNewLookup(parsed, lookup);
     }
     if (needs_write) {
       await promises.writeFile(path, stringify(content, parsed.data));
     }
   };
 
-  append_usage_to_word = async () => {
-    throw "unimplemented";
-  };
+  private appendNewLookup(
+    parsed: matter.GrayMatterFile<string>,
+    lookup: Lookup,
+  ) {
+    const vars = lookup_to_template_vars(lookup);
+    const rendered = renderLookupTemplate(vars);
+    parsed.content += "\n";
+    parsed.content += rendered;
 
-  ensure_dirs = async () => {
-    [this.books_dir, this.words_dir].forEach(async (d) => {
-      try {
-        await promises.access(d);
-        console.log(`${d} already exists`);
-      } catch (error) {
-        await promises.mkdir(d, { recursive: true });
-      }
-    });
-  };
+    parsed.data[FRONT_FIELDS.modified_at] = new Date().toISOString();
+    parsed.data[FRONT_FIELDS.latest_lookup_date] = lookup.date.toISOString();
+  }
 }

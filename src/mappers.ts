@@ -1,4 +1,4 @@
-import { Book, LookedUpWord } from "./domain_models";
+import { Book, LookedUpWord, Lookup } from "./domain_models";
 import type { TemplateVars } from "./templates";
 
 type BookVars = TemplateVars["books"][0];
@@ -29,23 +29,11 @@ export const word_to_template_vars = (word: LookedUpWord): TemplateVars => {
   const book_vars: BookVars[] = [];
   word.lookups // already sorted by date
     .map((actual_lookup) => {
-      lookup_vars.push({
-        usage: actual_lookup.usage,
-        book: actual_lookup.book.safe_title,
-        pos: actual_lookup.pos,
-        date: actual_lookup.date.toISOString(),
-      });
+      lookup_vars.push(lookup_to_template_vars(actual_lookup));
       return actual_lookup;
     })
     .map((actual_lookup) => {
-      book_vars.push({
-        safe_title: actual_lookup.book.safe_title,
-        title: actual_lookup.book.title,
-        authors: actual_lookup.book.authors,
-        asin: actual_lookup.book.asin,
-        guid: actual_lookup.book.guid,
-        modified_at: new Date().toISOString(),
-      });
+      book_vars.push(book_to_template_vars(actual_lookup.book));
     });
   return {
     word: word_vars,
@@ -53,3 +41,12 @@ export const word_to_template_vars = (word: LookedUpWord): TemplateVars => {
     books: book_vars,
   };
 };
+
+export function lookup_to_template_vars(lookup: Lookup): LookupVars {
+  return {
+    usage: lookup.usage,
+    book: lookup.book.safe_title,
+    pos: lookup.pos,
+    date: lookup.date.toISOString(),
+  };
+}
