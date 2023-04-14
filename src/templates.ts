@@ -25,12 +25,12 @@ type WordVars = {
   modified_at: string;
 };
 
-export const renderLookupTemplate = (v: LookupVars) => {
+export const render_lookup_template = (v: LookupVars) => {
   const vars = copy(v);
   return nunjucks.renderString(lookup, vars);
 };
 
-export const renderWordTemplate = (v: WordVars) => {
+export const render_word_template = (v: WordVars) => {
   // todo: use `renderLookupTemplate`
   const vars = copy(v);
   return nunjucks.renderString(word, vars);
@@ -45,7 +45,7 @@ type BookVars = {
   guid: string;
   modified_at: string;
 };
-export const renderBookTemplate = (v: BookVars) => {
+export const render_book_template = (v: BookVars) => {
   return nunjucks.renderString(book, v);
 };
 

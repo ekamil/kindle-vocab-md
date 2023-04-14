@@ -1,8 +1,8 @@
 import { describe, expect, test } from "@jest/globals";
 import {
-  renderBookTemplate,
-  renderLookupTemplate,
-  renderWordTemplate,
+  render_book_template,
+  render_lookup_template,
+  render_word_template,
 } from "./templates";
 
 describe("render module", () => {
@@ -32,7 +32,7 @@ describe("render module", () => {
       stem: WORD.stem,
       modified_at: new Date("2023-03-25 21:25Z").toISOString(),
     };
-    const res = renderWordTemplate(vars);
+    const res = render_word_template(vars);
     expect(res).toEqual(`---
 Modified at: '2023-03-25T21:25:00.000Z'
 Latest lookup date: ''
@@ -48,7 +48,7 @@ Latest lookup date: ''
 
   test("renders a single word with highlights", () => {
     const vars = WORD;
-    const res = renderWordTemplate(vars);
+    const res = render_word_template(vars);
     expect(res).toEqual(`---
 Modified at: '2023-03-25T21:25:00.000Z'
 Latest lookup date: ''
@@ -72,7 +72,7 @@ Latest lookup date: ''
 
   test("renders a single lookup (separate tmpl)", () => {
     const vars = WORD.lookups[0];
-    const res = renderLookupTemplate(vars);
+    const res = render_lookup_template(vars);
     expect(res).toEqual(`>[!quote] [[At the mountains of madness]] @ \`677\`
 > Foo was barred for the bar for fooing
 
@@ -89,7 +89,7 @@ Latest lookup date: ''
       guid: "CR!7Z1SMZYP6H6GK0E99HBRQKZ3627A",
       modified_at: new Date("2023-03-25 22:25Z").toISOString(),
     };
-    const res = renderBookTemplate(vars);
+    const res = render_book_template(vars);
     expect(res).toBeTruthy();
     expect(res).toEqual(`---
 tags:
