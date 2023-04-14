@@ -1,9 +1,10 @@
 {
   "name": "kindle-vocab-md",
   "version": "0.1.0",
-  "license": "ISC",
+  "author": "Kamil <kamil@essekkat.pl> (https://essekkat.pl)",
+  "license": "Unlicense",
   "private": true,
-  "description": "Export utility for Kindle Vocabulary",
+  "description": "Export Kindle Vocabulary Builder into markdown files",
   "scripts": {
     "clean": "rimraf dist/ ./kindle-vocab-md-0.?.?.tgz out/",
     "build": "node --no-warnings esbuild.config.mjs",
@@ -14,10 +15,10 @@
     "main": "npm run build && node dist/main.js"
   },
   "keywords": [],
-  "author": "kamil@essekkat.pl",
   "files": [
     "./dist/*"
   ],
+  "main": "dist/index.js",
   "devDependencies": {
     "@jest/globals": "^29.4.3",
     "@types/jest": "^29.5.0",

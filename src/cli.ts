@@ -24,7 +24,7 @@ export const program = new Command()
   )
   .action((options) => {
     // TODO: maybe don't require both -
-    // no outputWords == only write book files and vice versa ?
+    // no outputWords == only write book files and vice versa?
     if (options.outputBooks || options.outputWords) {
       if (options.outputBooks === null || options.outputWords === null) {
         throw "Both --output-books and --output-words are required";
