@@ -22,10 +22,9 @@ export class WordService {
     this.lookups_by_book = new Map();
   }
 
-  public load = async () => {
+  public async load(): Promise<WordService> {
     (await this.books_repo.all()).forEach((db_book) => {
       this.books.set(db_book.id, new Book(db_book));
-      this.lookups_by_book.set(db_book.id, new Array());
     });
 
     (await this.lookups_repo.all()).forEach((db_lookup) => {
@@ -53,7 +52,9 @@ export class WordService {
       const enhanced = await this.enhance_word(id);
       this.words.set(id, enhanced);
     });
-  };
+
+    return Promise.resolve(this);
+  }
 
   async all_words(): Promise<string[]> {
     // TODO: filtering
@@ -68,7 +69,10 @@ export class WordService {
       return Promise.resolve(from_cache);
     }
     const word: WordT = await this.words_repo.get(word_key);
-    const lookups = this.lookups_by_word.get(word.id) || [];
+    const lookups = this.lookups_by_word.get(word.id);
+    if (lookups === undefined) {
+      throw `missing lookups for word ${word}`;
+    }
     const enhanced = new LookedUpWord(word, lookups);
     this.words.set(word_key, enhanced);
     return Promise.resolve(enhanced);

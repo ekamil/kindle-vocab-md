@@ -23,12 +23,12 @@ async function main(): Promise<void> {
     log_connection(options.database),
   );
   const ws = new WordService(db);
-
-  const words = await ws.all_words();
-  words.forEach(async (word) => {
-    const enhanced = await ws.enhance_word(word);
-    const include_books = true;
-    await fss.write_word(enhanced, include_books);
+  await ws.load();
+  ws.words.forEach(async (word) => {
+    await fss.write_word(word);
+  });
+  ws.books.forEach(async (book) => {
+    await fss.write_book(book);
   });
 }
 
