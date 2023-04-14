@@ -10,20 +10,6 @@ describe("render module", () => {
     word: "fooing",
     stem: "foo",
     modified_at: new Date("2023-03-25 21:25Z").toISOString(),
-    lookups: [
-      {
-        usage: "Foo was barred for the bar for fooing",
-        book: "At the mountains of madness",
-        pos: "677",
-        date: null,
-      },
-      {
-        usage: "Foo was fooing for the bar again!!!",
-        book: "At the mountains of madness",
-        pos: "800",
-        date: "2023-03-25",
-      },
-    ],
   };
 
   test("renders a single word", () => {
@@ -42,7 +28,6 @@ Latest lookup date: ''
 >[!quote] fooing
 
 ## Examples
-
 `);
   });
 
@@ -58,24 +43,33 @@ Latest lookup date: ''
 >[!quote] fooing
 
 ## Examples
-
->[!quote] [[At the mountains of madness]] @ 677
-> Foo was barred for the bar for fooing
-
-
->[!quote] [[At the mountains of madness]] @ 800
-> Foo was fooing for the bar again!!!
-> @ 2023-03-25
-
 `);
   });
 
   test("renders a single lookup (separate tmpl)", () => {
-    const vars = WORD.lookups[0];
-    const res = render_lookup_template(vars);
-    expect(res).toEqual(`>[!quote] [[At the mountains of madness]] @ \`677\`
+    const lookups = [
+      {
+        usage: "Foo was barred for the bar for fooing",
+        book: "At the mountains of madness",
+        pos: "677",
+        date: null,
+      },
+      {
+        usage: "Foo was fooing for the bar agaFin!!!",
+        book: "At the mountains of madness",
+        pos: "800",
+        date: "2023-03-25",
+      },
+    ];
+    const first = render_lookup_template(lookups[0]);
+    expect(first).toEqual(`>[!quote] [[At the mountains of madness]] @ \`677\`
 > Foo was barred for the bar for fooing
 
+`);
+    const second = render_lookup_template(lookups[1]);
+    expect(second).toEqual(`>[!quote] [[At the mountains of madness]] @ \`800\`
+> Foo was fooing for the bar agaFin!!!
+> @ 2023-03-25
 `);
   });
 
