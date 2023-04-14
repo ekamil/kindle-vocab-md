@@ -1,6 +1,6 @@
 import { describe, expect, test } from "@jest/globals";
 import { type BookT, type LookupT, type WordT } from "./db_models";
-import { Book, EnhancedWord } from "./domain_models";
+import { Book, LookedUpWord } from "./domain_models";
 
 describe("domain models", () => {
   const book_info: BookT = {
@@ -53,28 +53,28 @@ describe("from db models", () => {
     timestamp: 1507190128401,
   };
 
-  const books: Map<string, BookT> = new Map([
+  const books: Map<string, Book> = new Map([
     [
       "Anathem:522FC9CB",
-      {
+      new Book({
         id: "Anathem:522FC9CB",
         asin: "cc2399ca-4b66-4ebf-bc74-6a596d278f35",
         guid: "Anathem:522FC9CB",
         lang: "en",
         title: "Anathem",
         authors: "Neal Stephenson",
-      },
+      }),
     ],
     [
       "The_Left_Hand_Of_Darkness:D7812BE3",
-      {
+      new Book({
         id: "The_Left_Hand_Of_Darkness:D7812BE3",
         asin: "9bbcd6ae-06fb-4161-a52d-f84900ec8da9",
         guid: "The_Left_Hand_Of_Darkness:D7812BE3",
         lang: "en",
         title: "The Left Hand Of Darkness",
         authors: "Ursula K. Le Guin",
-      },
+      }),
     ],
   ]);
 
@@ -101,7 +101,7 @@ describe("from db models", () => {
     },
   ];
   test("creates word from db models", () => {
-    const actual = new EnhancedWord(word, lookups, books);
+    const actual = new LookedUpWord(word, lookups, books);
     expect(actual.word).toBe("adroit");
     expect(actual.lookups).toHaveLength(2);
     expect(actual.lookups[0].book.safe_title).toBe("Anathem");

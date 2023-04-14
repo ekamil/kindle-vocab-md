@@ -40,3 +40,5 @@ main().then(
     console.error(err);
   },
 );
+
+export { PromisifiedDatabase, WordService };

@@ -2,11 +2,11 @@ import type { BookT, BookKey, LookupT, WordT } from "./db_models";
 
 // intermediary between db_models and templates
 export class Book {
+  readonly id: BookKey;
   readonly title: string;
   readonly authors: string;
   readonly asin: string;
   readonly guid: string;
-  now: Date;
 
   public get safe_title(): string {
     // safe title - as in ready to be a file name
@@ -14,27 +14,26 @@ export class Book {
   }
 
   constructor(book_info: BookT) {
+    this.id = book_info.id;
     this.title = book_info.title;
     this.authors = book_info.authors;
     this.asin = book_info.asin;
     this.guid = book_info.guid;
-    this.now = new Date();
   }
 }
 
-interface EnhancedLookup {
+interface Lookup {
   usage: string;
   book: Book;
   pos: string;
   date: Date;
 }
 
-export class EnhancedWord {
+export class LookedUpWord {
   word_key: string;
   word: string; // possibly declinated or sth
   stem: string;
-  lookups: EnhancedLookup[];
-  now: Date;
+  lookups: Lookup[];
 
   public get safe_word(): string {
     // safe word stem - ready to be a file name
@@ -55,7 +54,7 @@ export class EnhancedWord {
   constructor(
     word: WordT,
     lookups: LookupT[],
-    books: ReadonlyMap<BookKey, BookT>,
+    books: ReadonlyMap<BookKey, Book>,
   ) {
     this.word_key = word.id;
     this.word = word.word;
@@ -70,7 +69,7 @@ export class EnhancedWord {
           usage: l.usage,
           pos: l.pos,
           date: new Date(l.timestamp),
-          book: new Book(book_info),
+          book: book_info,
         };
       })
       .map((l) => {
@@ -81,6 +80,5 @@ export class EnhancedWord {
       .sort((l1, l2) => {
         return l1.date < l2.date ? -1 : 1;
       });
-    this.now = new Date();
   }
 }

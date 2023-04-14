@@ -1,4 +1,4 @@
-import { Book, EnhancedWord } from "./domain_models";
+import { Book, LookedUpWord } from "./domain_models";
 import type { TemplateVars } from "./templates";
 
 type BookVars = TemplateVars["books"][0];
@@ -17,7 +17,7 @@ export const book_to_template_vars = (book: Book): BookVars => {
   return mapped;
 };
 
-export const word_to_template_vars = (word: EnhancedWord): TemplateVars => {
+export const word_to_template_vars = (word: LookedUpWord): TemplateVars => {
   const word_vars: WordVars = {
     word: word.word,
     stem: word.stem,

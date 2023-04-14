@@ -1,7 +1,7 @@
 import { promises } from "fs";
 import { join } from "path";
 import matter, { stringify } from "gray-matter";
-import { Book, EnhancedWord } from "./domain_models";
+import { Book, LookedUpWord } from "./domain_models";
 import {
   renderBookTemplate,
   renderLookupTemplate,
@@ -52,7 +52,7 @@ export class FSService {
     }
   };
 
-  write_word = async (word: EnhancedWord, include_books = false) => {
+  write_word = async (word: LookedUpWord, include_books = false) => {
     const path = join(this.words_dir, word.safe_word) + MARKDOWN;
     const as_vars = word_to_template_vars(word);
 
