@@ -1,9 +1,9 @@
 import { describe, expect, test } from "@jest/globals";
 import { WordService } from "./word_service";
 import {
-  renderBookTemplate,
-  renderLookupTemplate,
-  renderWordTemplate,
+  render_book_template,
+  render_lookup_template,
+  render_word_template,
 } from "./templates";
 import {
   log_connection,
@@ -55,17 +55,17 @@ describe("WordService works with a real db", () => {
 
     const actual = word_to_template_vars(word);
 
-    const rendered_word = renderWordTemplate(actual.word);
+    const rendered_word = render_word_template(actual.word);
     expect(rendered_word).toBeTruthy();
     expect(rendered_word).toContain(word.stem);
 
     const actual_lookup = actual.lookups[0];
 
-    const rendered_lookup = renderLookupTemplate(actual_lookup);
+    const rendered_lookup = render_lookup_template(actual_lookup);
     expect(rendered_lookup).toBeTruthy();
     expect(rendered_lookup).toContain(word.stem);
 
-    const rendered_book = renderBookTemplate(actual.books[0]);
+    const rendered_book = render_book_template(actual.books[0]);
     expect(rendered_book).toBeTruthy();
     expect(rendered_book).toContain(lookup.book.title);
     expect(rendered_book).toContain(lookup.book.authors);

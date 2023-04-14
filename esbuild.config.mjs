@@ -16,7 +16,7 @@ esbuild.build({
     target: "es2018",
     platform: "node",
     sourcemap: true,
-    "minify": false,
+    minify: false,
     treeShaking: true,
     logLevel: "error"
 }).catch(() => process.exit(1));

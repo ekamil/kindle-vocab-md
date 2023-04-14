@@ -25,9 +25,11 @@ async function main(): Promise<void> {
   const ws = new WordService(db);
   await ws.load();
   ws.words.forEach(async (word) => {
+    // console.log(word);
     await fss.write_word(word);
   });
   ws.books.forEach(async (book) => {
+    // console.log(book);
     await fss.write_book(book);
   });
 }

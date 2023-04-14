@@ -3,9 +3,9 @@ import { join } from "path";
 import matter, { stringify } from "gray-matter";
 import { Book, LookedUpWord, Lookup } from "./domain_models";
 import {
-  renderBookTemplate,
-  renderLookupTemplate,
-  renderWordTemplate,
+  render_book_template,
+  render_lookup_template,
+  render_word_template,
 } from "./templates";
 import {
   book_to_template_vars,
@@ -35,6 +35,7 @@ export class FSService {
       }
     });
   };
+
   write_book = async (book: Book) => {
     const path = join(this.books_dir, book.safe_title) + MARKDOWN;
     let content;
@@ -42,27 +43,41 @@ export class FSService {
       content = await promises.readFile(path, { encoding: "utf-8" });
     } catch {
       const as_vars = book_to_template_vars(book);
-      content = renderBookTemplate(as_vars);
+      content = render_book_template(as_vars);
       await promises.writeFile(path, content);
       return;
     }
-    await this.maybeUpdateBook(book, path, content);
-  };
-
-  private async maybeUpdateBook(book: Book, path: string, content: string) {
-    // book file already exists - only write ASIN for later if it isn't already there
     const parsed = matter(content);
     const asin_in_file = parsed.data[FRONT_FIELDS.asin];
     if (asin_in_file === undefined) {
-      console.info(`Writing ASIN to file ${path}`);
-      parsed.data[FRONT_FIELDS.asin] = book.asin;
-      parsed.data[FRONT_FIELDS.modified_at] = new Date().toISOString();
-      await promises.writeFile(path, stringify(content, parsed.data));
+      console.debug(`Writing ASIN to file ${path}`);
+      await this.write_book_ASIN(book, path, parsed, content);
+      return;
     } else if (book.asin !== asin_in_file) {
-      const message = `Ambiguous duplicate book: "${book.title}" in "${path}"`;
-      // todo: - same title but different book - handle this
-      throw message;
+      await this.handle_conflict(book, path, content);
+      return;
     }
+  };
+
+  private async write_book_ASIN(
+    book: Book,
+    path: string,
+    parsed: matter.GrayMatterFile<string>,
+    content: string,
+  ) {
+    parsed.data[FRONT_FIELDS.asin] = book.asin;
+    parsed.data[FRONT_FIELDS.modified_at] = new Date().toISOString();
+    await promises.writeFile(path, stringify(content, parsed.data));
+  }
+
+  private async handle_conflict(book: Book, path: string, content: string) {
+    // creating another file with trailing number
+    const message = `Ambiguous duplicate book: "${book.title}" in "${path}"`;
+    const path_1 = join(this.books_dir, book.safe_title) + " 1" + MARKDOWN;
+    console.log(`${message}. Writing another file ${path_1}`);
+    const as_vars = book_to_template_vars(book);
+    content = render_book_template(as_vars);
+    await promises.writeFile(path, content);
   }
 
   write_word = async (word: LookedUpWord) => {
@@ -74,7 +89,7 @@ export class FSService {
       content = await promises.readFile(path, { encoding: "utf-8" });
     } catch {
       as_vars.word.lookups = as_vars.lookups;
-      content = renderWordTemplate(as_vars.word);
+      content = render_word_template(as_vars.word);
       await promises.writeFile(path, content);
       return;
     }
@@ -88,19 +103,19 @@ export class FSService {
         continue;
       }
       needs_write = true;
-      this.appendNewLookup(parsed, lookup);
+      this.append_new_lookup(parsed, lookup);
     }
     if (needs_write) {
       await promises.writeFile(path, stringify(content, parsed.data));
     }
   };
 
-  private appendNewLookup(
+  private append_new_lookup(
     parsed: matter.GrayMatterFile<string>,
     lookup: Lookup,
   ) {
     const vars = lookup_to_template_vars(lookup);
-    const rendered = renderLookupTemplate(vars);
+    const rendered = render_lookup_template(vars);
     parsed.content += "\n";
     parsed.content += rendered;
 
