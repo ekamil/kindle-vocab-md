@@ -9,7 +9,11 @@ import {
   log_connection,
   PromisifiedDatabase,
 } from "./tools/promisified_sqlite";
-import { word_to_template_vars } from "./mappers";
+import {
+  book_to_template_vars,
+  lookup_to_template_vars,
+  word_to_template_vars,
+} from "./mappers";
 
 const db_path = "test/vocab.db";
 
@@ -51,19 +55,18 @@ describe("WordService works with a real db", () => {
     expect(word.lookups).toHaveLength(1);
     const lookup = word.lookups[0];
 
-    const actual = word_to_template_vars(word);
-
-    const rendered_word = render_word_template(actual.word);
+    const word_vars = word_to_template_vars(word);
+    const rendered_word = render_word_template(word_vars);
     expect(rendered_word).toBeTruthy();
     expect(rendered_word).toContain(word.stem);
 
-    const actual_lookup = actual.lookups[0];
-
-    const rendered_lookup = render_lookup_template(actual_lookup);
+    const lookup_vars = lookup_to_template_vars(lookup);
+    const rendered_lookup = render_lookup_template(lookup_vars);
     expect(rendered_lookup).toBeTruthy();
     expect(rendered_lookup).toContain(word.stem);
 
-    const rendered_book = render_book_template(actual.books[0]);
+    const books_vars = book_to_template_vars(lookup.book);
+    const rendered_book = render_book_template(books_vars);
     expect(rendered_book).toBeTruthy();
     expect(rendered_book).toContain(lookup.book.title);
     expect(rendered_book).toContain(lookup.book.authors);

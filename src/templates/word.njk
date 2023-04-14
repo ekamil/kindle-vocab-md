@@ -7,8 +7,3 @@ Latest lookup date: '{{  latest_lookup_date }}'
 >[!quote] {{ word }}
 
 ## Examples
-{% for lookup in lookups %}
->[!quote] [[{{ lookup.book }}]] @ {{lookup.pos}}
-> {{ lookup.usage }}
-{% if lookup.date %}> @ {{lookup.date}}{% endif %}
-{% endfor %}

@@ -1,12 +1,8 @@
 import { Book, LookedUpWord, Lookup } from "./domain_models";
-import type { TemplateVars } from "./templates";
-
-type BookVars = TemplateVars["books"][0];
-type WordVars = TemplateVars["word"];
-type LookupVars = TemplateVars["lookups"][0];
+import type { BookVars, WordVars, LookupVars } from "./templates";
 
 export const book_to_template_vars = (book: Book): BookVars => {
-  const mapped = {
+  return {
     safe_title: book.safe_title,
     title: book.title,
     authors: book.authors,
@@ -14,31 +10,14 @@ export const book_to_template_vars = (book: Book): BookVars => {
     guid: book.guid,
     modified_at: new Date().toISOString(),
   };
-  return mapped;
 };
 
-export const word_to_template_vars = (word: LookedUpWord): TemplateVars => {
-  const word_vars: WordVars = {
+export const word_to_template_vars = (word: LookedUpWord): WordVars => {
+  return {
     word: word.word,
     stem: word.stem,
     latest_lookup_date: word.latest_lookup_date.toISOString(),
     modified_at: new Date().toISOString(),
-  };
-
-  const lookup_vars: LookupVars[] = [];
-  const book_vars: BookVars[] = [];
-  word.lookups // already sorted by date
-    .map((actual_lookup) => {
-      lookup_vars.push(lookup_to_template_vars(actual_lookup));
-      return actual_lookup;
-    })
-    .map((actual_lookup) => {
-      book_vars.push(book_to_template_vars(actual_lookup.book));
-    });
-  return {
-    word: word_vars,
-    lookups: lookup_vars,
-    books: book_vars,
   };
 };
 

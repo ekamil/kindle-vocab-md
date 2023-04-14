@@ -25,6 +25,7 @@ export class FSService {
     private readonly books_dir: string,
     private readonly words_dir: string,
   ) {}
+
   ensure_dirs = async () => {
     [this.books_dir, this.words_dir].forEach(async (d) => {
       try {
@@ -88,29 +89,31 @@ export class FSService {
     try {
       content = await promises.readFile(path, { encoding: "utf-8" });
     } catch {
-      as_vars.word.lookups = as_vars.lookups;
-      content = render_word_template(as_vars.word);
+      content = render_word_template(as_vars);
       await promises.writeFile(path, content);
-      return;
     }
-    const parsed = matter(content);
-    let needs_write = false;
-    for (let index = 0; index < as_vars.lookups.length; index++) {
-      // append missing lookups, using date for disambiguation
-      const lookup = word.lookups[index];
-      if (parsed.content.includes(lookup.date.toISOString())) {
-        // console.log("Lookup already in file");
-        continue;
-      }
-      needs_write = true;
-      this.append_new_lookup(parsed, lookup);
-    }
-    if (needs_write) {
-      await promises.writeFile(path, stringify(content, parsed.data));
-    }
+    this.write_word_lookups(word, path, content);
   };
 
-  private append_new_lookup(
+  async write_word_lookups(
+    word: LookedUpWord,
+    path: string,
+    existing_content: string,
+  ) {
+    const parsed = matter(existing_content);
+    var needs_write = false;
+    word.lookups.forEach((lookup) => {
+      if (!parsed.content.includes(lookup.date.toISOString())) {
+        this.append_lookup_to_content(parsed, lookup);
+      }
+      needs_write = true;
+    });
+    if (needs_write) {
+      await promises.writeFile(path, stringify(parsed.content, parsed.data));
+    }
+  }
+
+  private append_lookup_to_content(
     parsed: matter.GrayMatterFile<string>,
     lookup: Lookup,
   ) {
