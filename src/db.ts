@@ -30,17 +30,18 @@ export class BookRepository extends ReadListRepository<BookKey, BookT> {
 }
 
 export class LookupRepository extends ReadListRepository<LookupKey, LookupT> {
+  private cache = new Array<LookupT>();
   constructor(db: PromisifiedDatabase) {
     super(db, queries.lookup_by_id, queries.lookups);
   }
 
-  async for_word(word: WordKey, only_cache = false): Promise<LookupT[]> {
-    if (!only_cache || this.cache.size == 0) {
-      await this.all();
+  async for_word(word: WordKey): Promise<LookupT[]> {
+    if (this.cache.length == 0) {
+      (await this.all()).forEach((element) => {
+        this.cache.push(element);
+      });
     }
-    const from_cache = new Array(...this.cache.values()).filter(
-      (l) => l.word_key == word,
-    );
+    const from_cache = this.cache.filter((l) => l.word_key == word);
     return Promise.resolve(from_cache);
   }
 }

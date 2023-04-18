@@ -85,16 +85,7 @@ describe("db module - generic repo", () => {
     expect(actual).rejects.toContain(not_found);
   });
   test("list books", async () => {
-    const from_cache = await generic_repo.all(true);
-    expect(from_cache.length).toBeLessThan(expected_book_count);
-
     const actual = await generic_repo.all();
     expect(actual).toHaveLength(expected_book_count);
-  });
-  test("map interface", async () => {
-    const from_cache = await generic_repo.all(true);
-    expect(from_cache.length).toBe(expected_book_count);
-    const copy = await generic_repo.as_map();
-    expect(copy.get("Bloodchild:A6F32010")).toBeDefined();
   });
 });

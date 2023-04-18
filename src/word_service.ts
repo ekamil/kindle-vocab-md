@@ -1,80 +1,64 @@
 import { BookRepository, LookupRepository, WordRepository } from "./db";
-import type { WordKey, WordT, BookKey } from "./db_models";
+import type { WordKey, WordT, BookKey, LookupT, LookupKey } from "./db_models";
 import { Book, LookedUpWord, Lookup } from "./domain_models";
 import { PromisifiedDatabase } from "./tools/promisified_sqlite";
 
 export class WordService {
-  private readonly lookups_repo: LookupRepository;
-  private readonly words_repo: WordRepository;
-  private readonly books_repo: BookRepository;
-  public readonly words: Map<WordKey, LookedUpWord>;
-  public readonly books: Map<BookKey, Book>;
-  public readonly lookups_by_word: Map<WordKey, Lookup[]>;
-  public readonly lookups_by_book: Map<BookKey, Lookup[]>;
+  public readonly words: Map<WordKey, LookedUpWord> = new Map();
+  public readonly books: Map<BookKey, Book> = new Map();
+  public readonly lookups: Map<LookupKey, Lookup> = new Map();
+  private ready: boolean = false;
 
-  constructor(private readonly db: PromisifiedDatabase) {
-    this.lookups_repo = new LookupRepository(this.db);
-    this.words_repo = new WordRepository(this.db);
-    this.books_repo = new BookRepository(this.db);
-    this.words = new Map();
-    this.books = new Map();
-    this.lookups_by_word = new Map();
-    this.lookups_by_book = new Map();
-  }
+  constructor(private readonly db: PromisifiedDatabase) {}
 
   public async load(): Promise<WordService> {
-    (await this.books_repo.all()).forEach((db_book) => {
+    if (this.ready) return Promise.resolve(this);
+
+    const lookups_repo = new LookupRepository(this.db);
+    const words_repo = new WordRepository(this.db);
+    const books_repo = new BookRepository(this.db);
+
+    (await books_repo.all()).forEach((db_book) => {
       this.books.set(db_book.id, new Book(db_book));
     });
 
-    (await this.lookups_repo.all()).forEach((db_lookup) => {
-      const book = this.books.get(db_lookup.book_key);
-      if (book === undefined) {
-        throw `missing book for lookup ${db_lookup}`;
-      }
-      const lookup = new Lookup(db_lookup, book);
-
-      const wk = db_lookup.word_key;
-      if (this.lookups_by_word.has(wk)) {
-        this.lookups_by_word.get(wk)?.push(lookup);
-      } else {
-        this.lookups_by_word.set(wk, [lookup]);
-      }
-      const bk = db_lookup.book_key;
-      if (this.lookups_by_book.has(bk)) {
-        this.lookups_by_book.get(bk)?.push(lookup);
-      } else {
-        this.lookups_by_book.set(bk, [lookup]);
-      }
+    (await lookups_repo.all()).forEach((db_lookup) => {
+      this.loadLookups(db_lookup);
     });
 
-    (await this.words_repo.all()).forEach(async ({ id }) => {
-      const enhanced = await this.enhance_word(id);
-      this.words.set(id, enhanced);
+    (await words_repo.all()).forEach(async (word) => {
+      const enhanced = this.enhance_word(word);
+      this.words.set(word.id, enhanced);
     });
-
+    this.ready = true;
     return Promise.resolve(this);
   }
 
-  async all_words(): Promise<string[]> {
-    // TODO: filtering
-    return (await this.words_repo.all()).map((word) => {
-      return word.id;
-    });
+  private loadLookups(db_lookup: LookupT) {
+    const book = this.books.get(db_lookup.book_key);
+    if (book === undefined) {
+      throw `missing book for lookup ${db_lookup}`;
+    }
+    const lookup = new Lookup(db_lookup, book);
+    this.lookups.set(db_lookup.id, lookup);
   }
 
-  async enhance_word(word_key: WordKey): Promise<LookedUpWord> {
-    const from_cache = this.words.get(word_key);
-    if (from_cache !== undefined) {
-      return Promise.resolve(from_cache);
-    }
-    const word: WordT = await this.words_repo.get(word_key);
-    const lookups = this.lookups_by_word.get(word.id);
+  private lookups_by_word(word_id: WordKey): Lookup[] {
+    var results: Lookup[] = [];
+    this.lookups.forEach((lookup) => {
+      if (lookup.word_key == word_id) {
+        results.push(lookup);
+      }
+    });
+
+    return results;
+  }
+
+  private enhance_word(word: WordT): LookedUpWord {
+    const lookups = this.lookups_by_word(word.id);
     if (lookups === undefined) {
       throw `missing lookups for word ${word}`;
     }
-    const enhanced = new LookedUpWord(word, lookups);
-    this.words.set(word_key, enhanced);
-    return Promise.resolve(enhanced);
+    return new LookedUpWord(word, lookups);
   }
 }

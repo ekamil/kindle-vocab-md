@@ -71,3 +71,7 @@ export class LookedUpWord {
       });
   }
 }
+
+// class Vocabulary {
+//   // Main entry point for this API, books, words, lookups.
+// }

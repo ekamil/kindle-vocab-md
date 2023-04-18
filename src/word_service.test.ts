@@ -26,9 +26,7 @@ describe("WordService works with a real db", () => {
 
     expect(service.words.size).toBe(437);
     expect(service.books.size).toBe(50);
-    expect(
-      Array.from(service.lookups_by_book.values())[0].length,
-    ).toBeGreaterThan(0);
+    expect(service.lookups.size).toBe(452);
 
     const word_id = "en:retches";
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
