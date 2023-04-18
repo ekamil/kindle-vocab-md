@@ -1,30 +1,14 @@
 import type { BookT, BookKey, LookupT, WordT, WordKey } from "./db_models";
 
-// intermediary between db_models and templates
+import { normalize_book_title, normalize_word } from "./tools/normalize";
+
 export class Book {
   readonly book_key: BookKey;
   readonly title: string;
   readonly authors: string;
   readonly asin: string;
   readonly guid: string;
-
-  public get safe_title(): string {
-    // safe title - as in ready to be a file name
-    const segments = this.title.split(":");
-    if (segments.length > 1) {
-      segments.pop();
-    }
-    const shortened = segments.join(" ");
-
-    // series name probably, Interference (Semiosis Duology)"
-    const series = /\(\w.*\)/g;
-
-    return shortened
-      .replaceAll(series, "")
-      .replaceAll(/\W/g, " ")
-      .replaceAll(/ +/g, " ")
-      .trim();
-  }
+  readonly safe_title: string;
 
   constructor(book_info: BookT) {
     this.book_key = book_info.id;
@@ -32,6 +16,7 @@ export class Book {
     this.authors = book_info.authors;
     this.asin = book_info.asin;
     this.guid = book_info.guid;
+    this.safe_title = normalize_book_title(book_info.title);
   }
 }
 
@@ -56,19 +41,10 @@ export class LookedUpWord {
   word: string; // possibly declinated or sth
   stem: string;
   lookups: Lookup[];
-
-  public get safe_word(): string {
-    // safe word stem - ready to be a file name
-    return this.stem.replaceAll(/\W/g, " ").replaceAll(/ +/g, " ").trim();
-  }
+  safe_word: string;
 
   public get latest_lookup_date(): Date {
-    let from_lookup;
-    if (this.lookups) {
-      from_lookup = this.lookups[-1]?.date;
-    } else {
-      from_lookup = null;
-    }
+    let from_lookup = this.lookups[-1]?.date;
     const long_time_ago = new Date("1970-01-01 12:00Z");
     return from_lookup != null ? from_lookup : long_time_ago;
   }
@@ -77,6 +53,7 @@ export class LookedUpWord {
     this.word_key = word.id;
     this.word = word.word;
     this.stem = word.stem;
+    this.safe_word = normalize_word(word.stem);
     this.lookups = lookups
       .map((l) => {
         if (l.word_key != this.word_key) {

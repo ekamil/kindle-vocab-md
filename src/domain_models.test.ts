@@ -58,6 +58,25 @@ describe("domain models", () => {
     const book = new Book(book_info_copy);
     expect(book.safe_title).toBe(expected);
   });
+
+  test("creates word with empty lookups", () => {
+    const actual = new LookedUpWord(
+      {
+        id: "en:crèche",
+        stem: "crèche",
+        word: "crèche",
+        lang: "en",
+        category: 0,
+        timestamp: 1552410116996,
+      },
+      new Array(),
+    );
+    expect(actual.word).toBe("crèche");
+    expect(actual.safe_word).toBe("creche");
+    expect(actual.lookups).toHaveLength(0);
+    expect(actual.latest_lookup_date).not.toBeNull();
+    expect(actual.latest_lookup_date.getFullYear()).toBe(1970);
+  });
 });
 
 describe("from db models", () => {
@@ -111,6 +130,7 @@ describe("from db models", () => {
       timestamp: 1507190128428,
     },
   ];
+
   test("creates word from db models", () => {
     const books = db_books.map((db_book) => {
       return new Book(db_book);

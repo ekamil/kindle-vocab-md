@@ -20,14 +20,15 @@
   ],
   "main": "dist/index.js",
   "devDependencies": {
+    "@commander-js/extra-typings": "^10.0.1",
     "@jest/globals": "^29.4.3",
     "@types/jest": "^29.5.0",
     "@types/node": "^18.11.18",
     "@types/nunjucks": "^3.2.1",
     "@types/sqlite3": "^3.1.8",
+    "@types/unidecode": "^0.1.1",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
-    "@commander-js/extra-typings": "^10.0.1",
     "esbuild": "^0.17.11",
     "eslint": "^8.35.0",
     "husky": "^8.0.3",
@@ -40,8 +41,9 @@
   },
   "dependencies": {
     "commander": "^10.0.0",
+    "gray-matter": "^4.0.3",
     "nunjucks": "^3.2.3",
     "sqlite3": "^5.1.4",
-    "gray-matter": "^4.0.3"
+    "unidecode": "^0.1.8"
   }
 }
