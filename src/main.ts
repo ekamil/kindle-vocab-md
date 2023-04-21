@@ -5,7 +5,7 @@ import {
   log_connection,
   PromisifiedDatabase,
 } from "./tools/promisified_sqlite";
-import { WordService } from "./word_service";
+import { getKindleVocabulary } from "./word_service";
 
 async function main(): Promise<void> {
   program.parse();
@@ -22,13 +22,13 @@ async function main(): Promise<void> {
     options.database,
     log_connection(options.database),
   );
-  const ws = new WordService(db);
-  await ws.load();
-  ws.words.forEach(async (word) => {
+
+  const vocabulary = await getKindleVocabulary(db);
+  vocabulary.words.forEach(async (word) => {
     // console.log(word);
     await fss.write_word(word);
   });
-  ws.books.forEach(async (book) => {
+  vocabulary.books.forEach(async (book) => {
     // console.log(book);
     await fss.write_book(book);
   });
@@ -42,5 +42,3 @@ main().then(
     console.error(err);
   },
 );
-
-export { PromisifiedDatabase, WordService };

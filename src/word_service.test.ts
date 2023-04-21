@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { WordService } from "./word_service";
+import { getKindleVocabulary } from "./word_service";
 import {
   render_book_template,
   render_lookup_template,
@@ -19,18 +19,17 @@ const db_path = "test/vocab.db";
 
 describe("WordService works with a real db", () => {
   const db = new PromisifiedDatabase(db_path, log_connection(db_path));
-  const service = new WordService(db);
 
   test("smoke", async () => {
-    await service.load();
+    const vocabulary = await getKindleVocabulary(db);
 
-    expect(service.words.size).toBe(437);
-    expect(service.books.size).toBe(50);
-    expect(service.lookups.size).toBe(452);
+    expect(vocabulary.words.size).toBe(437);
+    expect(vocabulary.books.size).toBe(50);
+    expect(vocabulary.lookups.size).toBe(452);
 
     const word_id = "en:retches";
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const actual = service.words.get(word_id)!!;
+    const actual = vocabulary.words.get(word_id)!!;
 
     expect(actual.word).toBe("retches");
     expect(actual.stem).toBe("retch");
@@ -43,11 +42,11 @@ describe("WordService works with a real db", () => {
   });
 
   test("create template vars", async () => {
-    await service.load();
+    const vocabulary = await getKindleVocabulary(db);
 
     const word_id = "en:retches";
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const word = service.words.get(word_id)!!;
+    const word = vocabulary.words.get(word_id)!!;
 
     expect(word).toBeDefined();
     expect(word.lookups).toHaveLength(1);
