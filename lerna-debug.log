@@ -1,0 +1,11 @@
+0 silly argv {
+0 silly argv   _: [ 'add' ],
+0 silly argv   globs: [],
+0 silly argv   lernaVersion: '6.6.1',
+0 silly argv   '$0': '/Users/kamil/.npm/_npx/d5cad42883f80c04/node_modules/.bin/lerna',
+0 silly argv   pkg: 'packages/kindle-vocab-api'
+0 silly argv }
+1 notice cli v6.6.1
+2 verbose rootPath /Users/kamil/Repozytoria/kindle-vocab-md
+3 error Error: An unknown git error occurred
+3 error     at makeError (/Users/kamil/.npm/_npx/d5cad42883f80c04/node_modules/@npmcli/git/lib/make-error.js:28:13)

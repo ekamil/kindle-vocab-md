@@ -2,9 +2,8 @@ node_modules
 .direnv
 
 dist
-/package
-kindle-vocab-md-*.tgz
-/out
+packages/*/dist
+packages/*/out
 
 /.vscode
 kindle-vocab-md.code-workspace
