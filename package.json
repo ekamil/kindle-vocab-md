@@ -1,0 +1,14 @@
+{
+  "name": "kindle-vocab-md",
+  "version": "0.1.0",
+  "author": "Kamil <kamil@essekkat.pl> (https://essekkat.pl)",
+  "license": "Unlicense",
+  "private": true,
+  "description": "Tool to convert Kindle Vocabulary Builder to Markdown",
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "lerna": "^6.6.1"
+  }
+}
