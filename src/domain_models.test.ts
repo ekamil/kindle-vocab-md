@@ -52,6 +52,10 @@ describe("domain models", () => {
       "Accelerate: The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations",
       "Accelerate The Science of Lean Software and DevOps",
     ],
+    [
+      "The Curious Incident of the Dog in the Night-time",
+      "The Curious Incident of the Dog in the Night time",
+    ],
   ])("sanitizes '%s'", (title, expected) => {
     const book_info_copy = { ...book_info };
     book_info_copy.title = title;

@@ -91,6 +91,7 @@ tags:
 ASIN: B0097DHVGW
 Kindle guid: 'CR!7Z1SMZYP6H6GK0E99HBRQKZ3627A'
 Modified at: '2023-03-25T22:25:00.000Z'
+Status: Read
 ---
 
 # The Ego Tunnel: The Science of the Mind and the Myth of the Self
