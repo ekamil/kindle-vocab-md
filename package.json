@@ -22,7 +22,7 @@
   "devDependencies": {
     "@commander-js/extra-typings": "^10.0.1",
     "@jest/globals": "^29.4.3",
-    "@types/jest": "^29.5.0",
+    "@types/jest": "^29.5.1",
     "@types/node": "^18.11.18",
     "@types/nunjucks": "^3.2.1",
     "@types/sqlite3": "^3.1.8",
