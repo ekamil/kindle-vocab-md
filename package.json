@@ -5,10 +5,22 @@
   "license": "Unlicense",
   "private": true,
   "description": "Tool to convert Kindle Vocabulary Builder to Markdown",
+  "scripts": {
+    "prepare": "husky install",
+    "test": "lerna run test",
+    "start": "lerna run start",
+    "new-version": "lerna version --conventional-commits --yes",
+    "diff": "lerna diff"
+  },
   "workspaces": [
     "packages/*"
   ],
   "devDependencies": {
-    "lerna": "^6.6.1"
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.54.0",
+    "eslint": "^8.39.0",
+    "husky": "^8.0.3",
+    "lerna": "^6.6.1",
+    "prettier": "^2.8.8"
   }
 }
