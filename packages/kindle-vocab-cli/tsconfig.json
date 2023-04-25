@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/tsconfig",
 
   "include": ["src/**/*", "src/templates/*.njk"],
-  "exclude": ["node_modules", "dist", "src/**/*test.ts"],
+  "exclude": ["src/**/*test.ts"],
 
   "forceConsistentCasingInFileNames": true,
 
