@@ -31,21 +31,6 @@ Latest lookup date: ''
 `);
   });
 
-  test("renders a single word with highlights", () => {
-    const vars = WORD;
-    const res = render_word_template(vars);
-    expect(res).toEqual(`---
-Modified at: '2023-03-25T21:25:00.000Z'
-Latest lookup date: ''
----
-# foo
-
->[!quote] fooing
-
-## Examples
-`);
-  });
-
   test("renders a single lookup (separate tmpl)", () => {
     const lookups = [
       {

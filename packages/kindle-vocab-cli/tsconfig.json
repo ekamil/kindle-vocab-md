@@ -1,15 +1,27 @@
 {
-  "extends": "@tsconfig/node16/tsconfig.json",
+  "$schema": "https://json.schemastore.org/tsconfig",
+
   "include": ["src/**/*", "src/templates/*.njk"],
-  "exclude": ["node_modules", "dist"],
+  "exclude": ["node_modules", "dist", "src/**/*test.ts"],
+
   "forceConsistentCasingInFileNames": true,
+
   "compilerOptions": {
-    "resolveJsonModule": true,
+    "target": "ES2015",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
     "noEmit": true,
-    "module": "ESNext",
-    "target": "ESNext",
+    "declaration": false,
+    "outDir": "dist",
+    "resolveJsonModule": true,
+
     "isolatedModules": true,
     "noImplicitAny": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "noUncheckedIndexedAccess": false
   }
 }

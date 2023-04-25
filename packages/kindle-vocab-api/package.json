@@ -23,21 +23,21 @@
   "private": false,
   "type": "module",
   "devDependencies": {
-    "@jest/globals": "^29.4.3",
-    "@types/jest": "^29.5.0",
-    "@types/node": "^18.11.18",
+    "@jest/globals": "^29.5.0",
+    "@types/jest": "^29.5.1",
+    "@types/node": "^18.16.0",
     "@types/sqlite3": "^3.1.8",
     "@types/unidecode": "^0.1.1",
-    "@typescript-eslint/eslint-plugin": "^5.59.0",
-    "@typescript-eslint/parser": "^5.59.0",
-    "esbuild": "^0.17.17",
+    "@typescript-eslint/eslint-plugin": "^5.59.1",
+    "@typescript-eslint/parser": "^5.59.1",
+    "esbuild": "^0.17.18",
     "jest": "^29.5.0",
     "rimraf": "^5.0.0",
-    "ts-jest": "^29.0.5",
+    "ts-jest": "^29.1.0",
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "sqlite3": "^5.1.4",
+    "sqlite3": "^5.1.6",
     "unidecode": "^0.1.8"
   },
   "engines": {
