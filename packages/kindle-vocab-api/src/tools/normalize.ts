@@ -25,7 +25,7 @@ const normalize_string = (s: string) => {
 
 export function normalize_book_title(title: string): string {
   // safe title - as in ready to be a file name
-  var normalized = shorten_title(title);
+  let normalized = shorten_title(title);
   normalized = remove_series(normalized);
   normalized = normalize_string(normalized);
   return normalized;

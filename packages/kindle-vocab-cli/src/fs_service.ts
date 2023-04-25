@@ -1,17 +1,18 @@
 import { promises } from "fs";
-import { join } from "path";
 import matter, { stringify } from "gray-matter";
-import { Book, LookedUpWord, Lookup } from "./domain_models";
-import {
-  render_book_template,
-  render_lookup_template,
-  render_word_template,
-} from "./templates";
+import { join } from "path";
+import { Book, LookedUpWord, Lookup } from "@ekamil/kindle-vocab-api";
+
 import {
   book_to_template_vars,
   lookup_to_template_vars,
   word_to_template_vars,
 } from "./mappers";
+import {
+  render_book_template,
+  render_lookup_template,
+  render_word_template,
+} from "./templates";
 
 const MARKDOWN = ".md";
 const FRONT_FIELDS = {
@@ -101,7 +102,7 @@ export class FSService {
     existing_content: string,
   ) {
     const parsed = matter(existing_content);
-    var needs_write = false;
+    let needs_write = false;
     word.lookups.forEach((lookup) => {
       if (!parsed.content.includes(lookup.date.toISOString())) {
         this.append_lookup_to_content(parsed, lookup);

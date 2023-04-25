@@ -8,12 +8,15 @@ esbuild.build({
     outfile: "dist/main.js",
     bundle: true,
     external: Object.keys(metadata.dependencies).concat(Object.keys(metadata.devDependencies)),
+    loader: {
+        ".njk": "text"
+    },
     packages: "external",
-    format: "ecm",
-    target: "esnext",
+    format: "cjs",
+    target: "es2018",
     platform: "node",
     sourcemap: true,
     minify: false,
     treeShaking: true,
-    logLevel: "debug"
+    logLevel: "error"
 }).catch(() => process.exit(1));

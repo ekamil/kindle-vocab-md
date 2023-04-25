@@ -1,6 +1,6 @@
 import { describe, expect, test } from "@jest/globals";
-import { type BookT, type LookupT, type WordT } from "./db_models";
-import { Book, LookedUpWord, Lookup } from "./domain_models";
+import { type BookT, type LookupT, type WordT } from "./db_models.js";
+import { Book, LookedUpWord, Lookup } from "./domain_models.js";
 
 describe("domain models", () => {
   const book_info: BookT = {
@@ -73,7 +73,7 @@ describe("domain models", () => {
         category: 0,
         timestamp: 1552410116996,
       },
-      new Array(),
+      [],
     );
     expect(actual.word).toBe("crèche");
     expect(actual.safe_word).toBe("creche");
@@ -144,14 +144,15 @@ describe("from db models", () => {
         return book.book_key == db_lookup.book_key;
       });
       expect(filtered).toHaveLength(1);
-      return new Lookup(db_lookup, filtered[0]);
+      // eslint-disable-next-line @typescript-eslint/no-extra-non-null-assertion
+      return new Lookup(db_lookup, filtered[0]!!);
     });
     const actual = new LookedUpWord(db_word, lookups);
     expect(actual.word).toBe("adroit");
     expect(actual.lookups).toHaveLength(2);
-    expect(actual.lookups[0].book.safe_title).toBe("Anathem");
-    expect(actual.lookups[0].date.getFullYear()).toBe(2017);
-    expect(actual.lookups[0].usage).toContain(db_word.word);
-    expect(actual.lookups[0].usage).toContain("==");
+    expect(actual.lookups[0]?.book.safe_title).toBe("Anathem");
+    expect(actual.lookups[0]?.date.getFullYear()).toBe(2017);
+    expect(actual.lookups[0]?.usage).toContain(db_word.word);
+    expect(actual.lookups[0]?.usage).toContain("==");
   });
 });

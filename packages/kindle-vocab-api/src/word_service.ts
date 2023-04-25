@@ -1,8 +1,8 @@
-import { BookRepository, LookupRepository, WordRepository } from "./db";
-import { Book, LookedUpWord, Lookup, Vocabulary } from "./domain_models";
-import { PromisifiedDatabase } from "./tools/promisified_sqlite";
+import { BookRepository, LookupRepository, WordRepository } from "./db.js";
+import { Book, LookedUpWord, Lookup, Vocabulary } from "./domain_models.js";
+import { PromisifiedDatabase } from "./tools/promisified_sqlite.js";
 
-export async function getKindleVocabulary(
+export async function get_vocabulary_from_db(
   db: PromisifiedDatabase,
 ): Promise<Vocabulary> {
   const vocabulary = new Vocabulary();

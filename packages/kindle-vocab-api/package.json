@@ -1,44 +1,50 @@
 {
-  "name": "kindle-vocab-api",
+  "name": "@ekamil/kindle-vocab-api",
   "version": "0.1.0",
   "author": "Kamil <kamil@essekkat.pl> (https://essekkat.pl)",
   "license": "Unlicense",
-  "private": true,
   "description": "API interface for Kindle Vocabulary Builder DB file",
   "scripts": {
-    "clean": "rimraf dist/ ./kindle-vocab-md-0.?.?.tgz out/",
-    "build": "node --no-warnings esbuild.config.mjs",
-    "test": "jest --clearCache && jest .",
-    "lint": "prettier --check \"src/**/*.ts\" && eslint ./src && tsc ",
-    "prepare": "npm test && npm run lint && npm run build",
-    "preversion": "npm test && npm run lint",
-    "main": "npm run build && node dist/main.js"
+    "build-bundle": "rimraf dist/ && node --no-warnings esbuild.config.mjs",
+    "build": "rimraf dist/ && tsc --noEmit false",
+    "test": "jest ./src",
+    "lint": "prettier --check \"src/**/*.ts\" && eslint ./src && tsc --noEmit true",
+    "preversion": "npm test && npm run lint"
   },
   "keywords": [],
   "files": [
     "./dist/*"
   ],
-  "main": "dist/index.js",
+  "exports": "./dist/main.js",
+  "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "private": false,
+  "type": "module",
   "devDependencies": {
-    "@commander-js/extra-typings": "^10.0.1",
     "@jest/globals": "^29.4.3",
     "@types/jest": "^29.5.0",
     "@types/node": "^18.11.18",
-    "@types/nunjucks": "^3.2.1",
     "@types/sqlite3": "^3.1.8",
     "@types/unidecode": "^0.1.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.0",
+    "@typescript-eslint/parser": "^5.59.0",
     "esbuild": "^0.17.17",
-    "jest": "^29.4.3",
-    "ts-jest": "^29.0.5",
+    "jest": "^29.5.0",
     "rimraf": "^5.0.0",
-    "ts-node": "^10.9.1",
+    "ts-jest": "^29.0.5",
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "commander": "^10.0.1",
-    "gray-matter": "^4.0.3",
-    "nunjucks": "^3.2.3",
     "sqlite3": "^5.1.4",
     "unidecode": "^0.1.8"
+  },
+  "engines": {
+    "node": ">=14.16"
+  },
+  "jest": {
+    "preset": "ts-jest/presets/default-esm",
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    }
   }
 }
