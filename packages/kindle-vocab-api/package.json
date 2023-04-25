@@ -1,6 +1,6 @@
 {
   "name": "@ekamil/kindle-vocab-api",
-  "version": "1.0.2-alpha.0",
+  "version": "1.0.3-alpha.0",
   "author": "Kamil <kamil@essekkat.pl> (https://essekkat.pl)",
   "license": "Unlicense",
   "description": "API interface for Kindle Vocabulary Builder DB file",
