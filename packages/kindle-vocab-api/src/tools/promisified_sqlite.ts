@@ -1,10 +1,10 @@
-import { Database } from "sqlite3";
+import sqlite3 from "sqlite3";
 
 export class PromisifiedDatabase {
-  private readonly db: Database;
+  private readonly db: sqlite3.Database;
 
   constructor(path: string, callback?: (err: Error | null) => void) {
-    this.db = new Database(path, callback);
+    this.db = new sqlite3.Database(path, callback);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

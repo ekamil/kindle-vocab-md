@@ -9,11 +9,14 @@ esbuild.build({
     bundle: true,
     external: Object.keys(metadata.dependencies).concat(Object.keys(metadata.devDependencies)),
     packages: "external",
-    format: "ecm",
+    format: "esm",
     target: "esnext",
     platform: "node",
     sourcemap: true,
     minify: false,
     treeShaking: true,
     logLevel: "debug"
-}).catch(() => process.exit(1));
+}).catch((error) => {
+    console.log(error);
+    process.exit(1);
+});
