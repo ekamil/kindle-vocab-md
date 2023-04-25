@@ -12,11 +12,14 @@ esbuild.build({
         ".njk": "text"
     },
     packages: "external",
-    format: "cjs",
-    target: "es2018",
+    format: "esm",
+    target: "esnext",
     platform: "node",
     sourcemap: true,
     minify: false,
     treeShaking: true,
-    logLevel: "error"
-}).catch(() => process.exit(1));
+    logLevel: "debug"
+}).catch((error) => {
+    console.log(error);
+    process.exit(1);
+});

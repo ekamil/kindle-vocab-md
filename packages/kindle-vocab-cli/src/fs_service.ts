@@ -1,5 +1,7 @@
 import { promises } from "fs";
-import matter, { stringify } from "gray-matter";
+import matter from "gray-matter";
+const { stringify } = matter;
+
 import { join } from "path";
 import { Book, LookedUpWord, Lookup } from "@ekamil/kindle-vocab-api";
 

@@ -5,11 +5,13 @@
   "license": "Unlicense",
   "description": "API interface for Kindle Vocabulary Builder DB file",
   "scripts": {
-    "build-bundle": "rimraf dist/ && node --no-warnings esbuild.config.mjs",
-    "build": "rimraf dist/ && tsc --noEmit false",
+    "clean": "rimraf dist/",
+    "build-tsc": "rimraf dist/ && tsc --noEmit false",
+    "build": "rimraf dist/ && node --no-warnings esbuild.config.mjs && tsc --emitDeclarationOnly true",
     "test": "jest ./src",
     "lint": "prettier --check \"src/**/*.ts\" && eslint ./src && tsc --noEmit true",
-    "preversion": "npm test && npm run lint"
+    "preversion": "npm test && npm run lint",
+    "main": "npm run build-tsc && node dist/demo.js"
   },
   "keywords": [],
   "files": [

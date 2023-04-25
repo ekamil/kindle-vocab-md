@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "author": "Kamil <kamil@essekkat.pl> (https://essekkat.pl)",
   "license": "Unlicense",
-  "private": false,
   "description": "CLI tool to export Kindle Vocabulary Builder database",
   "scripts": {
+    "clean": "rimraf dist/ out/",
     "build": "rimraf dist/ out/ && node --no-warnings esbuild.config.mjs",
     "test": "jest ./src",
     "lint": "prettier --check \"src/**/*.ts\" && eslint ./src && tsc ",
@@ -16,7 +16,11 @@
   "files": [
     "./dist/*"
   ],
-  "main": "dist/index.js",
+  "exports": "./dist/main.js",
+  "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "private": false,
+  "type": "module",
   "devDependencies": {
     "@commander-js/extra-typings": "^10.0.1",
     "@jest/globals": "^29.4.3",
@@ -37,5 +41,14 @@
     "@ekamil/kindle-vocab-api": "*",
     "nunjucks": "^3.2.3",
     "unidecode": "^0.1.8"
+  },
+  "jest": {
+    "preset": "ts-jest/presets/default-esm",
+    "testEnvironment": "node",
+    "verbose": true,
+    "transform": {
+      "^.+.(njk)$": "<rootDir>/readstringTransformer.mjs",
+      "^.+.(ts|html)$": "ts-jest"
+    }
   }
 }
