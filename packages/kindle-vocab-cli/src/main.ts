@@ -15,7 +15,7 @@ async function main(): Promise<void> {
 
   const vocabulary = await getKindleVocabulary(options.database);
   vocabulary.words.forEach(async (word) => {
-    console.log(word);
+    // console.log(word);
     await fss.write_word(word);
   });
   vocabulary.books.forEach(async (book) => {
