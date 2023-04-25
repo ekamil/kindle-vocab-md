@@ -1,7 +1,9 @@
 {
-  "extends": "@tsconfig/node16/tsconfig.json",
+  "$schema": "https://json.schemastore.org/tsconfig",
+
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "src/**/*test.ts"],
+
   "forceConsistentCasingInFileNames": true,
 
   "compilerOptions": {
@@ -21,6 +23,7 @@
     "isolatedModules": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+    "esModuleInterop": true
   }
 }

@@ -1,6 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm exec lerna -- run build
-npm exec lerna -- run lint
-npm exec lerna -- run test
+npm run ci-build
