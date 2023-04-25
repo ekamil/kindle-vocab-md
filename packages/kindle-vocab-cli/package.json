@@ -1,6 +1,6 @@
 {
   "name": "@ekamil/kindle-vocab-cli",
-  "version": "1.0.1-alpha.0",
+  "version": "1.0.2-alpha.0",
   "author": "Kamil <kamil@essekkat.pl> (https://essekkat.pl)",
   "license": "Unlicense",
   "description": "CLI tool to export Kindle Vocabulary Builder database",
@@ -37,7 +37,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@ekamil/kindle-vocab-api": "^1.0.1-alpha.0",
+    "@ekamil/kindle-vocab-api": "^1.0.2-alpha.0",
     "commander": "^10.0.1",
     "gray-matter": "^4.0.3",
     "nunjucks": "^3.2.4",
