@@ -17,10 +17,7 @@ const remove_series = (title: string) => {
 };
 
 const normalize_string = (s: string) => {
-  return unidecode(s.normalize())
-    .replaceAll(disallowed, " ")
-    .replaceAll(/ +/g, " ")
-    .trim();
+  return unidecode(s.normalize()).replaceAll(disallowed, " ").replaceAll(/ +/g, " ").trim();
 };
 
 export function normalize_book_title(title: string): string {

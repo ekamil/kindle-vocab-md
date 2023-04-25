@@ -129,8 +129,7 @@ describe("from db models", () => {
       book_key: "The_Left_Hand_Of_Darkness:D7812BE3",
       dict_key: "B0053VMNYW",
       pos: "40268",
-      usage:
-        "He was not merely adroit and not merely powerful, he was faithless. ",
+      usage: "He was not merely adroit and not merely powerful, he was faithless. ",
       timestamp: 1507190128428,
     },
   ];

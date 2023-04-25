@@ -1,7 +1,7 @@
 import { describe, expect, test } from "@jest/globals";
 import { LookupRepository, WordRepository } from "./db.js";
 import type { BookKey, BookT } from "./db_models.js";
-import { PromisifiedDatabase } from "./tools/promisified_sqlite.js";
+import Database from "better-sqlite3";
 import { ReadListRepository } from "./tools/repository.js";
 
 const not_found = "not found";
@@ -12,17 +12,17 @@ const db_path = "test/vocab.db";
 
 describe("test DB version", () => {
   test("vocab.db is in the test version", async () => {
-    const db = new PromisifiedDatabase(db_path);
-    const actual: { sscnt: number } = await db.get(
-      "SELECT sscnt FROM metadata WHERE id = ?",
-      ["WORDS"],
-    );
+    const db = new Database(db_path);
+    const actual: { sscnt: number } = (await db
+      .prepare("SELECT sscnt FROM metadata WHERE id = ?")
+      .get(["WORDS"])) as any;
+
     expect(actual.sscnt).toBe(expected_sscnt);
   });
 });
 
 describe("db module - lookup repository", () => {
-  const db = new PromisifiedDatabase(db_path);
+  const db = new Database(db_path);
   const lookups = new LookupRepository(db);
   const known_id = "Starfish:840C8DB8:194286:11";
   const known_word = "en:arsenide";
@@ -50,7 +50,7 @@ describe("db module - lookup repository", () => {
 });
 
 describe("db module - word repository", () => {
-  const db = new PromisifiedDatabase(db_path);
+  const db = new Database(db_path);
   const lookups = new WordRepository(db);
   const known_word = "en:arsenide";
 
@@ -69,7 +69,7 @@ describe("db module - word repository", () => {
 });
 
 describe("db module - generic repo", () => {
-  const db = new PromisifiedDatabase(db_path);
+  const db = new Database(db_path);
 
   const generic_repo = new ReadListRepository<BookKey, BookT>(
     db,

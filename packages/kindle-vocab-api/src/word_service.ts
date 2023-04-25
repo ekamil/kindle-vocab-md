@@ -1,10 +1,8 @@
 import { BookRepository, LookupRepository, WordRepository } from "./db.js";
 import { Book, LookedUpWord, Lookup, Vocabulary } from "./domain_models.js";
-import { PromisifiedDatabase } from "./tools/promisified_sqlite.js";
+import { Database } from "better-sqlite3";
 
-export async function get_vocabulary_from_db(
-  db: PromisifiedDatabase,
-): Promise<Vocabulary> {
+export async function get_vocabulary_from_db(db: Database): Promise<Vocabulary> {
   const vocabulary = new Vocabulary();
 
   const lookups_repo = new LookupRepository(db);

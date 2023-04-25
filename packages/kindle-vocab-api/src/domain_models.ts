@@ -1,11 +1,4 @@
-import type {
-  BookT,
-  BookKey,
-  LookupT,
-  WordT,
-  WordKey,
-  LookupKey,
-} from "./db_models.js";
+import type { BookT, BookKey, LookupT, WordT, WordKey, LookupKey } from "./db_models.js";
 
 import { normalize_book_title, normalize_word } from "./tools/normalize.js";
 

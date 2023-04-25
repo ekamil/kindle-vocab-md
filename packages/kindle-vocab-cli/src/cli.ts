@@ -6,11 +6,7 @@ export const program = new Command()
   .description(description)
   .version(version)
   .name(name)
-  .option(
-    "-d, --database <path>",
-    "path to vocab.db SQLite database",
-    "./test/vocab.db",
-  )
+  .option("-d, --database <path>", "path to vocab.db SQLite database", "./test/vocab.db")
   .option("--output <path>", "directory or file for the results", "./out")
   .addOption(
     new Option("--output-books <path>", "directory for book files")
