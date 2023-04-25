@@ -18,6 +18,7 @@
   ],
   "exports": "./dist/main.js",
   "main": "./dist/main.js",
+  "bin": "./dist/main.js",
   "types": "./dist/main.d.ts",
   "private": false,
   "type": "module",
