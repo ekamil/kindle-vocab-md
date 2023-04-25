@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Vocabulary, Book, LookedUpWord, Lookup } from "./domain_models.js";
 import {
   log_connection,

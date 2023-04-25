@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { getKindleVocabulary } from "@ekamil/kindle-vocab-api";
 import assert from "assert";
 import { program } from "./cli";
