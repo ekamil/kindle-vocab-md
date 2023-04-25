@@ -4,8 +4,8 @@ import metadata from "./package.json" assert { type: "json" };
 
 
 esbuild.build({
-    entryPoints: ["src/main.ts"],
-    outfile: "dist/main.js",
+    entryPoints: ["src/main.ts", "src/demo.ts"],
+    outdir: "dist",
     bundle: true,
     external: Object.keys(metadata.dependencies).concat(Object.keys(metadata.devDependencies)),
     packages: "external",

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { getKindleVocabulary } from "./main.js";
 
 async function main(): Promise<void> {
