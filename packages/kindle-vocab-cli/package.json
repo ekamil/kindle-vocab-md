@@ -1,0 +1,41 @@
+{
+  "name": "@ekamil/kindle-vocab-cli",
+  "version": "0.1.0",
+  "author": "Kamil <kamil@essekkat.pl> (https://essekkat.pl)",
+  "license": "Unlicense",
+  "private": false,
+  "description": "CLI tool to export Kindle Vocabulary Builder database",
+  "scripts": {
+    "build": "rimraf dist/ out/ && node --no-warnings esbuild.config.mjs",
+    "test": "jest ./src",
+    "lint": "prettier --check \"src/**/*.ts\" && eslint ./src && tsc ",
+    "preversion": "npm test && npm run lint",
+    "main": "npm run build && node dist/main.js"
+  },
+  "keywords": [],
+  "files": [
+    "./dist/*"
+  ],
+  "main": "dist/index.js",
+  "devDependencies": {
+    "@commander-js/extra-typings": "^10.0.1",
+    "@jest/globals": "^29.4.3",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^18.11.18",
+    "@types/nunjucks": "^3.2.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.0",
+    "@typescript-eslint/parser": "^5.59.0",
+    "esbuild": "^0.17.17",
+    "jest": "^29.5.0",
+    "rimraf": "^5.0.0",
+    "ts-jest": "^29.0.5",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "commander": "^10.0.1",
+    "gray-matter": "^4.0.3",
+    "@ekamil/kindle-vocab-api": "*",
+    "nunjucks": "^3.2.3",
+    "unidecode": "^0.1.8"
+  }
+}

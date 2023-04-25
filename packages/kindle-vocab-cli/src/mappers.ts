@@ -1,4 +1,4 @@
-import { Book, LookedUpWord, Lookup } from "./domain_models";
+import { Book, LookedUpWord, Lookup } from "@ekamil/kindle-vocab-api";
 import type { BookVars, WordVars, LookupVars } from "./templates";
 
 export const book_to_template_vars = (book: Book): BookVars => {

@@ -1,8 +1,8 @@
 import { describe, expect, test } from "@jest/globals";
-import { LookupRepository, WordRepository } from "./db";
-import type { BookKey, BookT } from "./db_models";
-import { PromisifiedDatabase } from "./tools/promisified_sqlite";
-import { ReadListRepository } from "./tools/repository";
+import { LookupRepository, WordRepository } from "./db.js";
+import type { BookKey, BookT } from "./db_models.js";
+import { PromisifiedDatabase } from "./tools/promisified_sqlite.js";
+import { ReadListRepository } from "./tools/repository.js";
 
 const not_found = "not found";
 const expected_sscnt = 206;
@@ -44,8 +44,8 @@ describe("db module - lookup repository", () => {
     const actual = await lookups.for_word(known_word);
     expect(actual).toBeDefined();
     expect(actual).toHaveLength(1);
-    expect(actual[0].word_key).toBe(known_word);
-    expect(actual[0].id).toBe(known_id);
+    expect(actual[0]?.word_key).toBe(known_word);
+    expect(actual[0]?.id).toBe(known_id);
   });
 });
 

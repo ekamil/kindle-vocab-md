@@ -1,4 +1,4 @@
-import { PromisifiedDatabase } from "./promisified_sqlite";
+import { PromisifiedDatabase } from "./promisified_sqlite.js";
 
 const not_found = "not found";
 

@@ -1,44 +1,19 @@
-import assert from "assert";
-import { program } from "./cli";
-import { FSService } from "./fs_service";
+import { Vocabulary, Book, LookedUpWord, Lookup } from "./domain_models.js";
 import {
   log_connection,
   PromisifiedDatabase,
-} from "./tools/promisified_sqlite";
-import { getKindleVocabulary } from "./word_service";
+} from "./tools/promisified_sqlite.js";
+import { get_vocabulary_from_db } from "./word_service.js";
 
-async function main(): Promise<void> {
-  program.parse();
-  const options = program.opts();
-  console.debug(options);
-  assert(options.outputBooks);
-  assert(options.outputWords);
-
-  const fss = new FSService(options.outputBooks, options.outputWords);
-
-  await fss.ensure_dirs();
-
+async function getKindleVocabulary(
+  path_to_vocab_db: string,
+): Promise<Vocabulary> {
   const db = new PromisifiedDatabase(
-    options.database,
-    log_connection(options.database),
+    path_to_vocab_db,
+    log_connection(path_to_vocab_db),
   );
-
-  const vocabulary = await getKindleVocabulary(db);
-  vocabulary.words.forEach(async (word) => {
-    // console.log(word);
-    await fss.write_word(word);
-  });
-  vocabulary.books.forEach(async (book) => {
-    // console.log(book);
-    await fss.write_book(book);
-  });
+  const vocabulary = await get_vocabulary_from_db(db);
+  return vocabulary;
 }
 
-main().then(
-  (result) => {
-    console.debug(result != undefined ? result : "");
-  },
-  (err) => {
-    console.error(err);
-  },
-);
+export { getKindleVocabulary, Vocabulary, Book, LookedUpWord, Lookup };

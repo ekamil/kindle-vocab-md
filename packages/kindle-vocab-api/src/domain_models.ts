@@ -5,9 +5,9 @@ import type {
   WordT,
   WordKey,
   LookupKey,
-} from "./db_models";
+} from "./db_models.js";
 
-import { normalize_book_title, normalize_word } from "./tools/normalize";
+import { normalize_book_title, normalize_word } from "./tools/normalize.js";
 
 export class Book {
   readonly book_key: BookKey;
@@ -51,7 +51,7 @@ export class LookedUpWord {
   safe_word: string;
 
   public get latest_lookup_date(): Date {
-    let from_lookup = this.lookups[-1]?.date;
+    const from_lookup = this.lookups[-1]?.date;
     const long_time_ago = new Date("1970-01-01 12:00Z");
     return from_lookup != null ? from_lookup : long_time_ago;
   }

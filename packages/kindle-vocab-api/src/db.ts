@@ -5,9 +5,9 @@ import type {
   WordT,
   WordKey,
   LookupKey,
-} from "./db_models";
-import { PromisifiedDatabase } from "./tools/promisified_sqlite";
-import { ReadListRepository } from "./tools/repository";
+} from "./db_models.js";
+import { PromisifiedDatabase } from "./tools/promisified_sqlite.js";
+import { ReadListRepository } from "./tools/repository.js";
 
 const queries = {
   book_by_id: "SELECT * FROM book_info WHERE id = ?",
