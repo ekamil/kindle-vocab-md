@@ -32,7 +32,7 @@ Using `lerna` to manage all elements.
 
 #### Publish
 
-`lerna publish` or `npm run version && npm run publish`
+`npx lerna publish minor`
 
 ### Tools
 

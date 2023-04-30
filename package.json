@@ -10,9 +10,7 @@
     "clean": "lerna run clean",
     "lint": "lerna run lint",
     "test": "lerna run test",
-    "ci-build": "lerna run build && lerna run lint && lerna run test",
-    "new-version": "lerna version --conventional-commits --yes",
-    "publish": "lerna publish from-git"
+    "ci-build": "lerna run build && lerna run lint && lerna run test"
   },
   "workspaces": [
     "packages/*"
