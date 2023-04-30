@@ -1,4 +1,4 @@
-import { Command, Option } from "@commander-js/extra-typings";
+import { Command, Option } from "commander";
 import { join } from "path";
 import { name, version, description } from "../package.json";
 
