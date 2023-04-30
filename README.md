@@ -36,9 +36,9 @@ Using `lerna` to manage all elements.
 
 ### Tools
 
-[Lerna](https://lerna.js.org/)
-[Nunjucks](https://mozilla.github.io/nunjucks/templating.html)
-[Gray Matter](https://www.npmjs.com/package/gray-matter)
+- [Lerna](https://lerna.js.org/)
+- [Nunjucks](https://mozilla.github.io/nunjucks/templating.html)
+- [Gray Matter](https://www.npmjs.com/package/gray-matter)
 
 Maybe:
-[chalk for richer TUI](https://github.com/chalk/chalk)
+- [chalk for richer TUI](https://github.com/chalk/chalk)
