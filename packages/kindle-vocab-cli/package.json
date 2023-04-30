@@ -37,7 +37,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@ekamil/kindle-vocab-api": "^1.2.1",
+    "@ekamil/kindle-vocab-api": "*",
     "commander": "^10.0.1",
     "gray-matter": "^4.0.3",
     "nunjucks": "^3.2.4",
@@ -52,5 +52,5 @@
       "^(\\.{1,2}/.*)\\.js$": "$1"
     }
   },
-  "gitHead": "4ffb46d1600a2682e6180348c83e24d081b1edb5"
+  "gitHead": "7f838f29425ef4d773328992a385374269179a46"
 }
