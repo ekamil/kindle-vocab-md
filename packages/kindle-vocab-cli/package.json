@@ -21,7 +21,7 @@
   "bin": "./dist/main.js",
   "types": "./dist/main.d.ts",
   "private": false,
-  "type": "commonjs",
+  "type": "module",
   "devDependencies": {
     "@commander-js/extra-typings": "^10.0.3",
     "@jest/globals": "^29.5.0",

@@ -2,8 +2,8 @@
 
 import { getKindleVocabulary } from "@ekamil/kindle-vocab-api";
 import assert from "assert";
-import { program } from "./cli";
-import { FSService } from "./fs_service";
+import { program } from "./cli.js";
+import { FSService } from "./fs_service.js";
 
 async function main(): Promise<void> {
   program.parse();

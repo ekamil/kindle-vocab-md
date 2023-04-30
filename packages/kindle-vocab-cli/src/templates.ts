@@ -1,8 +1,35 @@
 import nunjucks from "nunjucks";
 
-import lookup from "./templates/lookup.njk";
-import word from "./templates/word.njk";
-import book from "./templates/book.njk";
+const lookup = `>[!quote] [[{{ book }}]] @ \`{{pos}}\`
+> {{ usage }}
+{% if date %}> @ {{date}}{% endif %}
+`;
+
+const word = `---
+Modified at: '{{ modified_at }}'
+Latest lookup date: '{{  latest_lookup_date }}'
+---
+# {{ stem }}
+
+>[!quote] {{ word }}
+
+## Examples
+`;
+
+const book = `---
+tags:
+  - book
+ASIN: {{asin}}
+Kindle guid: '{{guid}}'
+Modified at: '{{ modified_at }}'
+Status: Read
+---
+
+# {{title}}
+Author:: {{authors}}
+Cover:: #todo
+
+`;
 
 export type LookupVars = {
   usage: string;

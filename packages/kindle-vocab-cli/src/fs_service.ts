@@ -5,8 +5,12 @@ const { stringify } = matter;
 import { join } from "path";
 import { Book, LookedUpWord, Lookup } from "@ekamil/kindle-vocab-api";
 
-import { book_to_template_vars, lookup_to_template_vars, word_to_template_vars } from "./mappers";
-import { render_book_template, render_lookup_template, render_word_template } from "./templates";
+import {
+  book_to_template_vars,
+  lookup_to_template_vars,
+  word_to_template_vars,
+} from "./mappers.js";
+import { render_book_template, render_lookup_template, render_word_template } from "./templates.js";
 
 const MARKDOWN = ".md";
 const FRONT_FIELDS = {

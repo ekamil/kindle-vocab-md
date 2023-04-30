@@ -7,19 +7,17 @@
   "forceConsistentCasingInFileNames": true,
 
   "compilerOptions": {
-    "target": "ES2015",
-    "module": "commonjs",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "node16",
+    "moduleDetection": "force",
+    "target": "ESNext",
 
     "noEmit": true,
     "declaration": false,
     "outDir": "dist",
     "resolveJsonModule": true,
 
-    "isolatedModules": true,
+    "esModuleInterop": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": false
