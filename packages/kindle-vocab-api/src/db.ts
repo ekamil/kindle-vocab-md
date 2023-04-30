@@ -1,12 +1,6 @@
-import type {
-  BookT,
-  BookKey,
-  LookupT,
-  WordT,
-  WordKey,
-  LookupKey,
-} from "./db_models.js";
-import { PromisifiedDatabase } from "./tools/promisified_sqlite.js";
+import type { BookT, BookKey, LookupT, WordT, WordKey, LookupKey } from "./db_models.js";
+// import { PromisifiedDatabase } from "./tools/promisified_sqlite.js";
+import { Database } from "better-sqlite3";
 import { ReadListRepository } from "./tools/repository.js";
 
 const queries = {
@@ -17,21 +11,20 @@ const queries = {
   word_by_stem: "SELECT * FROM words WHERE stem like ? ORDER BY timestamp ASC",
   words: "SELECT * FROM words ORDER BY timestamp ASC",
 
-  lookups_by_word_key:
-    "SELECT * FROM lookups WHERE word_key = ? ORDER BY timestamp ASC",
+  lookups_by_word_key: "SELECT * FROM lookups WHERE word_key = ? ORDER BY timestamp ASC",
   lookup_by_id: "SELECT * FROM lookups WHERE id = ?",
   lookups: "SELECT * FROM lookups ORDER BY timestamp ASC",
 };
 
 export class BookRepository extends ReadListRepository<BookKey, BookT> {
-  constructor(db: PromisifiedDatabase) {
+  constructor(db: Database) {
     super(db, queries.book_by_id, queries.books);
   }
 }
 
 export class LookupRepository extends ReadListRepository<LookupKey, LookupT> {
   private cache = new Array<LookupT>();
-  constructor(db: PromisifiedDatabase) {
+  constructor(db: Database) {
     super(db, queries.lookup_by_id, queries.lookups);
   }
 
@@ -47,7 +40,7 @@ export class LookupRepository extends ReadListRepository<LookupKey, LookupT> {
 }
 
 export class WordRepository extends ReadListRepository<WordKey, WordT> {
-  constructor(db: PromisifiedDatabase) {
+  constructor(db: Database) {
     super(db, queries.word_by_id, queries.words);
   }
 }

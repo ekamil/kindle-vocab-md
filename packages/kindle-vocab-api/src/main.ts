@@ -1,19 +1,11 @@
 #!/usr/bin/env node
 
-import { Vocabulary, Book, LookedUpWord, Lookup } from "./domain_models.js";
-import {
-  log_connection,
-  PromisifiedDatabase,
-} from "./tools/promisified_sqlite.js";
+import { Book, LookedUpWord, Lookup, Vocabulary } from "./domain_models.js";
 import { get_vocabulary_from_db } from "./word_service.js";
+import Database from "better-sqlite3";
 
-async function getKindleVocabulary(
-  path_to_vocab_db: string,
-): Promise<Vocabulary> {
-  const db = new PromisifiedDatabase(
-    path_to_vocab_db,
-    log_connection(path_to_vocab_db),
-  );
+async function getKindleVocabulary(path_to_vocab_db: string): Promise<Vocabulary> {
+  const db = new Database(path_to_vocab_db);
   const vocabulary = await get_vocabulary_from_db(db);
   return vocabulary;
 }

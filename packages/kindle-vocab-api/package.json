@@ -19,12 +19,13 @@
   ],
   "exports": "./dist/main.js",
   "main": "./dist/main.js",
-  "bin": "./dist/main.js",
+  "bin": "./dist/demo.js",
   "types": "./dist/main.d.ts",
   "private": false,
   "type": "module",
   "devDependencies": {
     "@jest/globals": "^29.5.0",
+    "@types/better-sqlite3": "^7.6.4",
     "@types/jest": "^29.5.1",
     "@types/node": "^18.16.0",
     "@types/sqlite3": "^3.1.8",
@@ -38,6 +39,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "better-sqlite3": "^8.3.0",
     "sqlite3": "^5.1.6",
     "unidecode": "^0.1.8"
   },

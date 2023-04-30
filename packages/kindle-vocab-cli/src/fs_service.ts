@@ -5,16 +5,8 @@ const { stringify } = matter;
 import { join } from "path";
 import { Book, LookedUpWord, Lookup } from "@ekamil/kindle-vocab-api";
 
-import {
-  book_to_template_vars,
-  lookup_to_template_vars,
-  word_to_template_vars,
-} from "./mappers";
-import {
-  render_book_template,
-  render_lookup_template,
-  render_word_template,
-} from "./templates";
+import { book_to_template_vars, lookup_to_template_vars, word_to_template_vars } from "./mappers";
+import { render_book_template, render_lookup_template, render_word_template } from "./templates";
 
 const MARKDOWN = ".md";
 const FRONT_FIELDS = {
@@ -24,10 +16,7 @@ const FRONT_FIELDS = {
 };
 
 export class FSService {
-  constructor(
-    private readonly books_dir: string,
-    private readonly words_dir: string,
-  ) {}
+  constructor(private readonly books_dir: string, private readonly words_dir: string) {}
 
   ensure_dirs = async () => {
     [this.books_dir, this.words_dir].forEach(async (d) => {
@@ -98,11 +87,7 @@ export class FSService {
     this.write_word_lookups(word, path, content);
   };
 
-  async write_word_lookups(
-    word: LookedUpWord,
-    path: string,
-    existing_content: string,
-  ) {
+  async write_word_lookups(word: LookedUpWord, path: string, existing_content: string) {
     const parsed = matter(existing_content);
     let needs_write = false;
     word.lookups.forEach((lookup) => {
@@ -116,10 +101,7 @@ export class FSService {
     }
   }
 
-  private append_lookup_to_content(
-    parsed: matter.GrayMatterFile<string>,
-    lookup: Lookup,
-  ) {
+  private append_lookup_to_content(parsed: matter.GrayMatterFile<string>, lookup: Lookup) {
     const vars = lookup_to_template_vars(lookup);
     const rendered = render_lookup_template(vars);
     parsed.content += "\n";

@@ -1,4 +1,4 @@
-import { PromisifiedDatabase } from "./promisified_sqlite.js";
+import { Database } from "better-sqlite3";
 
 const not_found = "not found";
 
@@ -8,13 +8,13 @@ interface ID<K> {
 
 export class ReadListRepository<K, V extends ID<K>> {
   constructor(
-    protected readonly db: PromisifiedDatabase,
+    protected readonly db: Database,
     private readonly by_id_query: string,
     private readonly all_query: string,
   ) {}
 
   async get(key: K): Promise<V> {
-    const from_db = await this.db.get<V>(this.by_id_query, [key]);
+    const from_db = (await this.db.prepare(this.by_id_query).get([key])) as V;
     if (from_db?.id !== undefined) {
       return Promise.resolve(from_db);
     }
@@ -22,6 +22,6 @@ export class ReadListRepository<K, V extends ID<K>> {
   }
 
   async all(): Promise<V[]> {
-    return await this.db.all<V[]>(this.all_query, []);
+    return this.db.prepare(this.all_query).all() as V[];
   }
 }

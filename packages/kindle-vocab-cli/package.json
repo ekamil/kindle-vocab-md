@@ -21,7 +21,7 @@
   "bin": "./dist/main.js",
   "types": "./dist/main.d.ts",
   "private": false,
-  "type": "module",
+  "type": "commonjs",
   "devDependencies": {
     "@commander-js/extra-typings": "^10.0.3",
     "@jest/globals": "^29.5.0",
@@ -37,7 +37,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@ekamil/kindle-vocab-api": "^1.0.3-alpha.0",
+    "@ekamil/kindle-vocab-api": "*",
     "commander": "^10.0.1",
     "gray-matter": "^4.0.3",
     "nunjucks": "^3.2.4",

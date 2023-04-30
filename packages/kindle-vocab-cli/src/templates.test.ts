@@ -1,9 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import {
-  render_book_template,
-  render_lookup_template,
-  render_word_template,
-} from "./templates";
+import { render_book_template, render_lookup_template, render_word_template } from "./templates";
 
 describe("render module", () => {
   const WORD = {
@@ -60,8 +56,7 @@ Latest lookup date: ''
 
   test("renders a book note", () => {
     const vars = {
-      safe_title:
-        "The Ego Tunnel The Science of the Mind and the Myth of the Self",
+      safe_title: "The Ego Tunnel The Science of the Mind and the Myth of the Self",
       title: "The Ego Tunnel: The Science of the Mind and the Myth of the Self",
       authors: "Metzinger, Thomas",
       asin: "B0097DHVGW",

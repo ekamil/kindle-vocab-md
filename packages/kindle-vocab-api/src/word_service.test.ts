@@ -1,14 +1,11 @@
 import { describe, expect, test } from "@jest/globals";
-import {
-  PromisifiedDatabase,
-  log_connection,
-} from "./tools/promisified_sqlite.js";
 import { get_vocabulary_from_db } from "./word_service.js";
+import Database from "better-sqlite3";
 
 const db_path = "test/vocab.db";
 
 describe("WordService works with a real db", () => {
-  const db = new PromisifiedDatabase(db_path, log_connection(db_path));
+  const db = new Database(db_path);
 
   test("smoke", async () => {
     const vocabulary = await get_vocabulary_from_db(db);
