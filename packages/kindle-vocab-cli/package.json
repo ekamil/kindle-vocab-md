@@ -1,6 +1,6 @@
 {
   "name": "@ekamil/kindle-vocab-cli",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "author": "Kamil <kamil@essekkat.pl> (https://essekkat.pl)",
   "license": "Unlicense",
   "description": "CLI tool to export Kindle Vocabulary Builder database",
