@@ -1,6 +1,5 @@
 import type { BookT, BookKey, LookupT, WordT, WordKey, LookupKey } from "./db_models.js";
-// import { PromisifiedDatabase } from "./tools/promisified_sqlite.js";
-import { Database } from "better-sqlite3";
+import Database from "better-sqlite3";
 import { ReadListRepository } from "./tools/repository.js";
 
 const queries = {
@@ -15,16 +14,30 @@ const queries = {
   lookup_by_id: "SELECT * FROM lookups WHERE id = ?",
   lookups: "SELECT * FROM lookups ORDER BY timestamp ASC",
 };
+export type Repositories = {
+  books: BookRepository;
+  lookups: LookupRepository;
+  words: WordRepository;
+};
 
-export class BookRepository extends ReadListRepository<BookKey, BookT> {
-  constructor(db: Database) {
+export const createRepositories = async (path_to_db: string): Promise<Repositories> => {
+  const db = new Database(path_to_db);
+  return {
+    books: new BookRepository(db),
+    lookups: new LookupRepository(db),
+    words: new WordRepository(db),
+  };
+};
+
+class BookRepository extends ReadListRepository<BookKey, BookT> {
+  constructor(db: Database.Database) {
     super(db, queries.book_by_id, queries.books);
   }
 }
 
-export class LookupRepository extends ReadListRepository<LookupKey, LookupT> {
+class LookupRepository extends ReadListRepository<LookupKey, LookupT> {
   private cache = new Array<LookupT>();
-  constructor(db: Database) {
+  constructor(db: Database.Database) {
     super(db, queries.lookup_by_id, queries.lookups);
   }
 
@@ -39,8 +52,8 @@ export class LookupRepository extends ReadListRepository<LookupKey, LookupT> {
   }
 }
 
-export class WordRepository extends ReadListRepository<WordKey, WordT> {
-  constructor(db: Database) {
+class WordRepository extends ReadListRepository<WordKey, WordT> {
+  constructor(db: Database.Database) {
     super(db, queries.word_by_id, queries.words);
   }
 }

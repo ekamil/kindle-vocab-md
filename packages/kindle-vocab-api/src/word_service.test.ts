@@ -1,14 +1,13 @@
 import { describe, expect, test } from "@jest/globals";
+import { createRepositories } from "./db.js";
 import { get_vocabulary_from_db } from "./word_service.js";
-import Database from "better-sqlite3";
 
 const db_path = "test/vocab.db";
 
 describe("WordService works with a real db", () => {
-  const db = new Database(db_path);
-
   test("smoke", async () => {
-    const vocabulary = await get_vocabulary_from_db(db);
+    const repos = await createRepositories(db_path);
+    const vocabulary = await get_vocabulary_from_db(repos);
 
     expect(vocabulary.words.size).toBe(437);
     expect(vocabulary.books.size).toBe(50);
