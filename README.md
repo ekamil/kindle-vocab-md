@@ -1,12 +1,10 @@
 # Export kindle vocabulary to Markdown
 
-This program (script) is a way to liberate your "Vocabulary Builder" highlights from Kindle.
+Set of tools to liberate your "Vocabulary Builder" highlights from Kindle.
 
-There are alternatives but my goal here was to export in a way compatible with [Obsidian](https://obsidian.md/) - ie. into a directory of markdown files.
+## Mission statement
 
-**Important: backup the output directory before running**
-
-The script shouldn't delete anything, but better safe than sorry!
+> As an Obsidian user I want to browse, connect and use my Kindle highlights seamlessly.
 
 ## Features
 
@@ -14,54 +12,19 @@ The script shouldn't delete anything, but better safe than sorry!
 - creates WikiLinks between from words to books
 - safe to run repeatedly in the same directory (🤞🏽)
 
-## Issues
+## Issues & next steps
 
 See [issues](https://github.com/ekamil/kindle-vocab-md/issues)
 
 ⚠️ Unknown how it works with multiple languages and other versions of Kindle. ⚠️
 
-## Example output
-
-```
-📂 ./out
-┣━━ 📂 books
-┃   ┣━━ 📄 A Desolation Called Peace 2 Teixcalaan.md (212 bytes)
-┃   ┣━━ 📄 Accelerate The Science of Lean Software and DevOps Building and Scaling High Performing Technology Organizations.md (290 bytes)
-┃   ┣━━ 📄 All the Birds in the Sky.md (200 bytes)
-┃   ┣━━ 📄 Anathem.md (189 bytes)
-┃   ┣━━ 📄 Ancillary Justice 1 Imperial Radch.md (204 bytes)
-┃   ┗━━ 👀 ...
-┗━━ 📂 words
-    ┣━━ 📄 abode.md (598 bytes)
-    ┣━━ 📄 abseil.md (452 bytes)
-    ┣━━ 📄 abstruse.md (656 bytes)
-    ┣━━ 📄 abut.md (335 bytes)
-    ┣━━ 📄 actively.md (408 bytes)
-    ┗━━ 👀 ...
-```
-
-## Usage
-
-1. Connect Kindle with a cable, mount it
-2. (Optional) Copy Kindle's database to your drive
-   `cp /Volumes/Kindle/system/vocabulary/vocab.db ./vocab.db`
-3. Run the script with `--database ./vocab.db --output ./out`
-4. Enjoy words and books in the `./out` directory
-
-## Inspired by
-
-Heavily inspired by [obsidian-kindle-plugin](https://github.com/hadynz/obsidian-kindle-plugin), but without actual integration with Obsidian 😝
-
-## Assumptions
-
-- highly depends on structure of the Kindle vocabulary database
-- the files have to have readable front matter [see this for technical details](https://www.npmjs.com/package/gray-matter)
-
-## Next steps
-
-See [issues](https://github.com/ekamil/kindle-vocab-md/issues)
-
 ## Details
+
+To achieve the mission statement I need 3 components:
+
+1. API part interfacing with Kindle `vocab.db` and returning some usable data structure
+2. CLI part to easily use and test the solution
+3. (planned) Obsidian plugin
 
 ### Development
 
@@ -73,44 +36,9 @@ Using `lerna` to manage all elements.
 
 ### Tools
 
+[Lerna](https://lerna.js.org/)
 [Nunjucks](https://mozilla.github.io/nunjucks/templating.html)
 [Gray Matter](https://www.npmjs.com/package/gray-matter)
 
 Maybe:
 [chalk for richer TUI](https://github.com/chalk/chalk)
-
-### Kindle vocabulary
-
-It's a SQLite database with just 4 important tables:
-
-- lookups
-  - timestamp
-  - usage (ie. context)
-  - pos (ie. position in the book, probably)
-- words
-  - stem
-- dict_inf (optional, really, there's also `words.lang`, but it can have variant)
-  - langin / langout (ie. normalised language code)
-- book_info
-  - asin & guid
-  - authors
-  - title
-
-Book titles should be unique, Lookups are unique, words - aren't (word can be looked up multiple times).
-
-#### Example query
-
-```sqlite
-SELECT L.timestamp,
-       W.stem,
-       L.usage,
-       L.pos,
-       BI.title,
-       BI.authors,
-       coalesce(DI.langout, 'en')
-FROM LOOKUPS L
-         INNER JOIN WORDS W on L.word_key = W.id
-         INNER JOIN BOOK_INFO BI on L.book_key = BI.id
-         LEFT OUTER JOIN DICT_INFO DI on L.dict_key = DI.id
-WHERE W.stem = 'organza'
-```

@@ -8,6 +8,14 @@ There are alternatives but my goal here was to export in a way compatible with [
 
 The script shouldn't delete anything, but better safe than sorry!
 
+## Usage
+
+1. Connect Kindle with a cable, mount it
+2. (Optional) Copy Kindle's database to your drive
+   `cp /Volumes/Kindle/system/vocabulary/vocab.db ./vocab.db`
+3. Run the script with `npx @ekamil/kindle-vocab-cli --database ./vocab.db --output ./out`
+4. Enjoy words and books in the `./out` directory
+
 ## Features
 
 - grabs all words and books from your Kindle vocabulary database
@@ -40,22 +48,14 @@ See [issues](https://github.com/ekamil/kindle-vocab-md/issues)
     ┗━━ 👀 ...
 ```
 
-## Usage
-
-1. Connect Kindle with a cable, mount it
-2. (Optional) Copy Kindle's database to your drive
-   `cp /Volumes/Kindle/system/vocabulary/vocab.db ./vocab.db`
-3. Run the script with `npx @ekamil/kindle-vocab-cli --database ./vocab.db --output ./out`
-4. Enjoy words and books in the `./out` directory
-
 ## Inspired by
 
 Heavily inspired by [obsidian-kindle-plugin](https://github.com/hadynz/obsidian-kindle-plugin), but without actual integration with Obsidian 😝
 
 ## Assumptions
 
-- highly depends on structure of the Kindle vocabulary database
-- the files have to have readable front matter [see this for technical details](https://www.npmjs.com/package/gray-matter)
+- for reading: highly depends on structure of the Kindle vocabulary database
+- for deduplication: the files have to have readable front matter [see this for technical details](https://www.npmjs.com/package/gray-matter)
 
 ## Next steps
 
