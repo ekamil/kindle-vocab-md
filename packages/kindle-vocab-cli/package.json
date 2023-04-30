@@ -51,5 +51,6 @@
       "^.+.(njk)$": "<rootDir>/readstringTransformer.mjs",
       "^.+.(ts|html)$": "ts-jest"
     }
-  }
+  },
+  "gitHead": "20864d78fa1f425ef21cefcc75e4c458fd727183"
 }

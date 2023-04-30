@@ -15,7 +15,8 @@ The script shouldn't delete anything, but better safe than sorry!
 - safe to run repeatedly in the same directory (🤞🏽)
 
 ## Issues
-#todo: link to GH issues
+
+See [issues](https://github.com/ekamil/kindle-vocab-md/issues)
 
 ⚠️ Unknown how it works with multiple languages and other versions of Kindle. ⚠️
 
@@ -43,9 +44,9 @@ The script shouldn't delete anything, but better safe than sorry!
 
 1. Connect Kindle with a cable, mount it
 2. (Optional) Copy Kindle's database to your drive
-    `cp /Volumes/Kindle/system/vocabulary/vocab.db ./vocab.db`
+   `cp /Volumes/Kindle/system/vocabulary/vocab.db ./vocab.db`
 3. Run the script with `--database ./vocab.db --output ./out`
-3. Enjoy words and books in the `./out` directory
+4. Enjoy words and books in the `./out` directory
 
 ## Inspired by
 
@@ -58,23 +59,17 @@ Heavily inspired by [obsidian-kindle-plugin](https://github.com/hadynz/obsidian-
 
 ## Next steps
 
-- [ ] Set tags via CLI
-- [ ] pre-commit & husky
-- [ ] Make highlights optional (CLI option)
-- [x] Github or Gitlab? (rather 1 for social)
-- [x] Github Actions
-- [x] Flesh out the readme
-- [ ] Show some examples (attach test data)
-- [ ] Publish to NPM [docs](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry)
-- [ ] Impl. filter by book `--book UNIQUE-ENOUGH-STRING`
-- [ ] Impl. filter by date `--start-after DATE[2023-03-11]`
-- [ ] copy-db-before-query
+See [issues](https://github.com/ekamil/kindle-vocab-md/issues)
 
 ## Details
 
 ### Development
 
-Run main.ts: `npm run main -- --output ./out` or `npm run --silent main -- --output ./out`
+Using `lerna` to manage all elements.
+
+#### Publish
+
+`lerna publish` or `npm run version && npm run publish`
 
 ### Tools
 
