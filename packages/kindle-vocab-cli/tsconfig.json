@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
 
-  "include": ["src/**/*", "src/templates/*.njk"],
+  "include": ["src/**/*"],
   "exclude": ["src/**/*test.ts"],
 
   "forceConsistentCasingInFileNames": true,
@@ -13,13 +13,17 @@
     "target": "ESNext",
 
     "noEmit": true,
-    "declaration": false,
+    "declaration": true,
+    // "emitDeclarationOnly": true,
     "outDir": "dist",
-    "resolveJsonModule": true,
+    "declarationDir": "dist",
+    "pretty": true,
 
     "esModuleInterop": true,
+    "isolatedModules": true,
     "noImplicitAny": true,
-    "strictNullChecks": true,
-    "noUncheckedIndexedAccess": false
+    "noUncheckedIndexedAccess": false,
+    "resolveJsonModule": true,
+    "strictNullChecks": true
   }
 }

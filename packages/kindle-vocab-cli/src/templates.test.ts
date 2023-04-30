@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { render_book_template, render_lookup_template, render_word_template } from "./templates";
+import { render_book_template, render_lookup_template, render_word_template } from "./templates.js";
 
 describe("render module", () => {
   const WORD = {

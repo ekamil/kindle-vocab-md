@@ -43,13 +43,13 @@
     "nunjucks": "^3.2.4",
     "unidecode": "^0.1.8"
   },
+  "engines": {
+    "node": ">=14.16"
+  },
   "jest": {
     "preset": "ts-jest/presets/default-esm",
-    "testEnvironment": "node",
-    "verbose": true,
-    "transform": {
-      "^.+.(njk)$": "<rootDir>/readstringTransformer.mjs",
-      "^.+.(ts|html)$": "ts-jest"
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
     }
   },
   "gitHead": "20864d78fa1f425ef21cefcc75e4c458fd727183"

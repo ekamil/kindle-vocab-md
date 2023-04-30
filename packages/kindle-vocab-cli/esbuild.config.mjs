@@ -6,9 +6,6 @@ esbuild.build({
     entryPoints: ["src/main.ts"],
     outfile: "dist/main.js",
     bundle: true,
-    loader: {
-        ".njk": "text"
-    },
     format: "esm",
     target: "es2016",
     platform: "node",
