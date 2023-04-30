@@ -3,7 +3,9 @@
 import { getKindleVocabulary } from "./main.js";
 
 async function main(): Promise<void> {
-  const vocabulary = await getKindleVocabulary("test/vocab.db");
+  const db_path = process.argv[-1] as string;
+  console.log(`Opening DB at ${db_path}`);
+  const vocabulary = await getKindleVocabulary(db_path);
   let loop = 5;
   for (const word of vocabulary.words) {
     console.log(word);
@@ -24,7 +26,7 @@ async function main(): Promise<void> {
 
 main().then(
   (result) => {
-    console.debug(result != undefined ? result : "");
+    console.debug(result != undefined ? result : "Done");
   },
   (err) => {
     console.error(err);
