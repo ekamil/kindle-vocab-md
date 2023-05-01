@@ -8,7 +8,7 @@
     "clean": "rimraf dist/ out/",
     "build": "rimraf dist/ out/ && node --no-warnings esbuild.config.mjs",
     "test": "jest ./src",
-    "lint": "prettier --check \"src/**/*.ts\" && eslint ./src && tsc ",
+    "lint": "prettier --write \"src/**/*.ts\" && eslint --fix ./src && tsc ",
     "preversion": "npm test && npm run lint",
     "main": "npm run build && node dist/main.js"
   },
