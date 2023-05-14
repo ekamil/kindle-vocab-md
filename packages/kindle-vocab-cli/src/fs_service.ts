@@ -2,15 +2,10 @@ import { promises } from "fs";
 import matter from "gray-matter";
 const { stringify } = matter;
 
-import { join } from "path";
 import { Book, LookedUpWord, Lookup } from "@ekamil/kindle-vocab-api";
+import { join } from "path";
 
-import {
-  book_to_template_vars,
-  lookup_to_template_vars,
-  word_to_template_vars,
-} from "./mappers.js";
-import { render_book_template, render_lookup_template, render_word_template } from "./templates.js";
+import { render_book, render_lookup, render_word } from "./mappers.js";
 
 const MARKDOWN = ".md";
 const FRONT_FIELDS = {
@@ -22,25 +17,18 @@ const FRONT_FIELDS = {
 export class FSService {
   constructor(private readonly books_dir: string, private readonly words_dir: string) {}
 
-  ensure_dirs = async () => {
-    [this.books_dir, this.words_dir].forEach(async (d) => {
-      try {
-        await promises.access(d);
-        console.log(`${d} already exists`);
-      } catch (error) {
-        await promises.mkdir(d, { recursive: true });
-      }
-    });
+  ensure_dir = async (d: string) => {
+    await promises.mkdir(d, { recursive: true });
   };
 
   write_book = async (book: Book) => {
+    await this.ensure_dir(this.books_dir);
     const path = join(this.books_dir, book.safe_title) + MARKDOWN;
     let content;
     try {
       content = await promises.readFile(path, { encoding: "utf-8" });
     } catch {
-      const as_vars = book_to_template_vars(book);
-      content = render_book_template(as_vars);
+      content = render_book(book);
       await promises.writeFile(path, content);
       return;
     }
@@ -72,23 +60,22 @@ export class FSService {
     const message = `Ambiguous duplicate book: "${book.title}" in "${path}"`;
     const path_1 = join(this.books_dir, book.safe_title) + " 1" + MARKDOWN;
     console.log(`${message}. Writing another file ${path_1}`);
-    const as_vars = book_to_template_vars(book);
-    content = render_book_template(as_vars);
-    await promises.writeFile(path, content);
+    content = render_book(book);
+    await promises.writeFile(path_1, content);
   }
 
   write_word = async (word: LookedUpWord) => {
+    await this.ensure_dir(this.words_dir);
     const path = join(this.words_dir, word.safe_word) + MARKDOWN;
-    const as_vars = word_to_template_vars(word);
 
     let content;
     try {
       content = await promises.readFile(path, { encoding: "utf-8" });
     } catch {
-      content = render_word_template(as_vars);
+      content = render_word(word);
       await promises.writeFile(path, content);
     }
-    this.write_word_lookups(word, path, content);
+    await this.write_word_lookups(word, path, content);
   };
 
   async write_word_lookups(word: LookedUpWord, path: string, existing_content: string) {
@@ -106,8 +93,7 @@ export class FSService {
   }
 
   private append_lookup_to_content(parsed: matter.GrayMatterFile<string>, lookup: Lookup) {
-    const vars = lookup_to_template_vars(lookup);
-    const rendered = render_lookup_template(vars);
+    const rendered = render_lookup(lookup);
     parsed.content += "\n";
     parsed.content += rendered;
 

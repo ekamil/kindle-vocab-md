@@ -13,7 +13,6 @@ async function main(): Promise<void> {
   assert(options.outputWords);
 
   const fss = new FSService(options.outputBooks, options.outputWords);
-  await fss.ensure_dirs();
 
   const vocabulary = await getKindleVocabulary(options.database);
   vocabulary.words.forEach(async (word) => {

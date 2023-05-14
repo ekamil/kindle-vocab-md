@@ -1,7 +1,16 @@
-import { Book, LookedUpWord, Lookup } from "@ekamil/kindle-vocab-api";
-import type { BookVars, WordVars, LookupVars } from "./templates.js";
+import nunjucks from "nunjucks";
 
-export const book_to_template_vars = (book: Book): BookVars => {
+import { Book, LookedUpWord, Lookup } from "@ekamil/kindle-vocab-api";
+import {
+  BookVars,
+  WordVars,
+  LookupVars,
+  book_template,
+  word_template,
+  lookup_template,
+} from "./templates.js";
+
+const book_to_template_vars = (book: Book): BookVars => {
   return {
     safe_title: book.safe_title,
     title: book.title,
@@ -12,7 +21,12 @@ export const book_to_template_vars = (book: Book): BookVars => {
   };
 };
 
-export const word_to_template_vars = (word: LookedUpWord): WordVars => {
+export const render_book = (book: Book, template: string = book_template): string => {
+  const vars = book_to_template_vars(book);
+  return nunjucks.renderString(template, vars);
+};
+
+const word_to_template_vars = (word: LookedUpWord): WordVars => {
   return {
     word: word.word,
     stem: word.stem,
@@ -21,7 +35,15 @@ export const word_to_template_vars = (word: LookedUpWord): WordVars => {
   };
 };
 
-export function lookup_to_template_vars(lookup: Lookup): LookupVars {
+export const render_word = (
+  word: LookedUpWord,
+  template: string | undefined = undefined,
+): string => {
+  const vars = word_to_template_vars(word);
+  return nunjucks.renderString(template ?? word_template, vars);
+};
+
+function lookup_to_template_vars(lookup: Lookup): LookupVars {
   return {
     usage: lookup.usage,
     book: lookup.book.safe_title,
@@ -29,3 +51,8 @@ export function lookup_to_template_vars(lookup: Lookup): LookupVars {
     date: lookup.date.toISOString(),
   };
 }
+
+export const render_lookup = (lookup: Lookup, template: string | undefined = undefined): string => {
+  const vars = lookup_to_template_vars(lookup);
+  return nunjucks.renderString(template ?? lookup_template, vars);
+};

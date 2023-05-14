@@ -1,11 +1,9 @@
-import nunjucks from "nunjucks";
-
-const lookup = `>[!quote] [[{{ book }}]] @ \`{{pos}}\`
+export const lookup_template = `>[!quote] [[{{ book }}]] @ \`{{pos}}\`
 > {{ usage }}
 {% if date %}> @ {{date}}{% endif %}
 `;
 
-const word = `---
+export const word_template = `---
 Modified at: '{{ modified_at }}'
 Latest lookup date: '{{  latest_lookup_date }}'
 ---
@@ -16,7 +14,7 @@ Latest lookup date: '{{  latest_lookup_date }}'
 ## Examples
 `;
 
-const book = `---
+export const book_template = `---
 tags:
   - book
 ASIN: {{asin}}
@@ -46,17 +44,6 @@ export type WordVars = {
   modified_at: string;
 };
 
-export const render_lookup_template = (v: LookupVars) => {
-  const vars = copy(v);
-  return nunjucks.renderString(lookup, vars);
-};
-
-export const render_word_template = (v: WordVars) => {
-  // todo: use `renderLookupTemplate`
-  const vars = copy(v);
-  return nunjucks.renderString(word, vars);
-};
-
 export type BookVars = {
   // safe title - as in ready to be a file name
   safe_title: string;
@@ -66,10 +53,3 @@ export type BookVars = {
   guid: string;
   modified_at: string;
 };
-export const render_book_template = (v: BookVars) => {
-  return nunjucks.renderString(book, v);
-};
-
-function copy<Type>(obj: Type): Type {
-  return JSON.parse(JSON.stringify(obj)) as Type;
-}
