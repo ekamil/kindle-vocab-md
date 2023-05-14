@@ -1,8 +1,8 @@
 import type { BookKey, BookT, LookupT, WordKey, WordT } from "./db_models.js";
-
+import type { BookI, LookupI, LookedUpWordI } from "./domain_types.js";
 import { normalize_book_title, normalize_word } from "./tools/normalize.js";
 
-export class Book {
+export class Book implements BookI {
   readonly book_key: BookKey;
   readonly title: string;
   readonly authors: string;
@@ -20,7 +20,7 @@ export class Book {
   }
 }
 
-export class Lookup {
+export class Lookup implements LookupI {
   word_key: WordKey;
   word: string;
   usage: string;
@@ -38,7 +38,7 @@ export class Lookup {
   }
 }
 
-export class LookedUpWord {
+export class LookedUpWord implements LookedUpWordI {
   word_key: string;
   word: string; // possibly declinated or sth
   stem: string;
