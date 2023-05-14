@@ -1,5 +1,6 @@
 import type { BookT, BookKey, LookupT, WordT, WordKey, LookupKey } from "./db_models.js";
 import Database from "better-sqlite3";
+import { Database as DatabaseType } from "better-sqlite3";
 import { ReadListRepository } from "./tools/repository.js";
 
 const queries = {
@@ -14,10 +15,12 @@ const queries = {
   lookup_by_id: "SELECT * FROM lookups WHERE id = ?",
   lookups: "SELECT * FROM lookups ORDER BY timestamp ASC",
 };
+
 export type Repositories = {
   books: BookRepository;
   lookups: LookupRepository;
   words: WordRepository;
+  _db: DatabaseType;
 };
 
 export const createRepositories = async (path_to_db: string): Promise<Repositories> => {
@@ -26,6 +29,7 @@ export const createRepositories = async (path_to_db: string): Promise<Repositori
     books: new BookRepository(db),
     lookups: new LookupRepository(db),
     words: new WordRepository(db),
+    _db: db,
   };
 };
 
