@@ -45,6 +45,6 @@ describe("render module", () => {
 
   test("renders a book note", () => {
     const res = render_book(book);
-    expect(res).toContain("ASIN: B0097DHVGW");
+    expect(res).toContain("ASIN: cc2399ca-4b66-4ebf-bc74-6a596d278f35");
   });
 });
