@@ -154,5 +154,6 @@ describe("from db models", () => {
     expect(actual_word.lookups[0]?.book.safe_title).toBe("Anathem");
     expect(actual_word.lookups[0]?.date.getFullYear()).toBe(2017);
     expect(actual_word.lookups[0]?.usage).toContain(db_word.word);
+    expect(actual_word.lookups[0]?.word).toBe(db_word.word);
   });
 });
