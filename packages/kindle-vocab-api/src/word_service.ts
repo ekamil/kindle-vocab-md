@@ -12,28 +12,26 @@ export async function get_vocabulary_from_db(repositories: Repositories): Promis
     vocabulary.books.set(db_book.id, new Book(db_book));
   });
 
+  // Lookups and Words reference each other
+  // 1st pass is creating a map of words sans lookups
+  // then load lookups while attaching them onto words
+
+  (await words_repo.all()).forEach(async (word) => {
+    const enhanced = new LookedUpWord(word);
+    vocabulary.words.set(word.id, enhanced);
+  });
+
   (await lookups_repo.all()).forEach((db_lookup) => {
     const book = vocabulary.books.get(db_lookup.book_key);
     if (book === undefined) {
-      throw `missing book for lookup ${db_lookup}`;
+      throw `missing book key:${db_lookup.book_key} for lookup id:${db_lookup.id}`;
     }
-    const lookup = new Lookup(db_lookup, book);
-
-    const word_key = db_lookup.word_key;
-    if (vocabulary.lookups_by_word.has(word_key)) {
-      vocabulary.lookups_by_word.get(word_key)?.push(lookup);
-    } else {
-      vocabulary.lookups_by_word.set(word_key, [lookup]);
+    const word = vocabulary.words.get(db_lookup.word_key);
+    if (word === undefined) {
+      throw `missing word key:${db_lookup.word_key} for lookup id:${db_lookup.id}`;
     }
-  });
-
-  (await words_repo.all()).forEach(async (word) => {
-    const lookups = vocabulary.lookups_by_word.get(word.id);
-    if (lookups === undefined) {
-      throw `missing lookups for word ${word}`;
-    }
-    const enhanced = new LookedUpWord(word, lookups);
-    vocabulary.words.set(word.id, enhanced);
+    const lookup = new Lookup(db_lookup, book, word.word);
+    word.append_lookup(lookup);
   });
 
   return Promise.resolve(vocabulary);

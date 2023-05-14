@@ -22,13 +22,15 @@ export class Book {
 
 export class Lookup {
   word_key: WordKey;
+  word: string;
   usage: string;
   book: Book;
   pos: string;
   date: Date;
 
-  constructor(l: LookupT, book: Book) {
+  constructor(l: LookupT, book: Book, word: string) {
     this.word_key = l.word_key;
+    this.word = word;
     this.usage = l.usage;
     this.pos = l.pos;
     this.date = new Date(l.timestamp);
@@ -40,7 +42,7 @@ export class LookedUpWord {
   word_key: string;
   word: string; // possibly declinated or sth
   stem: string;
-  lookups: Lookup[];
+  lookups: Lookup[] = [];
   safe_word: string;
 
   public get latest_lookup_date(): Date {
@@ -49,32 +51,22 @@ export class LookedUpWord {
     return from_lookup != null ? from_lookup : long_time_ago;
   }
 
-  constructor(word: WordT, lookups: Lookup[]) {
+  constructor(word: WordT) {
     this.word_key = word.id;
     this.word = word.word;
     this.stem = word.stem;
     this.safe_word = normalize_word(word.stem);
-    this.lookups = lookups
-      .map((l) => {
-        if (l.word_key != this.word_key) {
-          throw `invalid lookup ${l} for word ${this.word_key}`;
-        }
-        return l;
-      })
-      .map((l) => {
-        // markdown highlighting in sentence
-        l.usage = l.usage.replaceAll(word.word, `==${word.word}==`);
-        return l;
-      })
-      .sort((l1, l2) => {
-        return l1.date < l2.date ? -1 : 1;
-      });
   }
+  append_lookup = (lookup: Lookup) => {
+    this.lookups.push(lookup);
+    this.lookups = this.lookups.sort((l1, l2) => {
+      return l1.date < l2.date ? -1 : 1;
+    });
+  };
 }
 
 export class Vocabulary {
   // Main entry point for this API, books, words, lookups.
   public readonly words: Map<WordKey, LookedUpWord> = new Map();
   public readonly books: Map<BookKey, Book> = new Map();
-  public readonly lookups_by_word: Map<WordKey, Lookup[]> = new Map();
 }

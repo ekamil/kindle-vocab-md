@@ -11,8 +11,8 @@ describe("WordService works with a real db", () => {
 
     expect(vocabulary.words.size).toBe(437);
     expect(vocabulary.books.size).toBe(50);
-    for (const [, lookups] of vocabulary.lookups_by_word) {
-      expect(lookups.length).toBeGreaterThanOrEqual(1);
+    for (const [, word] of vocabulary.words) {
+      expect(word.lookups.length).toBeGreaterThanOrEqual(1);
     }
 
     const word_id = "en:retches";
@@ -26,6 +26,5 @@ describe("WordService works with a real db", () => {
     expect(actual.lookups[0]?.date.getFullYear()).toBe(2016);
     expect(actual.lookups[0]?.date.getMonth()).toBe(7); // zero indexed
     expect(actual.lookups[0]?.usage).toContain("retches");
-    expect(actual.lookups[0]?.usage).toContain("==");
   });
 });

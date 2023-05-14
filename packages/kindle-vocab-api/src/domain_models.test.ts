@@ -64,17 +64,14 @@ describe("domain models", () => {
   });
 
   test("creates word with empty lookups", () => {
-    const actual = new LookedUpWord(
-      {
-        id: "en:crèche",
-        stem: "crèche",
-        word: "crèche",
-        lang: "en",
-        category: 0,
-        timestamp: 1552410116996,
-      },
-      [],
-    );
+    const actual = new LookedUpWord({
+      id: "en:crèche",
+      stem: "crèche",
+      word: "crèche",
+      lang: "en",
+      category: 0,
+      timestamp: 1552410116996,
+    });
     expect(actual.word).toBe("crèche");
     expect(actual.safe_word).toBe("creche");
     expect(actual.lookups).toHaveLength(0);
@@ -138,20 +135,24 @@ describe("from db models", () => {
     const books = db_books.map((db_book) => {
       return new Book(db_book);
     });
-    const lookups = db_lookups.map((db_lookup) => {
-      const filtered = books.filter((book) => {
-        return book.book_key == db_lookup.book_key;
+    const actual_word = new LookedUpWord(db_word);
+    db_lookups
+      .map((db_lookup) => {
+        const filtered = books.filter((book) => {
+          return book.book_key == db_lookup.book_key;
+        });
+        expect(filtered).toHaveLength(1);
+        // eslint-disable-next-line @typescript-eslint/no-extra-non-null-assertion
+        return new Lookup(db_lookup, filtered[0]!!, "adroit");
+      })
+      .forEach((lookup) => {
+        actual_word.append_lookup(lookup);
       });
-      expect(filtered).toHaveLength(1);
-      // eslint-disable-next-line @typescript-eslint/no-extra-non-null-assertion
-      return new Lookup(db_lookup, filtered[0]!!);
-    });
-    const actual = new LookedUpWord(db_word, lookups);
-    expect(actual.word).toBe("adroit");
-    expect(actual.lookups).toHaveLength(2);
-    expect(actual.lookups[0]?.book.safe_title).toBe("Anathem");
-    expect(actual.lookups[0]?.date.getFullYear()).toBe(2017);
-    expect(actual.lookups[0]?.usage).toContain(db_word.word);
-    expect(actual.lookups[0]?.usage).toContain("==");
+
+    expect(actual_word.word).toBe("adroit");
+    expect(actual_word.lookups).toHaveLength(2);
+    expect(actual_word.lookups[0]?.book.safe_title).toBe("Anathem");
+    expect(actual_word.lookups[0]?.date.getFullYear()).toBe(2017);
+    expect(actual_word.lookups[0]?.usage).toContain(db_word.word);
   });
 });
