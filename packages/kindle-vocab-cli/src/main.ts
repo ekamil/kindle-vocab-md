@@ -12,9 +12,12 @@ async function main(): Promise<void> {
   assert(options.outputBooks);
   assert(options.outputWords);
 
-  const fss = new FSService(options.outputBooks, options.outputWords);
+  const fss = new FSService(options.outputBooks, options.outputWords, {
+    highlightWord: options.highlightWord,
+  });
 
   const vocabulary = await getKindleVocabulary(options.database);
+
   vocabulary.words.forEach(async (word) => {
     // console.log(word);
     await fss.write_word(word);

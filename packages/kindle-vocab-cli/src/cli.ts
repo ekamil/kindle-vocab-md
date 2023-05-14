@@ -8,6 +8,7 @@ export const program = new Command()
   .name(name)
   .option("-d, --database <path>", "path to vocab.db SQLite database", "./test/vocab.db")
   .option("--output <path>", "directory or file for the results", "./out")
+  .option("--highlight-word", "surround word in the context with markdown highlight", true)
   .addOption(
     new Option("--output-books <path>", "directory for book files")
       .conflicts("output")

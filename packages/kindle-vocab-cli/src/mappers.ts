@@ -1,6 +1,6 @@
 import nunjucks from "nunjucks";
 
-import { Book, LookedUpWord, Lookup } from "@ekamil/kindle-vocab-api";
+import { BookI, LookedUpWordI, LookupI } from "@ekamil/kindle-vocab-api";
 import {
   BookVars,
   WordVars,
@@ -10,7 +10,7 @@ import {
   lookup_template,
 } from "./templates.js";
 
-const book_to_template_vars = (book: Book): BookVars => {
+const book_to_template_vars = (book: BookI): BookVars => {
   return {
     safe_title: book.safe_title,
     title: book.title,
@@ -21,12 +21,12 @@ const book_to_template_vars = (book: Book): BookVars => {
   };
 };
 
-export const render_book = (book: Book, template: string = book_template): string => {
+export const render_book = (book: BookI, template: string = book_template): string => {
   const vars = book_to_template_vars(book);
   return nunjucks.renderString(template, vars);
 };
 
-const word_to_template_vars = (word: LookedUpWord): WordVars => {
+const word_to_template_vars = (word: LookedUpWordI): WordVars => {
   return {
     word: word.word,
     stem: word.stem,
@@ -36,23 +36,26 @@ const word_to_template_vars = (word: LookedUpWord): WordVars => {
 };
 
 export const render_word = (
-  word: LookedUpWord,
+  word: LookedUpWordI,
   template: string | undefined = undefined,
 ): string => {
   const vars = word_to_template_vars(word);
   return nunjucks.renderString(template ?? word_template, vars);
 };
 
-function lookup_to_template_vars(lookup: Lookup): LookupVars {
-  return {
-    usage: lookup.usage,
+export const render_lookup = (
+  lookup: LookupI,
+  template: string | undefined = undefined,
+  highlightWord = true,
+): string => {
+  const usage = highlightWord
+    ? lookup.usage.replaceAll(lookup.word, `==${lookup.word}==`)
+    : lookup.usage;
+  const vars: LookupVars = {
+    usage: usage,
     book: lookup.book.safe_title,
     pos: lookup.pos,
     date: lookup.date.toISOString(),
   };
-}
-
-export const render_lookup = (lookup: Lookup, template: string | undefined = undefined): string => {
-  const vars = lookup_to_template_vars(lookup);
   return nunjucks.renderString(template ?? lookup_template, vars);
 };

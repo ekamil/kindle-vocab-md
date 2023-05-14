@@ -2,7 +2,7 @@ import { promises } from "fs";
 import matter from "gray-matter";
 const { stringify } = matter;
 
-import { Book, LookedUpWord, Lookup } from "@ekamil/kindle-vocab-api";
+import { BookI, LookedUpWordI, LookupI } from "@ekamil/kindle-vocab-api";
 import { join } from "path";
 
 import { render_book, render_lookup, render_word } from "./mappers.js";
@@ -14,14 +14,21 @@ const FRONT_FIELDS = {
   asin: "ASIN",
 };
 
+type RenderOptions = {
+  highlightWord: boolean;
+};
 export class FSService {
-  constructor(private readonly books_dir: string, private readonly words_dir: string) {}
+  constructor(
+    private readonly books_dir: string,
+    private readonly words_dir: string,
+    private readonly options: RenderOptions | undefined = undefined,
+  ) {}
 
   ensure_dir = async (d: string) => {
     await promises.mkdir(d, { recursive: true });
   };
 
-  write_book = async (book: Book) => {
+  write_book = async (book: BookI) => {
     await this.ensure_dir(this.books_dir);
     const path = join(this.books_dir, book.safe_title) + MARKDOWN;
     let content;
@@ -45,7 +52,7 @@ export class FSService {
   };
 
   private async write_book_ASIN(
-    book: Book,
+    book: BookI,
     path: string,
     parsed: matter.GrayMatterFile<string>,
     content: string,
@@ -55,7 +62,7 @@ export class FSService {
     await promises.writeFile(path, stringify(content, parsed.data));
   }
 
-  private async handle_conflict(book: Book, path: string, content: string) {
+  private async handle_conflict(book: BookI, path: string, content: string) {
     // creating another file with trailing number
     const message = `Ambiguous duplicate book: "${book.title}" in "${path}"`;
     const path_1 = join(this.books_dir, book.safe_title) + " 1" + MARKDOWN;
@@ -64,7 +71,7 @@ export class FSService {
     await promises.writeFile(path_1, content);
   }
 
-  write_word = async (word: LookedUpWord) => {
+  write_word = async (word: LookedUpWordI) => {
     await this.ensure_dir(this.words_dir);
     const path = join(this.words_dir, word.safe_word) + MARKDOWN;
 
@@ -78,7 +85,7 @@ export class FSService {
     await this.write_word_lookups(word, path, content);
   };
 
-  async write_word_lookups(word: LookedUpWord, path: string, existing_content: string) {
+  async write_word_lookups(word: LookedUpWordI, path: string, existing_content: string) {
     const parsed = matter(existing_content);
     let needs_write = false;
     word.lookups.forEach((lookup) => {
@@ -92,8 +99,8 @@ export class FSService {
     }
   }
 
-  private append_lookup_to_content(parsed: matter.GrayMatterFile<string>, lookup: Lookup) {
-    const rendered = render_lookup(lookup);
+  private append_lookup_to_content(parsed: matter.GrayMatterFile<string>, lookup: LookupI) {
+    const rendered = render_lookup(lookup, undefined, this.options?.highlightWord ?? true);
     parsed.content += "\n";
     parsed.content += rendered;
 
