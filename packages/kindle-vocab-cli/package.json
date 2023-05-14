@@ -40,8 +40,7 @@
     "@ekamil/kindle-vocab-api": "^1.5.0",
     "commander": "^10.0.1",
     "gray-matter": "^4.0.3",
-    "nunjucks": "^3.2.4",
-    "unidecode": "^0.1.8"
+    "nunjucks": "^3.2.4"
   },
   "engines": {
     "node": ">=14.16"
