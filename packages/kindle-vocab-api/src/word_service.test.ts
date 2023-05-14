@@ -11,7 +11,9 @@ describe("WordService works with a real db", () => {
 
     expect(vocabulary.words.size).toBe(437);
     expect(vocabulary.books.size).toBe(50);
-    expect(vocabulary.lookups.size).toBe(452);
+    for (const [, lookups] of vocabulary.lookups_by_word) {
+      expect(lookups.length).toBeGreaterThanOrEqual(1);
+    }
 
     const word_id = "en:retches";
     // eslint-disable-next-line @typescript-eslint/no-extra-non-null-assertion

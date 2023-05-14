@@ -1,4 +1,4 @@
-import type { BookT, BookKey, LookupT, WordT, WordKey, LookupKey } from "./db_models.js";
+import type { BookKey, BookT, LookupT, WordKey, WordT } from "./db_models.js";
 
 import { normalize_book_title, normalize_word } from "./tools/normalize.js";
 
@@ -76,6 +76,5 @@ export class Vocabulary {
   // Main entry point for this API, books, words, lookups.
   public readonly words: Map<WordKey, LookedUpWord> = new Map();
   public readonly books: Map<BookKey, Book> = new Map();
-  public readonly lookups: Map<LookupKey, Lookup> = new Map();
   public readonly lookups_by_word: Map<WordKey, Lookup[]> = new Map();
 }

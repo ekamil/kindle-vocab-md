@@ -18,7 +18,6 @@ export async function get_vocabulary_from_db(repositories: Repositories): Promis
       throw `missing book for lookup ${db_lookup}`;
     }
     const lookup = new Lookup(db_lookup, book);
-    vocabulary.lookups.set(db_lookup.id, lookup);
 
     const word_key = db_lookup.word_key;
     if (vocabulary.lookups_by_word.has(word_key)) {

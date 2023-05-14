@@ -1,6 +1,5 @@
-import type { BookT, BookKey, LookupT, WordT, WordKey, LookupKey } from "./db_models.js";
-import Database from "better-sqlite3";
-import { Database as DatabaseType } from "better-sqlite3";
+import Database, { Database as DatabaseType } from "better-sqlite3";
+import type { BookKey, BookT, LookupKey, LookupT, WordKey, WordT } from "./db_models.js";
 import { ReadListRepository } from "./tools/repository.js";
 
 const queries = {
