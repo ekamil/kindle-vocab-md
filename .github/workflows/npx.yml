@@ -1,0 +1,28 @@
+
+name: NPX - check distribution
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x,]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: wget https://github.com/ekamil/kindle-vocab-md/raw/main/packages/kindle-vocab-api/test/vocab.db -O vocab.db
+    - run: npx --yes @ekamil/kindle-vocab-cli --database vocab.db --output ./out
+    - run: ls -l ./out
+    - run: ls -l ./out/books | head -n 10
+    - run: ls -l1 ./out/words | head -n 10
